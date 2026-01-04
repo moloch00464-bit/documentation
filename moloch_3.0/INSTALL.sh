@@ -34,7 +34,7 @@ if [ -z "$ANTHROPIC_API_KEY" ]; then
     echo "⚠️ ANTHROPIC_API_KEY not set!"
     echo ""
     echo "   Set in ~/.bashrc:"
-    echo '   export ANTHROPIC_API_KEY="sk-ant-..."'
+    echo '   export ANTHROPIC_API_KEY="your-anthropic-key"'
     echo ""
     MISSING_KEYS=1
 fi
@@ -43,7 +43,7 @@ if [ -z "$OPENAI_API_KEY" ]; then
     echo "⚠️ OPENAI_API_KEY not set!"
     echo ""
     echo "   Set in ~/.bashrc:"
-    echo '   export OPENAI_API_KEY="sk-..."'
+    echo '   export OPENAI_API_KEY="your-openai-key"'
     echo ""
     MISSING_KEYS=1
 fi

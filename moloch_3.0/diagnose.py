@@ -131,11 +131,11 @@ def main():
         # API Keys fehlen?
         if not check_env_var("ANTHROPIC_API_KEY")[0]:
             print("\n🔑 Setze API Keys in ~/.bashrc:")
-            print('   echo "export ANTHROPIC_API_KEY=sk-ant-..." >> ~/.bashrc')
+            print('   echo "export ANTHROPIC_API_KEY=your-key" >> ~/.bashrc')
             print("   source ~/.bashrc")
 
         if not check_env_var("OPENAI_API_KEY")[0]:
-            print('   echo "export OPENAI_API_KEY=sk-..." >> ~/.bashrc')
+            print('   echo "export OPENAI_API_KEY=your-key" >> ~/.bashrc')
             print("   source ~/.bashrc")
 
     else:

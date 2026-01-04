@@ -107,8 +107,8 @@ pip install -r requirements.txt
 nano ~/.bashrc
 
 # Add these lines:
-export ANTHROPIC_API_KEY="sk-ant-api03-..."
-export OPENAI_API_KEY="sk-..."
+export ANTHROPIC_API_KEY="your-anthropic-key-here"
+export OPENAI_API_KEY="your-openai-key-here"
 
 # Save and reload
 source ~/.bashrc
@@ -358,7 +358,7 @@ echo $OPENAI_API_KEY
 
 # If empty, add to ~/.bashrc
 nano ~/.bashrc
-# Add: export ANTHROPIC_API_KEY="sk-ant-..."
+# Add: export ANTHROPIC_API_KEY="your-key-here"
 source ~/.bashrc
 ```
 

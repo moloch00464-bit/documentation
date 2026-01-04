@@ -50,7 +50,7 @@ pip install requests
 nano ~/.bashrc
 
 # Diese Zeilen hinzufügen:
-export ANTHROPIC_API_KEY="sk-ant-..."
+export ANTHROPIC_API_KEY="dein-anthropic-key-hier"
 export OPENAI_API_KEY="dein-openai-key-hier"
 
 # Speichern: CTRL+X, dann Y, dann Enter

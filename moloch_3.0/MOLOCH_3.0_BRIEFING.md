@@ -398,7 +398,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY', 'sk-ant-api03-oo...')
+ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY', 'YOUR-ANTHROPIC-KEY')
 MODEL = 'claude-sonnet-4-20250514'
 ```
 

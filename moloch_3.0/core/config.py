@@ -171,8 +171,8 @@ def validate_api_keys():
         for error in errors:
             print(f"   - {error}")
         print("\n💡 Set in ~/.bashrc:")
-        print('   export ANTHROPIC_API_KEY="sk-ant-..."')
-        print('   export OPENAI_API_KEY="sk-..."')
+        print('   export ANTHROPIC_API_KEY="your-anthropic-key"')
+        print('   export OPENAI_API_KEY="your-openai-key"')
         print("   source ~/.bashrc")
         return False
 
