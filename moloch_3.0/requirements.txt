@@ -1,0 +1,11 @@
+# M.O.L.O.C.H. 3.0 - Requirements
+# ================================
+
+# Core - Claude API
+anthropic>=0.18.0
+
+# HTTP Requests
+requests>=2.31.0
+
+# OpenAI (for Whisper STT)
+openai>=1.0.0
