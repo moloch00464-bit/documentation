@@ -1,0 +1,12 @@
+#!/data/data/com.termux/files/usr/bin/bash
+#
+# M.O.L.O.C.H. 3.0 - Quick Start Script
+# ======================================
+# Einfach "moloch" statt "python moloch3.py" tippen!
+#
+
+# Change to moloch directory
+cd ~/moloch_3.0
+
+# Run M.O.L.O.C.H.
+python moloch3.py "$@"

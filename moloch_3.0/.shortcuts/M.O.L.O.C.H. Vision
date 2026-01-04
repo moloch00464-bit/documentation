@@ -1,0 +1,3 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# M.O.L.O.C.H. 3.0 - Vision Mode Widget
+cd ~/moloch_3.0 && python moloch3.py -a "Was siehst du?"
