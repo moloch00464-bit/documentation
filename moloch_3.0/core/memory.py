@@ -137,10 +137,19 @@ class Memory:
         # Convert to API format (no metadata)
         context = []
         for entry in recent:
-            context.append({
-                "role": entry["role"],
-                "content": entry["content"]
-            })
+            # BUGFIX: Handle old/invalid history entries
+            if isinstance(entry, dict) and "role" in entry and "content" in entry:
+                context.append({
+                    "role": entry["role"],
+                    "content": entry["content"]
+                })
+            elif isinstance(entry, str):
+                # Old format: Just a string - convert to user message
+                context.append({
+                    "role": "user",
+                    "content": entry
+                })
+            # Skip invalid entries
 
         return context
 
