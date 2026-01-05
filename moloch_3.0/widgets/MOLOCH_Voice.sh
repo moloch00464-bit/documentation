@@ -5,5 +5,8 @@
 # Homescreen Button: Voice Interaction
 #
 
+# Load API Keys from ~/.bashrc
+source ~/.bashrc
+
 cd ~/documentation/moloch_3.0
 python3 moloch3_unified.py
