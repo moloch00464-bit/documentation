@@ -150,12 +150,47 @@ def suggest_threshold(noise_stats: dict, voice_stats: dict):
         print("   → Sprich LAUTER oder reduziere Background-Noise (TV leiser!)")
         return None
 
-    print(f"\n💡 Öffne die Config und ändere:")
-    print(f"   nano {CONFIG_FILE}")
-    print(f"\n   Zeile ~54:")
-    print(f"   SPEECH_THRESHOLD = {suggested}")
-
     return suggested
+
+
+def apply_threshold(threshold: int) -> bool:
+    """Apply threshold to config.py"""
+
+    print(f"\n{'='*60}")
+    print("💾 AUTO-CONFIG")
+    print(f"{'='*60}")
+
+    try:
+        # Read config
+        with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+
+        # Find and replace SPEECH_THRESHOLD line
+        modified = False
+        for i, line in enumerate(lines):
+            if 'SPEECH_THRESHOLD' in line and '=' in line and not line.strip().startswith('#'):
+                # Replace the line
+                old_line = line.strip()
+                lines[i] = f"SPEECH_THRESHOLD = {threshold}        # Auto-configured by calibrate_voice.py\n"
+                modified = True
+                print(f"\n📝 Alte Einstellung: {old_line}")
+                print(f"✅ Neue Einstellung: SPEECH_THRESHOLD = {threshold}")
+                break
+
+        if not modified:
+            print("\n❌ SPEECH_THRESHOLD Zeile nicht gefunden in config.py!")
+            return False
+
+        # Write back
+        with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
+            f.writelines(lines)
+
+        print(f"\n✅ Config gespeichert: {CONFIG_FILE}")
+        return True
+
+    except Exception as e:
+        print(f"\n❌ Fehler beim Schreiben: {e}")
+        return False
 
 
 def main():
@@ -212,10 +247,26 @@ def main():
 
     if suggested:
         print(f"\n✅ Kalibrierung erfolgreich!")
-        print(f"\n📝 Nächster Schritt:")
-        print(f"   1. Ändere SPEECH_THRESHOLD in config.py auf {suggested}")
-        print(f"   2. Teste mit: python3 moloch3_voice.py")
-        print(f"   3. Du solltest █ sehen wenn du sprichst!")
+
+        # Ask if auto-apply
+        print(f"\n{'='*60}")
+        response = input("\n🤖 Soll ich SPEECH_THRESHOLD automatisch setzen? [J/n]: ").strip().lower()
+
+        if response in ['', 'j', 'ja', 'y', 'yes']:
+            if apply_threshold(suggested):
+                print(f"\n🎉 FERTIG! Config wurde aktualisiert!")
+                print(f"\n📝 Nächster Schritt:")
+                print(f"   python3 moloch3_voice.py")
+                print(f"\n   → Du solltest jetzt █ sehen wenn du sprichst!")
+                print(f"   → Recording stoppt automatisch nach 1.5s Pause!")
+            else:
+                print(f"\n⚠️  Auto-Config fehlgeschlagen!")
+                print(f"   Manuelle Änderung: nano {CONFIG_FILE}")
+                print(f"   Setze: SPEECH_THRESHOLD = {suggested}")
+        else:
+            print(f"\n💡 Manuelle Änderung:")
+            print(f"   nano {CONFIG_FILE}")
+            print(f"   Setze: SPEECH_THRESHOLD = {suggested}")
 
     # Cleanup
     if TEST_FILE.exists():
