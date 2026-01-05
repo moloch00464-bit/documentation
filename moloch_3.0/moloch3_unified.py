@@ -279,10 +279,40 @@ Vision Mode:
         print("\n🧠 M.O.L.O.C.H. guckt...")
         response = ask_claude_vision(user_text, str(IMAGE_FILE), memory=memory, brain=brain, personality=personality)
 
-        # Save to memory
-        memory.add_to_history("user", user_text, metadata={"mode": "vision", "image_path": str(IMAGE_FILE)})
-        memory.add_to_history("assistant", response, metadata={"mode": "vision"})
+        # AUTONOMIE: Theme & Context Detection auch für Vision! 🎯
+        # Extract theme from response (was sieht M.O.L.O.C.H.?)
+        theme = personality.detect_theme(response)
+        context = {"location": "unknown", "activity": "vision", "theme": theme}
+
+        print(f"   🎯 Theme erkannt: {theme}")
+        print(f"   📸 Vision Mode - Foto analysiert")
+
+        # Save to memory (with Theme!)
+        memory.add_to_history("user", user_text, metadata={
+            "mode": "vision",
+            "image_path": str(IMAGE_FILE),
+            "theme": theme,
+            "context": context
+        })
+        memory.add_to_history("assistant", response, metadata={"mode": "vision", "theme": theme})
         memory.save_to_disk()
+
+        # AUTO-BRAIN-SAVE: Fotos sind immer wichtig! 📸
+        from datetime import datetime
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        kategorie = f"themen/{theme}/fotos" if theme != "allgemein" else "fotos"
+
+        brain_entry = {
+            "user_input": user_text,
+            "response": response,
+            "image_path": str(IMAGE_FILE),
+            "theme": theme,
+            "context": context,
+            "timestamp": datetime.now().isoformat()
+        }
+
+        brain.save(kategorie, brain_entry, f"foto_{timestamp}.json")
+        print(f"   💾 Auto-saved to brain/{kategorie}/")
 
         # Output
         print("\n" + "="*60)
