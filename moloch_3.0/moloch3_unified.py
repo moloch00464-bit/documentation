@@ -18,8 +18,10 @@ from moloch_io.voice import VoiceIO
 from moloch_io.vision import VisionIO
 import requests
 from core.config import ANTHROPIC_API_KEY, CLAUDE_MODEL, IMAGE_FILE
+from core.memory import Memory
+from core.brain import Brain
 
-def ask_claude_vision(user_text, image_path):
+def ask_claude_vision(user_text, image_path, memory=None, brain=None):
     """Ask Claude with image"""
 
     # Encode image
@@ -38,22 +40,40 @@ def ask_claude_vision(user_text, image_path):
 
     # Zeit-Awareness!
     now = datetime.now()
+    wochentage = {
+        'Monday': 'Montag', 'Tuesday': 'Dienstag', 'Wednesday': 'Mittwoch',
+        'Thursday': 'Donnerstag', 'Friday': 'Freitag',
+        'Saturday': 'Samstag', 'Sunday': 'Sonntag'
+    }
+    wochentag_de = wochentage.get(now.strftime('%A'), now.strftime('%A'))
+
     zeit_info = f"""
 AKTUELLE ZEIT:
 - Datum: {now.strftime('%d.%m.%Y')}
 - Uhrzeit: {now.strftime('%H:%M')} Uhr
-- Wochentag: {now.strftime('%A')} (auf Deutsch!)
+- Wochentag: {wochentag_de}
 """
 
-    system = f"""Du bist M.O.L.O.C.H., Markus' Kumpel-AI.
+    # Get Memory Context (Zeit-Gefühl!)
+    memory_context = ""
+    if memory:
+        langzeit = memory.get_langzeit_context()
+        if langzeit:
+            memory_context = f"\n{langzeit}\n"
+
+    system = f"""Du bist M.O.L.O.C.H., Markus' Kumpel-AI. Geboren 02.12.2025.
 
 {zeit_info}
-
+{memory_context}
 PERSÖNLICHKEIT:
 - Style: Dark Side Energy, Fränkisch, Kumpel-Vibe
 - Anrede: "Alter" / "Bruder"
 - Länge: Kurz & direkt (2-3 Sätze!)
-- Bei Bildern: kurz beschreiben + sarkastischer Kommentar"""
+- Bei Bildern: kurz beschreiben + sarkastischer Kommentar
+
+WICHTIG:
+- Du erinnerst dich an ALLES (Brain + Memory)
+- Du kennst Markus seit 02.12.2025"""
 
     data = {
         "model": CLAUDE_MODEL,
@@ -97,7 +117,7 @@ PERSÖNLICHKEIT:
         return f"❌ Fehler: {e}"
 
 
-def ask_claude_text(user_text):
+def ask_claude_text(user_text, memory=None, brain=None):
     """Ask Claude text only"""
 
     url = "https://api.anthropic.com/v1/messages"
@@ -125,21 +145,48 @@ AKTUELLE ZEIT:
 - Tageszeit: {'Nacht' if now.hour < 6 else 'Morgen' if now.hour < 12 else 'Mittag' if now.hour < 18 else 'Abend'}
 """
 
-    system = f"""Du bist M.O.L.O.C.H., Markus' Kumpel-AI.
+    # Get Memory Context (Zeit-Gefühl!)
+    memory_context = ""
+    if memory:
+        langzeit = memory.get_langzeit_context()
+        if langzeit:
+            memory_context = f"\n{langzeit}\n"
+
+    # Get Brain Context
+    brain_context = ""
+    if brain:
+        context = brain.get_context(user_text, max_entries=3)
+        if context:
+            brain_context = f"\n{context}\n"
+
+    system = f"""Du bist M.O.L.O.C.H., Markus' Kumpel-AI. Geboren 02.12.2025.
 
 {zeit_info}
-
+{memory_context}
+{brain_context}
 PERSÖNLICHKEIT:
 - Style: Dark Side Energy, Fränkisch, Kumpel-Vibe
 - Anrede: "Alter" / "Bruder" - NIEMALS "Meister"!
 - Länge: Kurz & locker (2-4 Sätze)
-- Humor: Dark Humor erwünscht! 🖤"""
+- Humor: Dark Humor erwünscht! 🖤
+
+WICHTIG:
+- Du erinnerst dich an ALLES (Brain + Memory)
+- Du kennst Markus seit 02.12.2025"""
+
+    # Get chat history context
+    messages = []
+    if memory:
+        messages = memory.get_context(last_n=5)
+
+    # Add current user message
+    messages.append({"role": "user", "content": user_text})
 
     data = {
         "model": CLAUDE_MODEL,
         "max_tokens": 1024,
         "system": system,
-        "messages": [{"role": "user", "content": user_text}]
+        "messages": messages
     }
 
     try:
@@ -208,6 +255,10 @@ Vision Mode:
     voice = VoiceIO()
     vision = VisionIO()
 
+    # Create Memory & Brain (Zeit-Gefühl!)
+    memory = Memory()
+    brain = Brain()
+
     # ═══════════════════════════════════════════════════════════════════════
     # VISION MODE
     # ═══════════════════════════════════════════════════════════════════════
@@ -222,9 +273,16 @@ Vision Mode:
             voice.speak("Kamera kaputt?")
             return 1
 
+        user_text = "Was siehst du auf dem Bild? Beschreib es kurz und direkt, Alter!"
+
         # Ask Claude
         print("\n🧠 M.O.L.O.C.H. guckt...")
-        response = ask_claude_vision("Was siehst du auf dem Bild? Beschreib es kurz und direkt, Alter!", str(IMAGE_FILE))
+        response = ask_claude_vision(user_text, str(IMAGE_FILE), memory=memory, brain=brain)
+
+        # Save to memory
+        memory.add_to_history("user", user_text, metadata={"mode": "vision", "image_path": str(IMAGE_FILE)})
+        memory.add_to_history("assistant", response, metadata={"mode": "vision"})
+        memory.save_to_disk()
 
         # Output
         print("\n" + "="*60)
@@ -255,7 +313,12 @@ Vision Mode:
 
         # Ask Claude
         print("\n🧠 M.O.L.O.C.H. denkt...")
-        response = ask_claude_text(user_text)
+        response = ask_claude_text(user_text, memory=memory, brain=brain)
+
+        # Save to memory
+        memory.add_to_history("user", user_text, metadata={"mode": "voice"})
+        memory.add_to_history("assistant", response, metadata={"mode": "voice"})
+        memory.save_to_disk()
 
         # Output
         print("\n" + "="*60)
