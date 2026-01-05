@@ -51,7 +51,7 @@ OLD_MEMORY_FILE = OLD_MOLOCH_DIR / "langzeit.json"
 MIN_RECORDING_TIME = 3        # Min seconds before can stop
 MAX_RECORDING_TIME = 20       # Max seconds total
 SILENCE_DURATION = 1.5        # Seconds of silence to stop
-SPEECH_THRESHOLD = 150        # Bytes/200ms growth = speech
+SPEECH_THRESHOLD = 500        # Bytes/200ms growth = speech (erhöht für Background-Noise!)
 
 # Not used in 2.0 approach (no ffmpeg conversion)
 AUDIO_SAMPLE_RATE = 16000
