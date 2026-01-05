@@ -9,4 +9,13 @@
 source ~/.bashrc
 
 cd ~/documentation/moloch_3.0
-python3 moloch3_unified.py
+
+# Run with error capture and keep terminal open
+python3 moloch3_unified.py 2>&1
+
+# Keep terminal open to see result
+echo ""
+echo "=================================="
+echo "Drücke ENTER zum Schließen..."
+echo "=================================="
+read
