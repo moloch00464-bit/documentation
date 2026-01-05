@@ -175,8 +175,8 @@ class Personality:
 
         # Gestresst indicators
         gestresst_words = [
-            "stress", "scheisse", "fuck", "verdammt", "hilfe", "schnell",
-            "problem", "fehler", "crash", "kaputt", "geht nicht"
+            "stress", "scheisse", "scheiße", "fuck", "verdammt", "hilfe", "schnell",
+            "problem", "fehler", "crash", "kaputt", "geht nicht", "nervt", "ärger"
         ]
         if any(word in text_lower for word in gestresst_words):
             return "gestresst"
