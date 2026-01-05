@@ -151,34 +151,35 @@ WICHTIG:
         self.voice.speak("Alter, ich bin bereit! Sprich mit mir!")
 
         while True:
-            # Listen
-            print("\n" + "="*60)
-            user_text = self.voice.listen()
+            try:
+                # Listen (stops automatically after 1.5s silence or 20s max)
+                print("\n" + "="*60)
+                user_text = self.voice.listen()
 
-            # If no text, wait a bit and ask to continue
-            if not user_text:
-                print("\n⚠️ Keine Transkription. Nochmal? (Ctrl+C zum Beenden)")
+                # If no text, wait a bit and continue
+                if not user_text:
+                    print("\n⚠️ Keine Transkription. Nochmal...")
+                    import time
+                    time.sleep(1)
+                    continue
+
+                # Get response from Claude
+                print("\n🧠 M.O.L.O.C.H. denkt...")
+                response = self._call_claude(user_text)
+
+                # Speak response
+                self.voice.speak(response)
+
+                # Pause before next recording (wait for TTS to finish)
                 import time
                 time.sleep(2)
-                continue
 
-            # Check for exit
-            if any(word in user_text.lower() for word in ['tschüss', 'ende', 'stopp', 'beenden', 'exit', 'quit']):
+                print("\n💬 Bereit für nächste Frage...")
+
+            except KeyboardInterrupt:
+                print("\n\n👋 Tschüss, Alter!")
                 self.voice.speak("Bis dann, Alter! 🖤")
                 break
-
-            # Get response from Claude
-            print("\n🧠 M.O.L.O.C.H. denkt...")
-            response = self._call_claude(user_text)
-
-            # Speak response
-            self.voice.speak(response)
-
-            # Pause before next recording (wait for TTS to finish)
-            import time
-            time.sleep(2)
-
-            print("\n💬 Bereit für nächste Frage...")
 
     def text_mode(self):
         """Text conversation mode"""
