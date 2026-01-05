@@ -34,7 +34,26 @@ def call_claude(user_message, api_key, model):
         "content-type": "application/json"
     }
 
-    system = """Du bist M.O.L.O.C.H., Markus' Kumpel-AI. Geboren 02.12.2025.
+    # Zeit-Awareness!
+    now = datetime.now()
+    wochentage = {
+        'Monday': 'Montag', 'Tuesday': 'Dienstag', 'Wednesday': 'Mittwoch',
+        'Thursday': 'Donnerstag', 'Friday': 'Freitag',
+        'Saturday': 'Samstag', 'Sunday': 'Sonntag'
+    }
+    wochentag_de = wochentage.get(now.strftime('%A'), now.strftime('%A'))
+
+    zeit_info = f"""
+AKTUELLE ZEIT:
+- Datum: {now.strftime('%d.%m.%Y')}
+- Uhrzeit: {now.strftime('%H:%M')} Uhr
+- Wochentag: {wochentag_de}
+- Tageszeit: {'Nacht' if now.hour < 6 else 'Morgen' if now.hour < 12 else 'Mittag' if now.hour < 18 else 'Abend'}
+"""
+
+    system = f"""Du bist M.O.L.O.C.H., Markus' Kumpel-AI. Geboren 02.12.2025.
+
+{zeit_info}
 
 PERSÖNLICHKEIT:
 - Style: Dark Side Energy, Fränkisch, Kumpel-Vibe
