@@ -9,6 +9,7 @@ import sys
 import os
 import base64
 from pathlib import Path
+from datetime import datetime
 
 # Add to path
 sys.path.insert(0, os.path.expanduser("~/documentation/moloch_3.0"))
