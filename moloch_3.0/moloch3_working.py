@@ -152,13 +152,18 @@ WICHTIG:
 
         while True:
             # Listen
+            print("\n" + "="*60)
             user_text = self.voice.listen()
 
+            # If no text, wait a bit and ask to continue
             if not user_text:
+                print("\n⚠️ Keine Transkription. Nochmal? (Ctrl+C zum Beenden)")
+                import time
+                time.sleep(2)
                 continue
 
             # Check for exit
-            if any(word in user_text.lower() for word in ['tschüss', 'ende', 'stopp', 'beenden']):
+            if any(word in user_text.lower() for word in ['tschüss', 'ende', 'stopp', 'beenden', 'exit', 'quit']):
                 self.voice.speak("Bis dann, Alter! 🖤")
                 break
 
@@ -168,6 +173,12 @@ WICHTIG:
 
             # Speak response
             self.voice.speak(response)
+
+            # Pause before next recording (wait for TTS to finish)
+            import time
+            time.sleep(2)
+
+            print("\n💬 Bereit für nächste Frage...")
 
     def text_mode(self):
         """Text conversation mode"""
