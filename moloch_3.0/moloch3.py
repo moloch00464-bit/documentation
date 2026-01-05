@@ -20,6 +20,7 @@ from core.api import MolochAPI, MOLOCH_TOOLS
 from core.brain import Brain
 from core.memory import Memory
 from core.personality import Personality
+from core.timekeeper import TimeKeeper
 
 # I/O
 from io.voice import VoiceIO
@@ -60,6 +61,7 @@ class Moloch3:
         self.brain = Brain()
         self.memory = Memory()
         self.personality = Personality(personality_mode=personality_mode)
+        self.timekeeper = TimeKeeper()
         self.logger = SmartLogger("moloch3")
         self.debugger = SelfDebugger()
 
@@ -175,6 +177,10 @@ class Moloch3:
             # Get tageszeit
             tageszeit = self.personality.get_tageszeit_mode()
 
+            # Get time context
+            time_context = self.timekeeper.get_context_string()
+            time_details = self.timekeeper.get_detailed_context()
+
             # Get brain context
             brain_context = self.brain.get_context(user_input)
 
@@ -189,6 +195,9 @@ class Moloch3:
                 brain_context=brain_context,
                 memory_context=memory_context
             )
+
+            # Add time context to system prompt
+            system_prompt += f"\n\n⏰ ZEITACHSE:\n{time_context}"
 
             # Get conversation context
             context_messages = self.memory.get_context()
@@ -222,18 +231,34 @@ class Moloch3:
                     "mode": mode,
                     "stimmung": stimmung,
                     "tageszeit": tageszeit.split(":")[1].split("(")[0].strip() if ":" in tageszeit else "unknown",
-                    "image_path": str(self.vision.IMAGE_FILE) if image_b64 else None
+                    "image_path": str(self.vision.IMAGE_FILE) if image_b64 else None,
+                    "timestamp": time_details["timestamp"]
                 }
             )
 
             self.memory.add_to_history(
                 role="assistant",
                 content=response,
-                metadata={"mode": mode}
+                metadata={
+                    "mode": mode,
+                    "timestamp": self.timekeeper.get_detailed_context()["timestamp"]
+                }
             )
 
             # Save to disk
             self.memory.save_to_disk()
+
+            # Add to timeline
+            event_type = "photo" if mode == "vision" else "conversation"
+            self.timekeeper.add_timeline_event(
+                event_type=event_type,
+                description=f"{mode.title()} mode: {user_input[:50]}...",
+                metadata={
+                    "mode": mode,
+                    "stimmung": stimmung,
+                    "response_length": len(response)
+                }
+            )
 
             # Log response
             self.logger.info(f"Response: {response[:100]}...")

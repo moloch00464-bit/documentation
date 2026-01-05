@@ -25,6 +25,9 @@ Platform: Android Termux
 - 🛠️ **Tool Executor** - Autonomous tool usage
 - 📸 **Vision History FIX** - Kann sich an Fotos erinnern!
 - 🏗️ **Modular Architecture** - Clean, wartbar, erweiterbar
+- ⏰ **TimeKeeper** - Zeit, Datum, Timeline-Bewusstsein!
+- 📱 **Feedback I/O** - Toast, Vibrate, Wake Lock, Brightness
+- ⌚ **Wearable Integration** - Xiaomi Smart Band 8 Pro Support!
 
 ---
 
@@ -39,7 +42,8 @@ moloch_3.0/
 │   ├── api.py             # Claude API Client
 │   ├── brain.py           # Brain Tree System
 │   ├── memory.py          # History + Long-term Memory
-│   └── personality.py     # DNA, Stimmung, Tageszeit
+│   ├── personality.py     # DNA, Stimmung, Tageszeit
+│   └── timekeeper.py      # Zeit, Datum, Timeline (NEW!)
 │
 ├── io/                     # Input/Output
 │   ├── voice.py           # Whisper STT + TTS
@@ -64,6 +68,7 @@ moloch_3.0/
 │   ├── brain/             # Brain Tree
 │   ├── history.json       # Chat History
 │   ├── langzeit.json      # Long-term Memory
+│   ├── timeline.json      # Event Timeline (NEW!)
 │   ├── ohr.wav            # Temp Audio
 │   └── auge.jpg           # Temp Image
 │
@@ -156,6 +161,38 @@ python moloch3.py --hal -t "Open the pod bay doors, HAL"
 /hal     - Toggle HAL personality
 /quit    - Exit
 ```
+
+### ⏰ TimeKeeper Features
+
+M.O.L.O.C.H. hat jetzt komplettes Zeit-Bewusstsein:
+
+**Automatisch im System Prompt:**
+- Aktuelles Datum & Uhrzeit
+- Wochentag (inkl. Wochenende-Erkennung)
+- Tageszeit-Modus (Kaffee/Normal/Locker/Dark Side)
+- Timeline der letzten Events
+
+**Beispiel System Prompt:**
+```
+⏰ ZEITACHSE:
+Montag, 5. Januar 2026 | 14:23:15 | Dark Side 🌙
+```
+
+**Timeline Events:**
+- Jedes Gespräch wird getrackt
+- Jedes Foto wird gespeichert
+- M.O.L.O.C.H. kann sagen: "vor 2 Stunden" statt nur "heute"
+
+**Du kannst fragen:**
+```bash
+moloch -t "Welcher Tag ist heute?"
+moloch -t "Wie spät ist es?"
+moloch -t "Wann haben wir zuletzt geredet?"
+moloch -t "Was haben wir heute schon gemacht?"
+```
+
+**Timeline-Daten:**
+Gespeichert in: `~/moloch_3.0/data/timeline.json`
 
 ---
 
