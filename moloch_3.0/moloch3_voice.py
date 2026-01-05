@@ -104,9 +104,9 @@ def main():
     # Greeting
     voice.speak("Alter, was brauchst du?")
 
-    # Listen (stops automatically after 1.5s silence)
+    # Listen (20 seconds fixed - NO PAUSE DETECTION!)
     print("\n" + "="*60)
-    user_text = voice.listen()
+    user_text = voice.listen(duration=20, smart=False)
 
     # Check if we got text
     if not user_text:

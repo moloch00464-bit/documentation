@@ -44,16 +44,19 @@ OLD_HISTORY_FILE = OLD_MOLOCH_DIR / "history.json"
 OLD_MEMORY_FILE = OLD_MOLOCH_DIR / "langzeit.json"
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# AUDIO CONFIGURATION - WORKING 2.0 SETTINGS!
+# AUDIO CONFIGURATION
 # ═══════════════════════════════════════════════════════════════════════════════
 
-# Smart Recording (from WORKING 2.0)
+# SIMPLE RECORDING (MOST RELIABLE!)
+RECORDING_DURATION = 20       # Fixed recording time in seconds (KEINE PAUSE-DETECTION!)
+
+# Smart Recording (UNRELIABLE! Nur wenn explizit aktiviert)
 MIN_RECORDING_TIME = 3        # Min seconds before can stop
 MAX_RECORDING_TIME = 20       # Max seconds total
 SILENCE_DURATION = 1.5        # Seconds of silence to stop
-SPEECH_THRESHOLD = 500        # Bytes/200ms growth = speech (erhöht für Background-Noise!)
+SPEECH_THRESHOLD = 500        # Bytes/200ms growth = speech (zu unreliable!)
 
-# Not used in 2.0 approach (no ffmpeg conversion)
+# Not used in simple approach
 AUDIO_SAMPLE_RATE = 16000
 AUDIO_CHANNELS = 1
 

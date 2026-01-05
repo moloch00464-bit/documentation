@@ -89,20 +89,26 @@ class VoiceIO:
     # SPEECH-TO-TEXT (Input) - WORKING 2.0 CODE!
     # ═══════════════════════════════════════════════════════════════════════════
 
-    def listen(self) -> Optional[str]:
+    def listen(self, duration: int = 20, smart: bool = False) -> Optional[str]:
         """
         Record audio and transcribe via Whisper
 
-        Uses WORKING 2.0 algorithm:
-        1. Smart recording with byte monitoring
-        2. Direct Whisper API (no ffmpeg)
+        Args:
+            duration: Recording duration in seconds (default: 20)
+            smart: Use smart pause detection (default: False - SIMPLE MODE!)
 
         Returns:
             Transcribed text or None
         """
-        # Step 1: Smart recording
-        if not self._record_audio_smart():
-            return None
+        # Step 1: Record audio
+        if smart:
+            # Smart recording with pause detection (UNRELIABLE!)
+            if not self._record_audio_smart():
+                return None
+        else:
+            # Simple fixed-duration recording (RELIABLE!)
+            if not self._record_audio_simple(duration):
+                return None
 
         # Step 2: Convert .mp4 → .mp3
         if not self._convert_mp4_to_mp3():
@@ -110,6 +116,81 @@ class VoiceIO:
 
         # Step 3: Transcribe with Whisper
         return self._transcribe_whisper()
+
+    def _record_audio_simple(self, duration: int) -> bool:
+        """
+        Simple Fixed-Duration Recording - NO SMART PAUSE DETECTION!
+
+        MOST RELIABLE APPROACH:
+        - Records for fixed duration (default 20s)
+        - No threshold detection
+        - No pause detection
+        - Just records and stops
+
+        Args:
+            duration: Recording duration in seconds
+
+        Returns:
+            Success status
+        """
+        # Delete old files
+        for f in [AUDIO_RAW, AUDIO_FILE]:
+            if os.path.exists(f):
+                try:
+                    os.remove(f)
+                except:
+                    pass
+
+        print(f"🎤 SPRICH JETZT! ({duration} Sekunden)")
+        print(f"⏱️  ", end="", flush=True)
+
+        # Start recording with fixed limit
+        try:
+            proc = subprocess.Popen(
+                ["termux-microphone-record", "-f", str(AUDIO_RAW), "-l", str(duration)],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL
+            )
+        except FileNotFoundError:
+            print("\n❌ termux-microphone-record nicht gefunden")
+            return False
+
+        # Wait for recording to complete
+        start_time = time.time()
+        while time.time() - start_time < duration:
+            elapsed = int(time.time() - start_time)
+            remaining = duration - elapsed
+            print(f"\r⏱️  {remaining}s... ", end="", flush=True)
+            time.sleep(1)
+
+        print(f"\r⏱️  Fertig! ({duration}s)         ")
+
+        # Stop recording (just in case)
+        try:
+            subprocess.run(
+                ["termux-microphone-record", "-q"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                timeout=2
+            )
+        except:
+            pass
+
+        # Wait a bit for file to be finalized
+        time.sleep(0.5)
+
+        # Verify file exists and has content
+        if not os.path.exists(AUDIO_RAW):
+            print("❌ Keine Aufnahme erstellt!")
+            return False
+
+        file_size = os.path.getsize(AUDIO_RAW)
+        if file_size < 1000:
+            print(f"⚠️ Aufnahme zu klein ({file_size} bytes)")
+            return False
+
+        print(f"✅ Aufnahme fertig ({file_size / 1024:.1f} KB)")
+        return True
 
     def _record_audio_smart(self) -> bool:
         """

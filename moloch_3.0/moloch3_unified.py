@@ -215,8 +215,8 @@ Vision Mode:
 
         voice.speak("Ja, Alter? Was brauchst du?")
 
-        # Listen
-        user_text = voice.listen()
+        # Listen (20 seconds fixed - NO PAUSE DETECTION!)
+        user_text = voice.listen(duration=20, smart=False)
 
         if not user_text:
             voice.speak("Nix verstanden")
