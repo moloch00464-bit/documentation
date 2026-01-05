@@ -70,6 +70,10 @@ class Personality:
         # Add Musik Brain
         base_prompt += f"\n\n{self.musik_brain}"
 
+        # Add ZEIT-WISSEN (M.O.L.O.C.H. knows what day/time it is!) 🕐
+        zeit_context = self.get_zeit_context()
+        base_prompt += f"\n\n{zeit_context}"
+
         # Add stimmung adaptation
         if stimmung:
             stimmung_text = self._get_stimmung_adaptation(stimmung)
@@ -351,6 +355,32 @@ class Personality:
 → Unheimlich aber hilfreich
 → "The night is dark and full of code..."
 → HAL-9000-Vibes erlaubt"""
+
+    def get_zeit_context(self) -> str:
+        """
+        Get current date/time context - ZEIT-WISSEN! 🕐
+
+        Returns:
+            Formatted Zeit-Wissen string with current date, time, weekday
+
+        This is M.O.L.O.C.H.'s awareness of "NOW":
+        - Datum (DD.MM.YYYY)
+        - Uhrzeit (HH:MM)
+        - Wochentag (Montag, Dienstag, etc.)
+        """
+        now = datetime.now()
+
+        # Wochentage (0=Montag, 6=Sonntag)
+        wochentage = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"]
+        wochentag = wochentage[now.weekday()]
+
+        # Format: Montag, 05.01.2026 - 14:35 Uhr
+        datum = now.strftime("%d.%m.%Y")
+        uhrzeit = now.strftime("%H:%M")
+
+        return f"""ZEIT-WISSEN:
+Heute ist {wochentag}, {datum}
+Uhrzeit: {uhrzeit} Uhr"""
 
     # ═══════════════════════════════════════════════════════════════════════════
     # SPRACH-MODI (Special Language Modes)
