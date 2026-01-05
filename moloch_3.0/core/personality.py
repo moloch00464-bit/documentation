@@ -197,6 +197,116 @@ class Personality:
         return "neutral"
 
     # ═══════════════════════════════════════════════════════════════════════════
+    # THEME-DETECTION (NEU! 🧠)
+    # ═══════════════════════════════════════════════════════════════════════════
+
+    def detect_theme(self, text: str) -> str:
+        """
+        Detect conversation theme from text
+
+        Args:
+            text: User input text
+
+        Returns:
+            Theme: "coding", "musik", "freunde", "konzert", "arbeit", "allgemein"
+
+        Examples:
+            "Python Bug fixen" → "coding"
+            "WGT war geil!" → "konzert"
+            "Rebecca angerufen" → "freunde"
+        """
+        text_lower = text.lower()
+
+        # CODING
+        coding_words = [
+            "code", "python", "bug", "script", "programmieren", "git",
+            "fehler", "debug", "api", "function", "moloch", "import"
+        ]
+        if any(word in text_lower for word in coding_words):
+            return "coding"
+
+        # KONZERT/EVENTS
+        konzert_words = [
+            "konzert", "wgt", "festival", "bühne", "live", "auftritt",
+            "event", "veranstaltung", "gig"
+        ]
+        if any(word in text_lower for word in konzert_words):
+            return "konzert"
+
+        # MUSIK (general)
+        musik_words = [
+            "musik", "song", "band", "album", "spotify", "track",
+            "sierra", "suicide commando", "vnv", "hören", "playlist"
+        ]
+        if any(word in text_lower for word in musik_words):
+            return "musik"
+
+        # FREUNDE
+        freunde_words = [
+            "rebecca", "erkan", "witte", "ryan", "freund", "kumpel",
+            "besuch", "treffen", "telefoniert", "gequatscht"
+        ]
+        if any(word in text_lower for word in freunde_words):
+            return "freunde"
+
+        # ARBEIT
+        arbeit_words = [
+            "arbeit", "job", "schicht", "chef", "kollege", "büro",
+            "früh", "spät", "nacht", "dienst"
+        ]
+        if any(word in text_lower for word in arbeit_words):
+            return "arbeit"
+
+        return "allgemein"
+
+    def detect_context(self, text: str) -> dict:
+        """
+        Detect user context (location + activity)
+
+        Args:
+            text: User input text
+
+        Returns:
+            Context dict with:
+            - location: "zuhause" | "unterwegs" | "konzert" | "arbeit" | "unknown"
+            - activity: "coding" | "musik" | "socializing" | "working" | "unknown"
+            - theme: detected theme
+
+        Example:
+            "Bin auf dem WGT, geil hier!"
+            → {"location": "konzert", "activity": "musik", "theme": "konzert"}
+        """
+        text_lower = text.lower()
+
+        context = {
+            "location": "unknown",
+            "activity": "unknown",
+            "theme": self.detect_theme(text)
+        }
+
+        # LOCATION
+        if any(word in text_lower for word in ["zuhause", "daheim", "home"]):
+            context["location"] = "zuhause"
+        elif any(word in text_lower for word in ["unterwegs", "draußen", "außer", "raus"]):
+            context["location"] = "unterwegs"
+        elif any(word in text_lower for word in ["konzert", "wgt", "festival", "event"]):
+            context["location"] = "konzert"
+        elif any(word in text_lower for word in ["arbeit", "schicht", "job"]):
+            context["location"] = "arbeit"
+
+        # ACTIVITY
+        if any(word in text_lower for word in ["code", "programmier", "debug", "script"]):
+            context["activity"] = "coding"
+        elif any(word in text_lower for word in ["musik", "hör", "song", "konzert"]):
+            context["activity"] = "musik"
+        elif any(word in text_lower for word in ["freund", "besuch", "treffen", "quatschen"]):
+            context["activity"] = "socializing"
+        elif any(word in text_lower for word in ["arbeit", "schicht", "job"]):
+            context["activity"] = "working"
+
+        return context
+
+    # ═══════════════════════════════════════════════════════════════════════════
     # TAGESZEIT-PERSÖNLICHKEIT
     # ═══════════════════════════════════════════════════════════════════════════
 

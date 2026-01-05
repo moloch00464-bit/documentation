@@ -315,11 +315,48 @@ Vision Mode:
         print("\n🧠 M.O.L.O.C.H. denkt...")
         response = ask_claude_text(user_text, memory=memory, brain=brain, personality=personality)
 
-        # Save to memory (with Stimmung!)
+        # AUTONOMIE: Theme & Context Detection! 🎯
         stimmung = personality.detect_stimmung(user_text)
-        memory.add_to_history("user", user_text, metadata={"mode": "voice", "stimmung": stimmung})
-        memory.add_to_history("assistant", response, metadata={"mode": "voice"})
+        theme = personality.detect_theme(user_text)
+        context = personality.detect_context(user_text)
+
+        print(f"   🎯 Theme erkannt: {theme}")
+        print(f"   📍 Context: {context['location']} / {context['activity']}")
+
+        # Save to memory (with Stimmung + Theme!)
+        memory.add_to_history("user", user_text, metadata={
+            "mode": "voice",
+            "stimmung": stimmung,
+            "theme": theme,
+            "context": context
+        })
+        memory.add_to_history("assistant", response, metadata={"mode": "voice", "theme": theme})
         memory.save_to_disk()
+
+        # AUTO-BRAIN-SAVE: Wichtige Sachen automatisch speichern! 💾
+        is_important = (
+            len(user_text) > 50 or  # Lange Messages = wichtig
+            "wichtig" in user_text.lower() or
+            "merk" in user_text.lower() or
+            "!" in user_text or
+            theme in ["freunde", "konzert", "coding"]  # Wichtige Themen
+        )
+
+        if is_important:
+            from datetime import datetime
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            kategorie = f"themen/{theme}"
+
+            brain_entry = {
+                "user_input": user_text,
+                "response": response,
+                "stimmung": stimmung,
+                "context": context,
+                "timestamp": datetime.now().isoformat()
+            }
+
+            brain.save(kategorie, brain_entry, f"{theme}_{timestamp}.json")
+            print(f"   💾 Auto-saved to brain/{kategorie}/")
 
         # Output
         print("\n" + "="*60)
