@@ -53,7 +53,23 @@ class Memory:
         try:
             if self.history_file.exists():
                 with open(self.history_file, "r", encoding="utf-8") as f:
-                    return json.load(f)
+                    data = json.load(f)
+
+                    # BUGFIX: Ensure history is a list, not a dict!
+                    if isinstance(data, list):
+                        return data
+                    elif isinstance(data, dict):
+                        # Old format: dict with messages - convert to list
+                        print(f"⚠️ Converting old history format (dict → list)")
+                        if "messages" in data:
+                            return data["messages"]
+                        else:
+                            # Unknown dict format - start fresh
+                            return []
+                    else:
+                        # Unknown format - start fresh
+                        return []
+
         except Exception as e:
             print(f"⚠️ History load error: {e}")
 
