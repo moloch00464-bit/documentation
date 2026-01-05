@@ -23,9 +23,9 @@ from core.personality import Personality
 from core.timekeeper import TimeKeeper
 
 # I/O
-from io.voice import VoiceIO
-from io.vision import VisionIO
-from io.text import TextIO
+from moloch_io.voice import VoiceIO
+from moloch_io.vision import VisionIO
+from moloch_io.text import TextIO
 
 # Autonomy
 from autonomy.logger import SmartLogger

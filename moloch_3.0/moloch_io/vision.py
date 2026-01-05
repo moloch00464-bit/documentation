@@ -148,7 +148,7 @@ if __name__ == "__main__":
     # Can't be tested without hardware
     print("💡 Camera test requires actual hardware - skipped in automated test")
     print("   To test manually:")
-    print("   >>> from io.vision import VisionIO")
+    print("   >>> from moloch_io.vision import VisionIO")
     print("   >>> vision = VisionIO()")
     print("   >>> vision.take_photo()")
 

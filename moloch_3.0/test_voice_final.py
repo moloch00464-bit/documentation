@@ -11,7 +11,7 @@ import os
 # Add moloch_3.0 to path
 sys.path.insert(0, os.path.expanduser("~/documentation/moloch_3.0"))
 
-from io.voice import VoiceIO
+from moloch_io.voice import VoiceIO
 
 def main():
     print("\n" + "="*60)
