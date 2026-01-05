@@ -45,7 +45,8 @@ class Personality:
         mode: str = "text",
         person: Optional[str] = None,
         brain_context: str = "",
-        memory_context: str = ""
+        memory_context: str = "",
+        zeit_stats: str = ""
     ) -> str:
         """
         Build dynamic system prompt
@@ -57,6 +58,7 @@ class Personality:
             person: Optional person name (for special language modes)
             brain_context: Context from Brain
             memory_context: Context from Memory
+            zeit_stats: Zeit statistics (session duration, last conversation, etc.)
 
         Returns:
             Complete system prompt
@@ -73,6 +75,10 @@ class Personality:
         # Add ZEIT-WISSEN (M.O.L.O.C.H. knows what day/time it is!) 🕐
         zeit_context = self.get_zeit_context()
         base_prompt += f"\n\n{zeit_context}"
+
+        # Add ZEIT-STATS (Session duration, last conversation, work time) 🕐
+        if zeit_stats:
+            base_prompt += f"\n\n{zeit_stats}"
 
         # Add stimmung adaptation
         if stimmung:

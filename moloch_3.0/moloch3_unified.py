@@ -46,6 +46,12 @@ def ask_claude_vision(user_text, image_path, memory=None, brain=None, personalit
         if langzeit:
             memory_context = langzeit
 
+    # Get Zeit Stats (Session duration, last conversation, work time) 🕐
+    zeit_stats = ""
+    if memory:
+        stats = memory.get_zeit_stats()
+        zeit_stats = stats.get("formatted_text", "")
+
     # Get Brain Context (optional for vision)
     brain_context = ""
     if brain:
@@ -61,7 +67,8 @@ def ask_claude_vision(user_text, image_path, memory=None, brain=None, personalit
             tageszeit=tageszeit_mode,
             mode="vision",
             brain_context=brain_context,
-            memory_context=memory_context
+            memory_context=memory_context,
+            zeit_stats=zeit_stats
         )
     else:
         # Fallback
@@ -145,6 +152,12 @@ def ask_claude_text(user_text, memory=None, brain=None, personality=None):
         if langzeit:
             memory_context = langzeit
 
+    # Get Zeit Stats (Session duration, last conversation, work time) 🕐
+    zeit_stats = ""
+    if memory:
+        stats = memory.get_zeit_stats()
+        zeit_stats = stats.get("formatted_text", "")
+
     # Get Brain Context
     brain_context = ""
     if brain:
@@ -159,7 +172,8 @@ def ask_claude_text(user_text, memory=None, brain=None, personality=None):
             tageszeit=tageszeit_mode,
             mode="voice",
             brain_context=brain_context,
-            memory_context=memory_context
+            memory_context=memory_context,
+            zeit_stats=zeit_stats
         )
     else:
         # Fallback (ohne Personality)

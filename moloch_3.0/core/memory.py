@@ -352,6 +352,118 @@ class Memory:
             "langzeit": langzeit_counts
         }
 
+    def get_zeit_stats(self) -> Dict[str, Any]:
+        """
+        Get Zeit-Statistiken (Zeit-Awareness!) 🕐
+
+        Returns:
+            Dict with:
+            - last_conversation_ago: Minutes since last conversation (or None)
+            - session_duration: Minutes since first message in history
+            - messages_today: Number of messages today
+            - first_message_today: Time of first message today
+            - formatted_text: Human-readable German text for system prompt
+
+        Examples:
+            "Letztes Gespräch vor 23 Minuten"
+            "Wir reden seit 45 Minuten (12 Messages)"
+            "Du arbeitest heute schon seit 3 Stunden am M.O.L.O.C.H."
+        """
+        now = datetime.now()
+        stats = {
+            "last_conversation_ago": None,
+            "session_duration": None,
+            "messages_today": 0,
+            "first_message_today": None,
+            "formatted_text": ""
+        }
+
+        if not self.history:
+            return stats
+
+        # Find last assistant message (last conversation)
+        last_assistant_msg = None
+        for entry in reversed(self.history):
+            if entry.get("role") == "assistant" and "timestamp" in entry.get("metadata", {}):
+                last_assistant_msg = entry
+                break
+
+        if last_assistant_msg:
+            timestamp_str = last_assistant_msg["metadata"]["timestamp"]
+            last_time = datetime.fromisoformat(timestamp_str)
+            minutes_ago = int((now - last_time).total_seconds() / 60)
+            stats["last_conversation_ago"] = minutes_ago
+
+        # Session duration (first message to now)
+        first_msg = None
+        for entry in self.history:
+            if "timestamp" in entry.get("metadata", {}):
+                first_msg = entry
+                break
+
+        if first_msg:
+            timestamp_str = first_msg["metadata"]["timestamp"]
+            first_time = datetime.fromisoformat(timestamp_str)
+            session_minutes = int((now - first_time).total_seconds() / 60)
+            stats["session_duration"] = session_minutes
+
+        # Messages today
+        today_str = now.strftime("%Y-%m-%d")
+        for entry in self.history:
+            if "timestamp" in entry.get("metadata", {}):
+                timestamp_str = entry["metadata"]["timestamp"]
+                entry_date = timestamp_str.split("T")[0]
+                if entry_date == today_str:
+                    stats["messages_today"] += 1
+                    if stats["first_message_today"] is None:
+                        stats["first_message_today"] = timestamp_str
+
+        # Build formatted text for system prompt
+        lines = []
+
+        if stats["last_conversation_ago"] is not None:
+            minutes = stats["last_conversation_ago"]
+            if minutes < 60:
+                lines.append(f"Letztes Gespräch vor {minutes} Minuten")
+            else:
+                hours = minutes // 60
+                mins = minutes % 60
+                if mins > 0:
+                    lines.append(f"Letztes Gespräch vor {hours}h {mins}min")
+                else:
+                    lines.append(f"Letztes Gespräch vor {hours} Stunden")
+
+        if stats["session_duration"] is not None and stats["session_duration"] > 0:
+            minutes = stats["session_duration"]
+            msg_count = len(self.history)
+            if minutes < 60:
+                lines.append(f"Aktuelle Session seit {minutes} Minuten ({msg_count} Messages)")
+            else:
+                hours = minutes // 60
+                mins = minutes % 60
+                if mins > 0:
+                    lines.append(f"Aktuelle Session seit {hours}h {mins}min ({msg_count} Messages)")
+                else:
+                    lines.append(f"Aktuelle Session seit {hours} Stunden ({msg_count} Messages)")
+
+        if stats["messages_today"] > 0 and stats["first_message_today"]:
+            first_today = datetime.fromisoformat(stats["first_message_today"])
+            work_minutes = int((now - first_today).total_seconds() / 60)
+            if work_minutes >= 60:
+                work_hours = work_minutes // 60
+                work_mins = work_minutes % 60
+                if work_hours >= 3:
+                    # Warnung bei langer Arbeitszeit!
+                    lines.append(f"⚠️ Du arbeitest heute schon seit {work_hours}h am M.O.L.O.C.H.! Pause?")
+                else:
+                    if work_mins > 0:
+                        lines.append(f"Heute schon {work_hours}h {work_mins}min am M.O.L.O.C.H. ({stats['messages_today']} Messages)")
+                    else:
+                        lines.append(f"Heute schon {work_hours}h am M.O.L.O.C.H. ({stats['messages_today']} Messages)")
+
+        stats["formatted_text"] = "\n".join(lines)
+        return stats
+
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # TESTING
