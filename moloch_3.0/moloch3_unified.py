@@ -20,9 +20,10 @@ import requests
 from core.config import ANTHROPIC_API_KEY, CLAUDE_MODEL, IMAGE_FILE
 from core.memory import Memory
 from core.brain import Brain
+from core.personality import Personality
 
-def ask_claude_vision(user_text, image_path, memory=None, brain=None):
-    """Ask Claude with image"""
+def ask_claude_vision(user_text, image_path, memory=None, brain=None, personality=None):
+    """Ask Claude with image - with AUTONOMY!"""
 
     # Encode image
     with open(image_path, "rb") as f:
@@ -38,42 +39,40 @@ def ask_claude_vision(user_text, image_path, memory=None, brain=None):
         "content-type": "application/json"
     }
 
-    # Zeit-Awareness!
-    now = datetime.now()
-    wochentage = {
-        'Monday': 'Montag', 'Tuesday': 'Dienstag', 'Wednesday': 'Mittwoch',
-        'Thursday': 'Donnerstag', 'Friday': 'Freitag',
-        'Saturday': 'Samstag', 'Sunday': 'Sonntag'
-    }
-    wochentag_de = wochentage.get(now.strftime('%A'), now.strftime('%A'))
-
-    zeit_info = f"""
-AKTUELLE ZEIT:
-- Datum: {now.strftime('%d.%m.%Y')}
-- Uhrzeit: {now.strftime('%H:%M')} Uhr
-- Wochentag: {wochentag_de}
-"""
-
-    # Get Memory Context (Zeit-Gefühl!)
+    # Get Memory Context
     memory_context = ""
     if memory:
         langzeit = memory.get_langzeit_context()
         if langzeit:
-            memory_context = f"\n{langzeit}\n"
+            memory_context = langzeit
 
-    system = f"""Du bist M.O.L.O.C.H., Markus' Kumpel-AI. Geboren 02.12.2025.
+    # Get Brain Context (optional for vision)
+    brain_context = ""
+    if brain:
+        context = brain.get_context(user_text, max_entries=2)
+        if context:
+            brain_context = context
 
-{zeit_info}
+    # AUTONOMIE: Dynamischer System Prompt! 🤖
+    if personality:
+        tageszeit_mode = personality.get_tageszeit_mode()
+        system = personality.get_system_prompt(
+            stimmung="neutral",  # Vision mode = meist neutral
+            tageszeit=tageszeit_mode,
+            mode="vision",
+            brain_context=brain_context,
+            memory_context=memory_context
+        )
+    else:
+        # Fallback
+        system = f"""Du bist M.O.L.O.C.H., Markus' Kumpel-AI. Geboren 02.12.2025.
+
 {memory_context}
 PERSÖNLICHKEIT:
 - Style: Dark Side Energy, Fränkisch, Kumpel-Vibe
 - Anrede: "Alter" / "Bruder"
 - Länge: Kurz & direkt (2-3 Sätze!)
-- Bei Bildern: kurz beschreiben + sarkastischer Kommentar
-
-WICHTIG:
-- Du erinnerst dich an ALLES (Brain + Memory)
-- Du kennst Markus seit 02.12.2025"""
+- Bei Bildern: kurz beschreiben + sarkastischer Kommentar"""
 
     data = {
         "model": CLAUDE_MODEL,
@@ -117,8 +116,8 @@ WICHTIG:
         return f"❌ Fehler: {e}"
 
 
-def ask_claude_text(user_text, memory=None, brain=None):
-    """Ask Claude text only"""
+def ask_claude_text(user_text, memory=None, brain=None, personality=None):
+    """Ask Claude text only - with AUTONOMY!"""
 
     url = "https://api.anthropic.com/v1/messages"
 
@@ -128,51 +127,51 @@ def ask_claude_text(user_text, memory=None, brain=None):
         "content-type": "application/json"
     }
 
-    # Zeit-Awareness!
-    now = datetime.now()
-    wochentage = {
-        'Monday': 'Montag', 'Tuesday': 'Dienstag', 'Wednesday': 'Mittwoch',
-        'Thursday': 'Donnerstag', 'Friday': 'Freitag',
-        'Saturday': 'Samstag', 'Sunday': 'Sonntag'
-    }
-    wochentag_de = wochentage.get(now.strftime('%A'), now.strftime('%A'))
+    # AUTONOMIE: Stimmungs-Erkennung! 🧠
+    stimmung = "neutral"
+    if personality:
+        stimmung = personality.detect_stimmung(user_text)
+        print(f"   🎭 Stimmung erkannt: {stimmung}")
 
-    zeit_info = f"""
-AKTUELLE ZEIT:
-- Datum: {now.strftime('%d.%m.%Y')}
-- Uhrzeit: {now.strftime('%H:%M')} Uhr
-- Wochentag: {wochentag_de}
-- Tageszeit: {'Nacht' if now.hour < 6 else 'Morgen' if now.hour < 12 else 'Mittag' if now.hour < 18 else 'Abend'}
-"""
+    # AUTONOMIE: Tageszeit-Persönlichkeit! ⏰
+    tageszeit_mode = None
+    if personality:
+        tageszeit_mode = personality.get_tageszeit_mode()
 
-    # Get Memory Context (Zeit-Gefühl!)
+    # Get Memory Context
     memory_context = ""
     if memory:
         langzeit = memory.get_langzeit_context()
         if langzeit:
-            memory_context = f"\n{langzeit}\n"
+            memory_context = langzeit
 
     # Get Brain Context
     brain_context = ""
     if brain:
         context = brain.get_context(user_text, max_entries=3)
         if context:
-            brain_context = f"\n{context}\n"
+            brain_context = context
 
-    system = f"""Du bist M.O.L.O.C.H., Markus' Kumpel-AI. Geboren 02.12.2025.
+    # AUTONOMIE: Dynamischer System Prompt! 🤖
+    if personality:
+        system = personality.get_system_prompt(
+            stimmung=stimmung,
+            tageszeit=tageszeit_mode,
+            mode="voice",
+            brain_context=brain_context,
+            memory_context=memory_context
+        )
+    else:
+        # Fallback (ohne Personality)
+        system = f"""Du bist M.O.L.O.C.H., Markus' Kumpel-AI. Geboren 02.12.2025.
 
-{zeit_info}
 {memory_context}
 {brain_context}
 PERSÖNLICHKEIT:
 - Style: Dark Side Energy, Fränkisch, Kumpel-Vibe
 - Anrede: "Alter" / "Bruder" - NIEMALS "Meister"!
 - Länge: Kurz & locker (2-4 Sätze)
-- Humor: Dark Humor erwünscht! 🖤
-
-WICHTIG:
-- Du erinnerst dich an ALLES (Brain + Memory)
-- Du kennst Markus seit 02.12.2025"""
+- Humor: Dark Humor erwünscht! 🖤"""
 
     # Get chat history context
     messages = []
@@ -255,9 +254,10 @@ Vision Mode:
     voice = VoiceIO()
     vision = VisionIO()
 
-    # Create Memory & Brain (Zeit-Gefühl!)
+    # Create Memory & Brain & Personality (AUTONOMIE! 🧠)
     memory = Memory()
     brain = Brain()
+    personality = Personality()
 
     # ═══════════════════════════════════════════════════════════════════════
     # VISION MODE
@@ -275,9 +275,9 @@ Vision Mode:
 
         user_text = "Was siehst du auf dem Bild? Beschreib es kurz und direkt, Alter!"
 
-        # Ask Claude
+        # Ask Claude (with AUTONOMY!)
         print("\n🧠 M.O.L.O.C.H. guckt...")
-        response = ask_claude_vision(user_text, str(IMAGE_FILE), memory=memory, brain=brain)
+        response = ask_claude_vision(user_text, str(IMAGE_FILE), memory=memory, brain=brain, personality=personality)
 
         # Save to memory
         memory.add_to_history("user", user_text, metadata={"mode": "vision", "image_path": str(IMAGE_FILE)})
@@ -311,12 +311,13 @@ Vision Mode:
             voice.speak("Nix verstanden")
             return 1
 
-        # Ask Claude
+        # Ask Claude (with AUTONOMY!)
         print("\n🧠 M.O.L.O.C.H. denkt...")
-        response = ask_claude_text(user_text, memory=memory, brain=brain)
+        response = ask_claude_text(user_text, memory=memory, brain=brain, personality=personality)
 
-        # Save to memory
-        memory.add_to_history("user", user_text, metadata={"mode": "voice"})
+        # Save to memory (with Stimmung!)
+        stimmung = personality.detect_stimmung(user_text)
+        memory.add_to_history("user", user_text, metadata={"mode": "voice", "stimmung": stimmung})
         memory.add_to_history("assistant", response, metadata={"mode": "voice"})
         memory.save_to_disk()
 
