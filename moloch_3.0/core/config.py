@@ -23,15 +23,16 @@ CLAUDE_MODEL = "claude-sonnet-4-20250514"
 # ═══════════════════════════════════════════════════════════════════════════════
 
 # Base Directory
-MOLOCH_DIR = Path.home() / "moloch_3.0"
+MOLOCH_DIR = Path.home() / "documentation/moloch_3.0"
 
 # Data Directories
 DATA_DIR = MOLOCH_DIR / "data"
 BRAIN_DIR = DATA_DIR / "brain"
 LOGS_DIR = MOLOCH_DIR / "logs"
 
-# Files
-AUDIO_FILE = DATA_DIR / "ohr.wav"
+# Files - SAME FORMAT AS WORKING 2.0!
+AUDIO_RAW = DATA_DIR / "ohr_raw.mp4"  # Raw recording (.mp4!)
+AUDIO_FILE = DATA_DIR / "ohr.mp3"      # Final audio (.mp3!)
 IMAGE_FILE = DATA_DIR / "auge.jpg"
 HISTORY_FILE = DATA_DIR / "history.json"
 MEMORY_FILE = DATA_DIR / "langzeit.json"
@@ -43,10 +44,16 @@ OLD_HISTORY_FILE = OLD_MOLOCH_DIR / "history.json"
 OLD_MEMORY_FILE = OLD_MOLOCH_DIR / "langzeit.json"
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# AUDIO CONFIGURATION
+# AUDIO CONFIGURATION - WORKING 2.0 SETTINGS!
 # ═══════════════════════════════════════════════════════════════════════════════
 
-MAX_RECORDING_TIME = 20  # Seconds
+# Smart Recording (from WORKING 2.0)
+MIN_RECORDING_TIME = 3        # Min seconds before can stop
+MAX_RECORDING_TIME = 20       # Max seconds total
+SILENCE_DURATION = 1.5        # Seconds of silence to stop
+SPEECH_THRESHOLD = 150        # Bytes/200ms growth = speech
+
+# Not used in 2.0 approach (no ffmpeg conversion)
 AUDIO_SAMPLE_RATE = 16000
 AUDIO_CHANNELS = 1
 
