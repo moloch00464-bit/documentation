@@ -85,53 +85,68 @@ class VoiceIO:
 
     def listen(self, duration: int = 20, smart: bool = False) -> Optional[str]:
         """
-        Record audio for fixed duration and transcribe via Google Speech API
+        Listen to user via Termux Speech-to-Text
 
-        KOSTENLOS! KEINE API Keys nötig!
-        - termux-microphone-record (fixe Dauer, kein Auto-Stopp!)
-        - Google Web Speech API (kostenlos!)
+        KOSTENLOS! Nutzt Termux API (lokal, kein Cloud-Service!)
+        - Google Speech Recognition (on-device)
+        - KEIN API Key nötig!
         - KEINE Kosten!
 
         Args:
-            duration: Recording duration in seconds (default: 20)
+            duration: Max recording duration in seconds (default: 20)
             smart: Ignored (kept for backwards compatibility)
 
         Returns:
             Transcribed text or None
         """
-        # Audio file paths - use default format (let termux decide)
-        audio_raw = DATA_DIR / "voice_recording.mp3"
-        audio_wav = DATA_DIR / "voice_recording.wav"
-
-        print(f"🎤 AUFNAHME STARTET - {duration} SEKUNDEN!")
-        print("   Sprich jetzt - Aufnahme stoppt NICHT bei Pausen!")
+        print("🎤 SPRICH JETZT!")
+        print("   (Sprich ohne lange Pausen für längere Aufnahme)")
         print()
 
         try:
-            # Step 1: Record audio for fixed duration
-            if not self._record_audio(audio_raw, duration):
+            # Run termux-speech-to-text (WORKING VERSION!)
+            result = subprocess.run(
+                ["termux-speech-to-text"],
+                capture_output=True,
+                text=True,
+                timeout=duration
+            )
+
+            if result.returncode != 0:
+                stderr = result.stderr.strip()
+                if stderr:
+                    print(f"❌ STT Fehler: {stderr}")
+                else:
+                    print("❌ STT fehlgeschlagen")
+
+                # FALLBACK: Use text input
                 return self._fallback_text_input()
 
-            # Step 2: Convert to WAV (needed for SpeechRecognition)
-            if not self._convert_to_wav(audio_raw, audio_wav):
-                return self._fallback_text_input()
+            # Get transcribed text
+            text = result.stdout.strip()
 
-            # Step 3: Transcribe with Google Speech API (FREE!)
-            text = self._transcribe_audio(audio_wav)
-
-            if text:
-                print(f"📝 Du: {text}")
-                return text
-            else:
+            if not text:
                 print("⚠️ Nichts verstanden")
                 return self._fallback_text_input()
+
+            print(f"📝 Du: {text}")
+            return text
+
+        except subprocess.TimeoutExpired:
+            print("⏱️ Timeout - zu lange gewartet")
+            return self._fallback_text_input()
+
+        except FileNotFoundError:
+            # FALLBACK: Use text input if termux-speech-to-text not available
+            print("⚠️ termux-speech-to-text nicht verfügbar")
+            return self._fallback_text_input()
 
         except KeyboardInterrupt:
             print("\n⚠️ Abgebrochen")
             return None
 
         except Exception as e:
-            print(f"❌ Voice Fehler: {e}")
+            print(f"❌ STT Fehler: {e}")
             return self._fallback_text_input()
 
     def _record_audio(self, output_file: Path, duration: int) -> bool:
