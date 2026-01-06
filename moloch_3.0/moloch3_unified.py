@@ -26,6 +26,7 @@ from core.api_safeguards import get_api_guard
 from core.local_commands import LocalCommandHandler
 from core.location import LocationTracker
 from core.learning import PersistentLearning
+from core.voice_settings import VoiceSettings
 
 def ask_claude_vision(user_text, image_path, memory=None, brain=None, personality=None):
     """Ask Claude with image - with AUTONOMY!"""
@@ -405,8 +406,11 @@ Vision Mode:
             """)
             return 0
 
+    # Create Voice Settings (EMOTION SYNTHESIS! 🎭🎤)
+    voice_settings = VoiceSettings(DATA_DIR)
+
     # Create I/O
-    voice = VoiceIO()
+    voice = VoiceIO(voice_settings=voice_settings)
     vision = VisionIO()
 
     # Create Memory & Brain & Personality (AUTONOMIE! 🧠)
@@ -556,6 +560,17 @@ Vision Mode:
         print(f"   🎯 Theme erkannt: {theme}")
         print(f"   📍 Context: {context['location']} / {context['activity']}")
 
+        # Get tageszeit mode for voice modulation! 🎭
+        tageszeit_raw = personality.get_tageszeit_mode()
+        # Extract mode name (e.g., "kaffee", "dark_side")
+        tageszeit = "normal"
+        if "Kaffee" in tageszeit_raw:
+            tageszeit = "kaffee"
+        elif "Feierabend" in tageszeit_raw:
+            tageszeit = "feierabend"
+        elif "Dark Side" in tageszeit_raw:
+            tageszeit = "dark_side"
+
         # Save to memory (with Stimmung + Theme!)
         memory.add_to_history("user", user_text, metadata={
             "mode": "voice",
@@ -596,7 +611,8 @@ Vision Mode:
         print(f"🤖 {response}")
         print("="*60)
 
-        voice.speak(response)
+        # Speak with EMOTION SYNTHESIS! 🎭🎤
+        voice.speak(response, stimmung=stimmung, tageszeit=tageszeit)
 
         return 0
 
