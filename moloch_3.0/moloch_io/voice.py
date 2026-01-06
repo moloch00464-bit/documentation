@@ -177,7 +177,7 @@ class VoiceIO:
             proc.wait(timeout=5)
 
             # IMPORTANT: Give file time to be fully written to disk
-            time.sleep(2)
+            time.sleep(1)  # Reduced from 2s to 1s for faster processing
 
             print(f"⏹️ Aufnahme gestoppt")
 
