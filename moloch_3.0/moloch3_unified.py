@@ -23,6 +23,7 @@ from core.brain import Brain
 from core.personality import Personality
 from core.api_safeguards import get_api_guard
 from core.local_commands import LocalCommandHandler
+from core.location import LocationTracker
 
 def ask_claude_vision(user_text, image_path, memory=None, brain=None, personality=None):
     """Ask Claude with image - with AUTONOMY!"""
@@ -344,6 +345,15 @@ Vision Mode:
 
     # Create Local Command Handler (API-SPAREN! 💰)
     local_handler = LocalCommandHandler(DATA_DIR)
+
+    # Create Location Tracker (GPS-AWARENESS! 📍)
+    location_tracker = LocationTracker(DATA_DIR)
+
+    # Check location (shows if changed)
+    print("\n" + "="*60)
+    location_summary = location_tracker.get_location_summary()
+    print(location_summary)
+    print("="*60)
 
     # ═══════════════════════════════════════════════════════════════════════
     # VISION MODE
