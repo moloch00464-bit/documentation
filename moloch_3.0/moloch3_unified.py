@@ -37,40 +37,44 @@ import re
 
 def parse_and_execute_self_modifications(response: str) -> str:
     """
-    Parse M.O.L.O.C.H.'s response for <SELF_MODIFY> tags and execute them!
+    Parse M.O.L.O.C.H.'s response for SELF_MODIFY commands and execute them!
+
+    Format: SELF_MODIFY|type|param1=value1|param2=value2|...
 
     Args:
         response: M.O.L.O.C.H.'s response text
 
     Returns:
-        Cleaned response (with <SELF_MODIFY> tags removed)
+        Cleaned response (with SELF_MODIFY commands removed)
     """
-    # Find all <SELF_MODIFY .../> tags
-    pattern = r'<SELF_MODIFY\s+([^>]+)/>'
+    # Find all SELF_MODIFY lines
+    pattern = r'SELF_MODIFY\|([^\n]+)'
     matches = re.finditer(pattern, response)
 
     sm = SelfModificationSystem()
     executed_modifications = []
 
     for match in matches:
-        # Parse attributes
-        attrs_str = match.group(1)
-        attrs = {}
+        # Parse pipe-separated values
+        parts = match.group(1).split('|')
 
-        # Simple attribute parser (type="value")
-        attr_pattern = r'(\w+)="([^"]*)"'
-        for attr_match in re.finditer(attr_pattern, attrs_str):
-            key, value = attr_match.groups()
-            attrs[key] = value
+        if not parts:
+            continue
 
-        # Execute based on type
-        mod_type = attrs.get('type', '')
+        mod_type = parts[0].strip()
+
+        # Parse key=value pairs
+        params = {}
+        for part in parts[1:]:
+            if '=' in part:
+                key, value = part.split('=', 1)
+                params[key.strip()] = value.strip()
 
         try:
             if mod_type == 'voice':
-                pitch = float(attrs.get('pitch')) if attrs.get('pitch') else None
-                rate = float(attrs.get('rate')) if attrs.get('rate') else None
-                reason = attrs.get('reason', 'Self-optimization')
+                pitch = float(params.get('pitch')) if params.get('pitch') else None
+                rate = float(params.get('rate')) if params.get('rate') else None
+                reason = params.get('reason', 'Self-optimization')
 
                 print(f"\n🔧 M.O.L.O.C.H. MODIFIZIERT SEINE STIMME!")
                 success = sm.modify_voice_settings(pitch=pitch, rate=rate, reason=reason)
@@ -78,8 +82,8 @@ def parse_and_execute_self_modifications(response: str) -> str:
                     executed_modifications.append(f"Voice: Pitch={pitch}, Rate={rate}")
 
             elif mod_type == 'category':
-                name = attrs.get('name', '')
-                description = attrs.get('description', '')
+                name = params.get('name', '')
+                description = params.get('description', '')
 
                 print(f"\n🔧 M.O.L.O.C.H. ERSTELLT BRAIN-KATEGORIE!")
                 success = sm.create_brain_category(name, description)
@@ -87,8 +91,8 @@ def parse_and_execute_self_modifications(response: str) -> str:
                     executed_modifications.append(f"Category: {name}")
 
             elif mod_type == 'optimize':
-                mode = attrs.get('mode', 'performance')
-                reason = attrs.get('reason', 'Self-optimization')
+                mode = params.get('mode', 'performance')
+                reason = params.get('reason', 'Self-optimization')
 
                 print(f"\n🔧 M.O.L.O.C.H. OPTIMIERT SICH!")
                 fast_mode = (mode == 'performance')
@@ -99,7 +103,7 @@ def parse_and_execute_self_modifications(response: str) -> str:
         except Exception as e:
             print(f"❌ Fehler bei Self-Modification: {e}")
 
-    # Remove all <SELF_MODIFY> tags from response
+    # Remove all SELF_MODIFY commands from response
     cleaned_response = re.sub(pattern, '', response)
 
     # Show summary if any modifications were executed
