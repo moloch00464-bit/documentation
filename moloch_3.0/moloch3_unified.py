@@ -499,11 +499,11 @@ Vision Mode:
         elif "Kaffee" in tageszeit_mode:
             tageszeit = "kaffee"
 
-        voice.speak("Moment, lass mich gucken", stimmung="neutral", tageszeit=tageszeit)
+        voice.speak("Moment, lass mich gucken")  # Fast Mode (default)
 
         # Take photo
         if not vision.take_photo():
-            voice.speak("Kamera kaputt?", stimmung="gestresst", tageszeit=tageszeit)
+            voice.speak("Kamera kaputt?")  # Fast Mode (default)
             return 1
 
         user_text = "Was siehst du auf dem Bild? Beschreib es kurz und direkt, Alter!"
@@ -554,12 +554,8 @@ Vision Mode:
         print(f"\n{response}\n")
         print("="*60)
 
-        # Detect stimmung from response for voice modulation
-        stimmung = "neutral"
-        if personality:
-            stimmung = personality.erkennung.detect_stimmung(response)
-
-        voice.speak(response, stimmung=stimmung, tageszeit=tageszeit)
+        # Speak with Fast Mode (no emotion processing) ⚡
+        voice.speak(response)  # Fast Mode (default)
 
         return 0
 
@@ -580,13 +576,13 @@ Vision Mode:
         elif "Feierabend" in tageszeit_mode:
             tageszeit = "feierabend"
 
-        voice.speak("Ja, Alter? Was brauchst du?", stimmung="neutral", tageszeit=tageszeit)
+        voice.speak("Ja, Alter? Was brauchst du?")  # Fast Mode (default)
 
         # Listen (20 seconds fixed - NO PAUSE DETECTION!)
         user_text = voice.listen(duration=20, smart=False)
 
         if not user_text:
-            voice.speak("Nix verstanden", stimmung="fragend", tageszeit=tageszeit)
+            voice.speak("Nix verstanden")  # Fast Mode (default)
             return 1
 
         # ═══════════════════════════════════════════════════════════════════════
@@ -619,51 +615,25 @@ Vision Mode:
                 is_feature_request=is_feature_request
             )
 
-        # AUTONOMIE: Theme & Context Detection! 🎯
-        stimmung = personality.detect_stimmung(user_text)
-        theme = personality.detect_theme(user_text)
-        context = personality.detect_context(user_text)
-
-        print(f"   🎭 Stimmung erkannt: {stimmung}")
-        print(f"   🎯 Theme erkannt: {theme}")
-        print(f"   📍 Context: {context['location']} / {context['activity']}")
-
-        # tageszeit already calculated at start of voice mode for early speak() calls!
-
-        # Save to memory (with Stimmung + Theme!)
-        memory.add_to_history("user", user_text, metadata={
-            "mode": "voice",
-            "stimmung": stimmung,
-            "theme": theme,
-            "context": context
-        })
-        memory.add_to_history("assistant", response, metadata={"mode": "voice", "theme": theme})
+        # PERFORMANCE MODE: NO detection overhead! ⚡
+        # Save to memory (minimal metadata)
+        memory.add_to_history("user", user_text, metadata={"mode": "voice"})
+        memory.add_to_history("assistant", response, metadata={"mode": "voice"})
         memory.save_to_disk()
 
-        # AUTO-BRAIN-SAVE: Wichtige Sachen automatisch speichern! 💾
-        is_important = (
-            len(user_text) > 50 or  # Lange Messages = wichtig
-            "wichtig" in user_text.lower() or
-            "merk" in user_text.lower() or
-            "!" in user_text or
-            theme in ["freunde", "konzert", "coding"]  # Wichtige Themen
-        )
-
-        if is_important:
+        # AUTO-BRAIN-SAVE: Simplified (only if explicitly important)
+        if any(word in user_text.lower() for word in ["wichtig", "merk", "speicher"]):
             from datetime import datetime
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            kategorie = f"themen/{theme}"
 
             brain_entry = {
                 "user_input": user_text,
                 "response": response,
-                "stimmung": stimmung,
-                "context": context,
                 "timestamp": datetime.now().isoformat()
             }
 
-            brain.save(kategorie, brain_entry, f"{theme}_{timestamp}.json")
-            print(f"   💾 Auto-saved to brain/{kategorie}/")
+            brain.save("wichtig", brain_entry, f"important_{timestamp}.json")
+            print(f"   💾 Gespeichert!")
 
         # Output
         print("\n" + "="*60)
@@ -689,8 +659,8 @@ Vision Mode:
 
                         print(f"\n{emoji} Stimme #{i}: {description}")
                         print(f"   Pitch: {prof['pitch']}, Rate: {prof['rate']}")
-                        # Multi-Voice Demo: Use PURE profiles (no emotion modulation!)
-                        voice.speak(response, stimmung=None, tageszeit=None, profile=profile_name)
+                        # Multi-Voice Demo: Use specific profile (Feature Mode)
+                        voice.speak(response, profile=profile_name, fast_mode=False)
 
                         # Kurze Pause zwischen Stimmen (damit man sie unterscheiden kann!)
                         if i < 3:
@@ -698,13 +668,13 @@ Vision Mode:
                             time.sleep(1.5)  # 1.5 Sekunden Pause
                     else:
                         print(f"\n⚠️  Voice Profile #{i} nicht gefunden - nutze Base Voice")
-                        voice.speak(response, stimmung=stimmung, tageszeit=tageszeit)
+                        voice.speak(response)  # Fast Mode (default)
             else:
                 print("⚠️  Keine Voice Profiles gefunden! Nutze normale Stimme.")
-                voice.speak(response, stimmung=stimmung, tageszeit=tageszeit)
+                voice.speak(response)  # Fast Mode (default)
         else:
-            # Normal single-voice output
-            voice.speak(response, stimmung=stimmung, tageszeit=tageszeit)
+            # Normal single-voice output - FAST MODE! ⚡
+            voice.speak(response)  # Fast Mode (default)
 
         return 0
 
