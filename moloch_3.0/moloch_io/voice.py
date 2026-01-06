@@ -85,10 +85,11 @@ class VoiceIO:
 
     def listen(self, duration: int = 20, smart: bool = False) -> Optional[str]:
         """
-        Listen to user via Termux Speech-to-Text
+        Listen to user via Recording + Google Speech API
 
-        KOSTENLOS! Nutzt Termux API (lokal, kein Cloud-Service!)
-        - Google Speech Recognition (on-device)
+        KOSTENLOS! Nutzt Google Web Speech API (FREE!)
+        - termux-microphone-record (20s fixe Aufnahme)
+        - Google Web Speech API (DEUTSCH!)
         - KEIN API Key nötig!
         - KEINE Kosten!
 
@@ -100,28 +101,25 @@ class VoiceIO:
             Transcribed text or None
         """
         print("🎤 SPRICH JETZT!")
-        print("   (Sprich ohne lange Pausen für längere Aufnahme)")
+        print(f"   (Aufnahme läuft {duration} Sekunden)")
         print()
 
         try:
-            # Run termux-speech-to-text with Popen (interactive, captures output after dialog closes)
-            proc = subprocess.Popen(
-                ["termux-speech-to-text", "-l", "de-DE"],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True
-            )
+            # Step 1: Record audio
+            audio_file = DATA_DIR / "voice_input.m4a"
+            wav_file = DATA_DIR / "voice_input.wav"
 
-            # Wait for process to complete (user speaks and dialog closes)
-            try:
-                stdout, stderr = proc.communicate(timeout=duration)
-            except subprocess.TimeoutExpired:
-                proc.kill()
-                print("⏱️ Timeout - zu lange gewartet")
+            if not self._record_audio(audio_file, duration):
+                print("⚠️ Aufnahme fehlgeschlagen")
                 return self._fallback_text_input()
 
-            # Get transcribed text from stdout
-            text = stdout.strip()
+            # Step 2: Convert to WAV
+            if not self._convert_to_wav(audio_file, wav_file):
+                print("⚠️ Konvertierung fehlgeschlagen")
+                return self._fallback_text_input()
+
+            # Step 3: Transcribe with Google Speech API (DEUTSCH!)
+            text = self._transcribe_audio(wav_file)
 
             if not text:
                 print("⚠️ Nichts verstanden")
@@ -129,15 +127,6 @@ class VoiceIO:
 
             print(f"📝 Du: {text}")
             return text
-
-        except subprocess.TimeoutExpired:
-            print("⏱️ Timeout - zu lange gewartet")
-            return self._fallback_text_input()
-
-        except FileNotFoundError:
-            # FALLBACK: Use text input if termux-speech-to-text not available
-            print("⚠️ termux-speech-to-text nicht verfügbar")
-            return self._fallback_text_input()
 
         except KeyboardInterrupt:
             print("\n⚠️ Abgebrochen")
