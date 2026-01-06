@@ -40,7 +40,16 @@ class Brain:
 
     def _ensure_structure(self):
         """Ensures brain directory structure exists"""
-        categories = ["wer", "was", "wo", "wann", "wie", "kontext"]
+        # Updated categories for M.O.L.O.C.H. 3.0 Tool Use
+        categories = [
+            "personen",    # People (friends, family, colleagues)
+            "orte",        # Places (locations, venues)
+            "projekte",    # Projects (coding, work, personal)
+            "themen",      # Topics (interests, subjects)
+            "wichtig",     # Important facts (critical info)
+            # Legacy categories (for migration compatibility)
+            "wer", "was", "wo", "wann", "wie", "kontext"
+        ]
         for category in categories:
             (self.brain_dir / category).mkdir(parents=True, exist_ok=True)
 

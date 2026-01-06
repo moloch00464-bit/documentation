@@ -202,14 +202,21 @@ def _tool_brain_save(tool_input: Dict, brain) -> Dict:
 def _tool_brain_load(tool_input: Dict, brain) -> Dict:
     """Load from brain"""
     category = tool_input["category"]
-    search_term = tool_input.get("search_term")
+    search_term = tool_input.get("search_term", "")
 
-    results = brain.load(category, search_term)
+    # Use brain.find() to search
+    if search_term:
+        results = brain.find(query=search_term, kategorie=category)
+    else:
+        # If no search term, list all in category
+        files = brain.list_category(category)
+        results = [{"file": f} for f in files]
 
     return {
         "success": True,
         "results": results,
-        "count": len(results) if results else 0
+        "count": len(results) if results else 0,
+        "message": f"✅ {len(results)} Einträge gefunden in '{category}'"
     }
 
 
@@ -219,17 +226,15 @@ def _tool_learning_save(tool_input: Dict, learning) -> Dict:
     category = tool_input["category"]
     importance = tool_input["importance"]
 
-    learning.add_learning(
+    success = learning.learn_fact(
         fact=fact,
         category=category,
-        importance=importance,
-        source="self_discovered"
+        importance=importance
     )
-    learning.save()
 
     return {
-        "success": True,
-        "message": f"✅ Learning gespeichert (Wichtigkeit: {importance}/10)",
+        "success": success,
+        "message": f"✅ Learning gespeichert (Wichtigkeit: {importance}/10)" if success else "❌ Learning speichern fehlgeschlagen",
         "fact": fact
     }
 
