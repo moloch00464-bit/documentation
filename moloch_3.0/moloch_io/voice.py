@@ -83,12 +83,24 @@ class VoiceIO:
                     profile=profile
                 )
 
+                # DEBUG: Print voice parameters!
+                debug_info = f"🎤 Voice Params: Pitch={params['pitch']:.2f}, Rate={params['rate']:.2f}"
+                if profile:
+                    debug_info += f", Profile={profile}"
+                if stimmung:
+                    debug_info += f", Stimmung={stimmung}"
+                print(f"   {debug_info}")
+
                 # Add pitch and rate parameters
                 cmd.extend(["-p", str(params["pitch"])])
                 cmd.extend(["-r", str(params["rate"])])
 
             # Add text to speak
             cmd.append(text)
+
+            # DEBUG: Print full command (first 100 chars of text)
+            text_preview = text[:100] + "..." if len(text) > 100 else text
+            print(f"   🔊 Command: {' '.join(cmd[:-1])} \"{text_preview}\"")
 
             # Increased timeout for longer responses (60s)
             result = subprocess.run(
