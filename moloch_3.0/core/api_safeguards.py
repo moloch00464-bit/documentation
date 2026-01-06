@@ -37,7 +37,7 @@ class APILimits:
     vision_cost_per_call: float = 0.048  # ~$0.048 per image (1600 tokens)
 
     # Total Daily Budget
-    max_daily_cost_usd: float = 5.0  # Max $5/day total
+    max_daily_cost_usd: float = 10.0  # Max $10/day total (erhöht für mehr Spielraum!)
 
 
 @dataclass
@@ -243,6 +243,27 @@ class APIGuard:
         self.stats.vision_cost_today = 0.0
 
         self._save_stats()
+
+    def manual_reset(self):
+        """
+        Manual reset of API counters
+
+        WICHTIG: Nur für Notfälle oder zum Testen!
+        Normal wird automatisch um Mitternacht resettet.
+        """
+        print("\n⚠️  MANUELLER API RESET")
+        print(f"   Aktuelle Kosten heute: ${self.stats.total_cost_today:.2f}")
+        print(f"   Whisper Calls: {self.stats.whisper_calls_today}")
+        print(f"   Claude Calls: {self.stats.claude_calls_today}")
+        print(f"   Vision Calls: {self.stats.vision_calls_today}")
+
+        # Reset everything
+        self._reset_daily()
+        self._reset_hourly()
+
+        print("\n✅ API Counters wurden zurückgesetzt!")
+        print(f"   Neues Budget: ${self.limits.max_daily_cost_usd:.2f}")
+        print()
 
     def _reset_hourly(self):
         """Reset hourly counters"""
