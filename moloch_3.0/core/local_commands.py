@@ -51,6 +51,35 @@ class LocalCommandHandler:
         """
         text_lower = text.lower()
 
+        # SELF-MODIFICATION - M.O.L.O.C.H. modifiziert sich selbst! 🤖🔧
+        if any(phrase in text_lower for phrase in [
+            "ändere deine stimme",
+            "stimme anpassen",
+            "pitch ändern",
+            "rate ändern",
+            "tune deine voice",
+            "optimiere deine stimme"
+        ]):
+            return False, None, {"self_modify": "voice"}
+
+        if any(phrase in text_lower for phrase in [
+            "neue kategorie",
+            "brain ordner",
+            "erstelle kategorie",
+            "organisiere dich",
+            "brain organisation"
+        ]):
+            return False, None, {"self_modify": "category"}
+
+        if any(phrase in text_lower for phrase in [
+            "optimiere dich",
+            "tune dich",
+            "passe dich an",
+            "selbst optimierung",
+            "performance tuning"
+        ]):
+            return False, None, {"self_modify": "optimize"}
+
         # FEATURE REQUEST - M.O.L.O.C.H. → Claude Communication! 🤖↔️🤖
         if any(phrase in text_lower for phrase in [
             "sag claude",

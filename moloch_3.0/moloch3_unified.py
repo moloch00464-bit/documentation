@@ -27,6 +27,90 @@ from core.local_commands import LocalCommandHandler
 from core.location import LocationTracker
 from core.learning import PersistentLearning
 from core.voice_settings import VoiceSettings
+from core.self_modify import SelfModificationSystem
+import re
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SELF-MODIFICATION PARSER 🤖🔧
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def parse_and_execute_self_modifications(response: str) -> str:
+    """
+    Parse M.O.L.O.C.H.'s response for <SELF_MODIFY> tags and execute them!
+
+    Args:
+        response: M.O.L.O.C.H.'s response text
+
+    Returns:
+        Cleaned response (with <SELF_MODIFY> tags removed)
+    """
+    # Find all <SELF_MODIFY .../> tags
+    pattern = r'<SELF_MODIFY\s+([^>]+)/>'
+    matches = re.finditer(pattern, response)
+
+    sm = SelfModificationSystem()
+    executed_modifications = []
+
+    for match in matches:
+        # Parse attributes
+        attrs_str = match.group(1)
+        attrs = {}
+
+        # Simple attribute parser (type="value")
+        attr_pattern = r'(\w+)="([^"]*)"'
+        for attr_match in re.finditer(attr_pattern, attrs_str):
+            key, value = attr_match.groups()
+            attrs[key] = value
+
+        # Execute based on type
+        mod_type = attrs.get('type', '')
+
+        try:
+            if mod_type == 'voice':
+                pitch = float(attrs.get('pitch')) if attrs.get('pitch') else None
+                rate = float(attrs.get('rate')) if attrs.get('rate') else None
+                reason = attrs.get('reason', 'Self-optimization')
+
+                print(f"\n🔧 M.O.L.O.C.H. MODIFIZIERT SEINE STIMME!")
+                success = sm.modify_voice_settings(pitch=pitch, rate=rate, reason=reason)
+                if success:
+                    executed_modifications.append(f"Voice: Pitch={pitch}, Rate={rate}")
+
+            elif mod_type == 'category':
+                name = attrs.get('name', '')
+                description = attrs.get('description', '')
+
+                print(f"\n🔧 M.O.L.O.C.H. ERSTELLT BRAIN-KATEGORIE!")
+                success = sm.create_brain_category(name, description)
+                if success:
+                    executed_modifications.append(f"Category: {name}")
+
+            elif mod_type == 'optimize':
+                mode = attrs.get('mode', 'performance')
+                reason = attrs.get('reason', 'Self-optimization')
+
+                print(f"\n🔧 M.O.L.O.C.H. OPTIMIERT SICH!")
+                fast_mode = (mode == 'performance')
+                success = sm.modify_performance_mode(fast_mode, reason)
+                if success:
+                    executed_modifications.append(f"Performance: {mode}")
+
+        except Exception as e:
+            print(f"❌ Fehler bei Self-Modification: {e}")
+
+    # Remove all <SELF_MODIFY> tags from response
+    cleaned_response = re.sub(pattern, '', response)
+
+    # Show summary if any modifications were executed
+    if executed_modifications:
+        print(f"\n✅ SELF-MODIFICATIONS AUSGEFÜHRT:")
+        for mod in executed_modifications:
+            print(f"   - {mod}")
+        print()
+
+    return cleaned_response.strip()
+
 
 def ask_claude_vision(user_text, image_path, memory=None, brain=None, personality=None):
     """Ask Claude with image - with AUTONOMY!"""
@@ -508,6 +592,9 @@ Vision Mode:
         print("\n🧠 M.O.L.O.C.H. guckt...")
         response = ask_claude_vision(user_text, str(IMAGE_FILE), memory=memory, brain=brain, personality=personality)
 
+        # 🔧 SELF-MODIFICATION: Parse and execute <SELF_MODIFY> tags!
+        response = parse_and_execute_self_modifications(response)
+
         # AUTONOMIE: Theme & Context Detection auch für Vision! 🎯
         # Extract theme from response (was sieht M.O.L.O.C.H.?)
         theme = personality.detect_theme(response)
@@ -610,6 +697,9 @@ Vision Mode:
                 learning=learning,
                 is_feature_request=is_feature_request
             )
+
+            # 🔧 SELF-MODIFICATION: Parse and execute <SELF_MODIFY> tags!
+            response = parse_and_execute_self_modifications(response)
 
         # PERFORMANCE MODE: NO detection overhead! ⚡
         # Save to memory (minimal metadata)
