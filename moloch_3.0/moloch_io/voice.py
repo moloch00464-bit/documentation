@@ -76,7 +76,7 @@ class VoiceIO:
     # SPEECH-TO-TEXT (Input) - TERMUX STT (KOSTENLOS!)
     # ═══════════════════════════════════════════════════════════════════════════
 
-    def listen(self) -> Optional[str]:
+    def listen(self, duration: int = 60, smart: bool = False) -> Optional[str]:
         """
         Listen to user via Termux Speech-to-Text
 
@@ -84,6 +84,10 @@ class VoiceIO:
         - Google Speech Recognition (on-device oder Google Cloud je nach Android)
         - KEIN API Key nötig!
         - KEINE Kosten!
+
+        Args:
+            duration: Max recording duration in seconds (default: 60)
+            smart: Ignored (kept for backwards compatibility)
 
         Returns:
             Transcribed text or None
@@ -98,7 +102,7 @@ class VoiceIO:
                 ["termux-speech-to-text", "-l", "de-DE"],  # German language
                 capture_output=True,
                 text=True,
-                timeout=60  # Max 60s
+                timeout=duration  # Use provided duration
             )
 
             if result.returncode != 0:
