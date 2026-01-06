@@ -106,7 +106,7 @@ class VoiceIO:
         try:
             # Run termux-speech-to-text with Popen (interactive, captures output after dialog closes)
             proc = subprocess.Popen(
-                ["termux-speech-to-text"],
+                ["termux-speech-to-text", "-l", "de-DE"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True
