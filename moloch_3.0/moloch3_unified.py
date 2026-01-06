@@ -646,7 +646,8 @@ Vision Mode:
 
                         print(f"\n{emoji} Stimme #{i}: {description}")
                         print(f"   Pitch: {prof['pitch']}, Rate: {prof['rate']}")
-                        voice.speak(response, stimmung=stimmung, tageszeit=tageszeit, profile=profile_name)
+                        # Multi-Voice Demo: Use PURE profiles (no emotion modulation!)
+                        voice.speak(response, stimmung=None, tageszeit=None, profile=profile_name)
 
                         # Kurze Pause zwischen Stimmen (damit man sie unterscheiden kann!)
                         if i < 3:
