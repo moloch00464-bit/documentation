@@ -1,0 +1,9 @@
+Feature Update: 2026-01-06
+M.O.L.O.C.H. 3.0 - Neue Features aktiviert!
+
+- GPS/Location Awareness (termux-location)
+- Local Command Handling (spart API-Kosten!)
+- Voice System Update (Google Speech API - DEUTSCH!)
+- Migration completed (112 Memories, 200 History)
+
+This flag triggers the "Feature Announcement" message where M.O.L.O.C.H. discovers his new capabilities!

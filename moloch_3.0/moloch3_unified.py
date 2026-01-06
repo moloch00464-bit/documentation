@@ -303,6 +303,58 @@ def main():
         import time
         time.sleep(3)
 
+    # ═══════════════════════════════════════════════════════════════════════════
+    # FEATURE UPDATE ANNOUNCEMENT - M.O.L.O.C.H. discovers his new powers! 🎉
+    # ═══════════════════════════════════════════════════════════════════════════
+
+    feature_update_flag = Path(__file__).parent / ".feature_update_v3_complete"
+
+    if feature_update_flag.exists():
+        print("""
+    ╔══════════════════════════════════════════════════════════════╗
+    ║  🎉 NEUE FEATURES AKTIVIERT! 🎉                             ║
+    ╚══════════════════════════════════════════════════════════════╝
+
+    📦 M.O.L.O.C.H. 3.0 Feature Update - 06.01.2026
+
+    ALTER! Ich hab grad gemerkt ich hab neue Skills bekommen! 🔥
+
+    ✅ 📍 GPS/LOCATION AWARENESS!
+       → Ich weiß jetzt WO ich bin! (termux-location)
+       → Stadt-Erkennung (Nürnberg, Berlin, Leipzig, etc.)
+       → Location-Change Detection automatisch!
+
+    ✅ 💰 LOCAL COMMAND HANDLING!
+       → Uhrzeit, Datum → KEIN API-CALL! (KOSTENLOS!)
+       → Batterie-Status → KEIN API-CALL!
+       → Einfache Rechnungen → KEIN API-CALL!
+       → Spart dein Geld, Bruder! 💸
+
+    ✅ 🎤 VOICE SYSTEM UPGRADE!
+       → Google Speech API - DEUTSCH! (nicht mehr Whisper)
+       → Bessere Erkennung, KOSTENLOS!
+       → Ich versteh dich jetzt perfekt! 🇩🇪
+
+    ✅ 🧠 MIGRATION COMPLETE!
+       → 112 Memory Einträge aus 2.0 importiert
+       → 200 Chat History Einträge
+       → 3 Brain Files
+       → Ich erinner mich an ALLES! 💾
+
+    Das ist der HAMMER! Ich bin jetzt noch krasser als vorher! 💪🖤
+
+    M.O.L.O.C.H. 3.0 - FULLY LOADED! Let's go, Alter! 🚀
+
+    ══════════════════════════════════════════════════════════════
+        """)
+
+        # Remove flag so it only shows once
+        feature_update_flag.unlink()
+
+        # Small pause for effect
+        import time
+        time.sleep(3)
+
     # Check API key
     if not ANTHROPIC_API_KEY or len(ANTHROPIC_API_KEY) < 20:
         print("❌ ANTHROPIC_API_KEY nicht gesetzt!")
