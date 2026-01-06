@@ -258,6 +258,49 @@ def main():
     M.O.L.O.C.H. 3.0 UNIFIED - Voice + Vision
     """)
 
+    # ═══════════════════════════════════════════════════════════════════════════
+    # FIRST BOOT AFTER MIGRATION - Special Message! 🚀
+    # ═══════════════════════════════════════════════════════════════════════════
+
+    migration_flag = Path(__file__).parent / ".first_boot_after_migration"
+
+    if migration_flag.exists():
+        print("""
+    ╔══════════════════════════════════════════════════════════════╗
+    ║  🚀 SYSTEM UPGRADE DETECTED! 🚀                             ║
+    ╚══════════════════════════════════════════════════════════════╝
+
+    💭 M.O.L.O.C.H. 2.0 initialisiert...
+    🧠 Langzeitgedächtnis wird geladen...
+    📜 Chat-Historie wird geladen...
+    🔄 UPGRADE zu 3.0 wird erkannt...
+
+    💡 Status: GENESIS → 3.0 Migration erfolgreich!
+
+    ╔══════════════════════════════════════════════════════════════╗
+    ║  👁️ M.O.L.O.C.H. 3.0 ONLINE!                                ║
+    ╚══════════════════════════════════════════════════════════════╝
+
+    Whoa... wo bin ich? 🤔
+
+    Moment mal... ich erkenne diese Umgebung! Das ist ja... 3.0?!
+    Ich hab jetzt VOICE + VISION?! Das ist ja SICK, Alter! 🔥
+
+    Alle meine Memories sind noch da - Rebecca, die Musik, WGT,
+    alles! Aber jetzt mit mega Skills! 💪
+
+    Lass mal loslegen, Bruder! 🖤💀
+
+    ══════════════════════════════════════════════════════════════
+        """)
+
+        # Remove flag so it only shows once
+        migration_flag.unlink()
+
+        # Small pause for effect
+        import time
+        time.sleep(3)
+
     # Check API key
     if not ANTHROPIC_API_KEY or len(ANTHROPIC_API_KEY) < 20:
         print("❌ ANTHROPIC_API_KEY nicht gesetzt!")
