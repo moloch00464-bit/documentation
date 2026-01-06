@@ -104,33 +104,39 @@ class VoiceIO:
         print()
 
         try:
-            # Run termux-speech-to-text (WORKING VERSION!)
-            result = subprocess.run(
-                ["termux-speech-to-text"],
-                capture_output=True,
-                text=True,
-                timeout=duration
-            )
+            # Run termux-speech-to-text WITHOUT capture (needs interactive TTY!)
+            # Write output to temp file instead
+            import tempfile
+            with tempfile.NamedTemporaryFile(mode='w+', delete=False, suffix='.txt') as f:
+                temp_file = f.name
 
-            if result.returncode != 0:
-                stderr = result.stderr.strip()
-                if stderr:
-                    print(f"❌ STT Fehler: {stderr}")
-                else:
-                    print("❌ STT fehlgeschlagen")
+            try:
+                # Run command and redirect output to file
+                result = subprocess.run(
+                    f"termux-speech-to-text > {temp_file}",
+                    shell=True,
+                    timeout=duration
+                )
 
-                # FALLBACK: Use text input
-                return self._fallback_text_input()
+                # Read the output from file
+                with open(temp_file, 'r') as f:
+                    text = f.read().strip()
 
-            # Get transcribed text
-            text = result.stdout.strip()
+                # Clean up
+                os.remove(temp_file)
 
-            if not text:
-                print("⚠️ Nichts verstanden")
-                return self._fallback_text_input()
+                if not text:
+                    print("⚠️ Nichts verstanden")
+                    return self._fallback_text_input()
 
-            print(f"📝 Du: {text}")
-            return text
+                print(f"📝 Du: {text}")
+                return text
+
+            except Exception as e:
+                # Clean up temp file on error
+                if os.path.exists(temp_file):
+                    os.remove(temp_file)
+                raise e
 
         except subprocess.TimeoutExpired:
             print("⏱️ Timeout - zu lange gewartet")
