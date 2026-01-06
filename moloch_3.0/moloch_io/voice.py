@@ -35,33 +35,61 @@ class VoiceIO:
     - termux-tts-speak (TTS)
     """
 
-    def __init__(self):
+    def __init__(self, voice_settings=None):
         """Initialize Voice I/O"""
         # Ensure data directory exists
         DATA_DIR.mkdir(parents=True, exist_ok=True)
 
+        # Voice settings for emotion-based modulation
+        self.voice_settings = voice_settings
+
     # ═══════════════════════════════════════════════════════════════════════════
-    # TEXT-TO-SPEECH (Output)
+    # TEXT-TO-SPEECH (Output) - WITH EMOTION SYNTHESIS! 🎭🎤
     # ═══════════════════════════════════════════════════════════════════════════
 
-    def speak(self, text: str) -> bool:
+    def speak(self, text: str, stimmung: str = None, tageszeit: str = None) -> bool:
         """
-        Speak text via Termux TTS
+        Speak text via Termux TTS with emotion-based voice modulation!
 
         Args:
             text: Text to speak
+            stimmung: Current mood (gestresst, gut_drauf, fragend, neutral, dark_side)
+            tageszeit: Time of day (kaffee, normal, feierabend, dark_side)
 
         Returns:
             Success status
+
+        NEW: Emotion Synthesis! Voice changes based on mood & time! 🎭
+        - Gestresst → tiefer, schneller
+        - Gut drauf → höher, lockerer
+        - Dark Side → EXTRA TIEF! 🖤😈
         """
         # Always print (fallback if TTS fails)
         print(f"\n🗣️ {text}\n")
 
         try:
             # Use full path to avoid PATH issues
+            termux_tts = "/data/data/com.termux/files/usr/bin/termux-tts-speak"
+
+            # Get voice parameters based on emotion & time
+            cmd = [termux_tts]
+
+            if self.voice_settings:
+                params = self.voice_settings.get_voice_params(
+                    stimmung=stimmung,
+                    tageszeit=tageszeit
+                )
+
+                # Add pitch and rate parameters
+                cmd.extend(["-p", str(params["pitch"])])
+                cmd.extend(["-r", str(params["rate"])])
+
+            # Add text to speak
+            cmd.append(text)
+
             # Increased timeout for longer responses (60s)
             result = subprocess.run(
-                ["/data/data/com.termux/files/usr/bin/termux-tts-speak", text],
+                cmd,
                 capture_output=True,
                 timeout=60,
                 text=True
