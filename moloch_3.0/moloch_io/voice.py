@@ -111,6 +111,17 @@ class VoiceIO:
                     print(f"❌ STT Fehler: {stderr}")
                 else:
                     print("❌ STT fehlgeschlagen (Mikrofon-Berechtigung?)")
+
+                # FALLBACK: Use text input
+                print("   📝 FALLBACK: Text-Eingabe aktiviert")
+                print()
+                try:
+                    text = input("💬 Tippe deine Nachricht: ").strip()
+                    if text:
+                        print(f"📝 Du: {text}")
+                        return text
+                except (KeyboardInterrupt, EOFError):
+                    print("\n⚠️ Abgebrochen")
                 return None
 
             # Get transcribed text
@@ -128,11 +139,21 @@ class VoiceIO:
             return None
 
         except FileNotFoundError:
-            print("❌ termux-speech-to-text nicht gefunden!")
-            print("   Install:")
-            print("   1. pkg install termux-api")
-            print("   2. Install 'Termux:API' App von F-Droid")
-            return None
+            # FALLBACK: Use text input if termux-speech-to-text not available
+            print("⚠️ termux-speech-to-text nicht verfügbar")
+            print("   📝 FALLBACK: Text-Eingabe aktiviert")
+            print("   (Install termux-api für Voice: pkg install termux-api)")
+            print()
+
+            try:
+                text = input("💬 Tippe deine Nachricht: ").strip()
+                if text:
+                    print(f"📝 Du: {text}")
+                    return text
+                return None
+            except (KeyboardInterrupt, EOFError):
+                print("\n⚠️ Abgebrochen")
+                return None
 
         except KeyboardInterrupt:
             print("\n⚠️ Abgebrochen")
