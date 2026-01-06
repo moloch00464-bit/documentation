@@ -9,6 +9,7 @@ import sys
 import os
 import base64
 import signal
+import json
 from pathlib import Path
 from datetime import datetime
 
@@ -28,6 +29,7 @@ from core.location import LocationTracker
 from core.learning import PersistentLearning
 from core.voice_settings import VoiceSettings
 from core.self_modify import SelfModificationSystem
+from core.tools import MOLOCH_TOOLS, execute_tool
 import re
 
 
@@ -346,27 +348,109 @@ PERSÖNLICHKEIT:
         "model": CLAUDE_MODEL,
         "max_tokens": 1024,
         "system": system,
-        "messages": messages
+        "messages": messages,
+        "tools": MOLOCH_TOOLS  # 🛠️ M.O.L.O.C.H. hat jetzt ECHTE TOOLS!
     }
 
+    # 🔄 TOOL USE LOOP - M.O.L.O.C.H. kann mehrere Tool Calls machen!
+    max_tool_rounds = 5  # Prevent infinite loops
+    tool_round = 0
+    final_response = ""
+
     try:
-        response = requests.post(url, headers=headers, json=data, timeout=60)
+        while tool_round < max_tool_rounds:
+            response = requests.post(url, headers=headers, json=data, timeout=60)
 
-        if response.status_code != 200:
-            return f"❌ API Error: {response.status_code}"
+            if response.status_code != 200:
+                return f"❌ API Error: {response.status_code}"
 
-        result = response.json()
+            result = response.json()
 
-        if 'content' in result and len(result['content']) > 0:
-            # SAFEGUARD: Record successful Claude API call
-            # Estimate tokens (rough): ~4 chars = 1 token
-            input_tokens = len(system) // 4 + len(user_text) // 4
-            output_tokens = len(result['content'][0]['text']) // 4
+            # Record API call for safeguards
+            input_tokens = result.get('usage', {}).get('input_tokens', 0)
+            output_tokens = result.get('usage', {}).get('output_tokens', 0)
             guard.record_claude_call(input_tokens=input_tokens, output_tokens=output_tokens)
 
-            return result['content'][0]['text']
-        else:
-            return "❌ Keine Antwort"
+            # Check if response has content
+            if 'content' not in result or len(result['content']) == 0:
+                return "❌ Keine Antwort"
+
+            # Check stop_reason
+            stop_reason = result.get('stop_reason')
+
+            # Collect text responses
+            text_responses = []
+            tool_calls = []
+
+            for block in result['content']:
+                if block['type'] == 'text':
+                    text_responses.append(block['text'])
+                elif block['type'] == 'tool_use':
+                    tool_calls.append(block)
+
+            # If we have text, save it
+            if text_responses:
+                final_response = "\n".join(text_responses)
+
+            # If no tool calls, we're done!
+            if stop_reason == 'end_turn' or not tool_calls:
+                return final_response if final_response else "❌ Keine Antwort"
+
+            # 🛠️ EXECUTE TOOLS!
+            print(f"\n🔧 M.O.L.O.C.H. nutzt {len(tool_calls)} Tool(s)!")
+
+            # Build tool results message
+            tool_results = []
+
+            for tool_call in tool_calls:
+                tool_name = tool_call['name']
+                tool_input = tool_call['input']
+                tool_use_id = tool_call['id']
+
+                print(f"   🛠️ {tool_name}({tool_input})")
+
+                # Execute the tool!
+                sm = SelfModificationSystem() if 'self_modify' in tool_name else None
+                result_data = execute_tool(
+                    tool_name=tool_name,
+                    tool_input=tool_input,
+                    brain=brain,
+                    memory=memory,
+                    learning=learning,
+                    self_modify_system=sm
+                )
+
+                # Show result
+                if result_data.get('success'):
+                    print(f"      ✅ {result_data.get('message', 'Success')}")
+                else:
+                    print(f"      ❌ {result_data.get('error', 'Failed')}")
+
+                # Add tool result
+                tool_results.append({
+                    "type": "tool_result",
+                    "tool_use_id": tool_use_id,
+                    "content": json.dumps(result_data, ensure_ascii=False)
+                })
+
+            # Add assistant message (with tool use) and tool results to messages
+            messages.append({
+                "role": "assistant",
+                "content": result['content']
+            })
+            messages.append({
+                "role": "user",
+                "content": tool_results
+            })
+
+            # Update data for next API call
+            data['messages'] = messages
+
+            # Next round!
+            tool_round += 1
+
+        # If we hit max rounds, return what we have
+        return final_response if final_response else "⚠️ Tool loop limit erreicht"
 
     except Exception as e:
         return f"❌ Fehler: {e}"
