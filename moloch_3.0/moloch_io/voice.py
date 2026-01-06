@@ -58,8 +58,9 @@ class VoiceIO:
         print(f"\n🗣️ {text}\n")
 
         try:
+            # Use full path to avoid PATH issues
             result = subprocess.run(
-                ["termux-tts-speak", text],
+                ["/data/data/com.termux/files/usr/bin/termux-tts-speak", text],
                 capture_output=True,
                 timeout=30,
                 text=True
@@ -156,8 +157,10 @@ class VoiceIO:
             print(f"🎙️ Aufnahme läuft für {duration} Sekunden...")
 
             # Start termux-microphone-record (runs in background, default encoder)
+            # Use full path to avoid PATH issues in subprocess
+            termux_record = "/data/data/com.termux/files/usr/bin/termux-microphone-record"
             proc = subprocess.Popen(
-                ["termux-microphone-record", "-f", str(output_file)],
+                [termux_record, "-f", str(output_file)],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True
@@ -166,8 +169,8 @@ class VoiceIO:
             # Wait for specified duration
             time.sleep(duration)
 
-            # Stop recording properly with termux-microphone-stop (not terminate!)
-            subprocess.run(["termux-microphone-stop"], timeout=5)
+            # Stop recording properly (use -q flag to quit)
+            subprocess.run([termux_record, "-q"], timeout=5)
 
             # Wait for process to finish
             proc.wait(timeout=5)
