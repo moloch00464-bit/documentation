@@ -8,6 +8,7 @@ Single command - Voice OR Vision mode!
 import sys
 import os
 import base64
+import signal
 from pathlib import Path
 from datetime import datetime
 
@@ -24,6 +25,7 @@ from core.personality import Personality
 from core.api_safeguards import get_api_guard
 from core.local_commands import LocalCommandHandler
 from core.location import LocationTracker
+from core.learning import PersistentLearning
 
 def ask_claude_vision(user_text, image_path, memory=None, brain=None, personality=None):
     """Ask Claude with image - with AUTONOMY!"""
@@ -136,7 +138,7 @@ PERSÖNLICHKEIT:
         return f"❌ Fehler: {e}"
 
 
-def ask_claude_text(user_text, memory=None, brain=None, personality=None):
+def ask_claude_text(user_text, memory=None, brain=None, personality=None, learning=None):
     """Ask Claude text only - with AUTONOMY!"""
 
     # SAFEGUARD: Check if Claude API call is allowed
@@ -186,6 +188,13 @@ def ask_claude_text(user_text, memory=None, brain=None, personality=None):
         if context:
             brain_context = context
 
+    # Get Learning Context (PERSISTENT MEMORY! 🧠💾)
+    learning_context = ""
+    if learning:
+        learning_summary = learning.get_learning_summary(max_facts=10)
+        if learning_summary:
+            learning_context = learning_summary
+
     # AUTONOMIE: Dynamischer System Prompt! 🤖
     if personality:
         system = personality.get_system_prompt(
@@ -196,6 +205,9 @@ def ask_claude_text(user_text, memory=None, brain=None, personality=None):
             memory_context=memory_context,
             zeit_stats=zeit_stats
         )
+        # Add learning context to system prompt
+        if learning_context:
+            system += f"\n\n{learning_context}"
     else:
         # Fallback (ohne Personality)
         system = f"""Du bist M.O.L.O.C.H., Markus' Kumpel-AI. Geboren 02.12.2025.
@@ -414,6 +426,31 @@ Vision Mode:
     print(location_summary)
     print("="*60)
 
+    # Create Persistent Learning System (CROSS-SESSION INTELLIGENCE! 🧠💾)
+    learning = PersistentLearning(DATA_DIR)
+
+    # Setup auto-save on exit (Ctrl+C)
+    def save_learnings_on_exit(signum, frame):
+        """Auto-save learnings when session ends"""
+        print("\n\n💾 Speichere Learnings...")
+        learning.end_session(auto_summary=True)
+        print("✅ Session beendet. Bis bald, Alter! 🖤")
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, save_learnings_on_exit)
+    signal.signal(signal.SIGTERM, save_learnings_on_exit)
+
+    # Load learned facts from previous sessions
+    print("\n" + "="*60)
+    print("🧠 LOADING PERSISTENT LEARNINGS...")
+    learned_facts = learning.get_learned_facts(min_importance=5)
+    if learned_facts:
+        print(f"✅ Loaded {len(learned_facts)} important facts from previous sessions!")
+        print(f"   Most important: {learned_facts[0]['fact']}")
+    else:
+        print("📚 No previous learnings yet - starting fresh!")
+    print("="*60)
+
     # ═══════════════════════════════════════════════════════════════════════
     # VISION MODE
     # ═══════════════════════════════════════════════════════════════════════
@@ -509,7 +546,7 @@ Vision Mode:
         else:
             # Not local → Ask Claude (with AUTONOMY!)
             print("🧠 M.O.L.O.C.H. denkt... (API)")
-            response = ask_claude_text(user_text, memory=memory, brain=brain, personality=personality)
+            response = ask_claude_text(user_text, memory=memory, brain=brain, personality=personality, learning=learning)
 
         # AUTONOMIE: Theme & Context Detection! 🎯
         stimmung = personality.detect_stimmung(user_text)
