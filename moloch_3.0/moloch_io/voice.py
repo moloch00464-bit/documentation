@@ -99,8 +99,8 @@ class VoiceIO:
         Returns:
             Transcribed text or None
         """
-        # Audio file paths (MP3 not MP4!)
-        audio_raw = DATA_DIR / "voice_recording.mp3"
+        # Audio file paths - use M4A for termux-microphone-record with AAC encoder
+        audio_raw = DATA_DIR / "voice_recording.m4a"
         audio_wav = DATA_DIR / "voice_recording.wav"
 
         print(f"🎤 AUFNAHME STARTET - {duration} SEKUNDEN!")
@@ -197,7 +197,7 @@ class VoiceIO:
         Convert audio file to WAV format using ffmpeg
 
         Args:
-            input_file: Input audio file (.mp3)
+            input_file: Input audio file (.m4a)
             output_file: Output WAV file
 
         Returns:
@@ -208,9 +208,9 @@ class VoiceIO:
             output_file.unlink()
 
         try:
-            # Convert with ffmpeg (silent mode)
+            # Convert with ffmpeg
             result = subprocess.run(
-                ["ffmpeg", "-i", str(input_file), "-acodec", "pcm_s16le", "-ar", "16000", str(output_file), "-y", "-loglevel", "error"],
+                ["ffmpeg", "-i", str(input_file), "-acodec", "pcm_s16le", "-ar", "16000", str(output_file), "-y"],
                 capture_output=True,
                 text=True,
                 timeout=30
@@ -218,7 +218,8 @@ class VoiceIO:
 
             if result.returncode != 0:
                 print(f"⚠️ Konvertierung fehlgeschlagen")
-                print(f"   Install ffmpeg: pkg install ffmpeg")
+                if result.stderr:
+                    print(f"   Error: {result.stderr}")
                 return False
 
             if not output_file.exists():
