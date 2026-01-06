@@ -176,13 +176,33 @@ class LocalCommandHandler:
             )
 
             if result.returncode == 0 and result.stdout:
-                location_data = json.loads(result.stdout)
+                try:
+                    location_data = json.loads(result.stdout)
+                except json.JSONDecodeError:
+                    print("⚠️ Invalid JSON from termux-location")
+                    return None
+
                 lat = location_data.get("latitude")
                 lon = location_data.get("longitude")
 
-                # For now, just return location
-                # TODO: Add weather API call (free service like wttr.in)
-                return f"📍 Standort: {lat:.2f}, {lon:.2f}\n⚠️ Wetter-API noch nicht implementiert, Bruder!"
+                # Use wttr.in (FREE weather API!)
+                try:
+                    import requests
+                    # Format: wttr.in/{location}?format=...
+                    # Custom format: temp, condition, feel-like temp
+                    weather_url = f"https://wttr.in/{lat},{lon}?format=%t+%C+%f"
+                    response = requests.get(weather_url, timeout=5)
+
+                    if response.status_code == 200:
+                        weather_text = response.text.strip()
+                        return f"🌤️ Wetter: {weather_text}\n📍 Standort: {lat:.2f}, {lon:.2f}"
+                    else:
+                        return f"📍 Standort: {lat:.2f}, {lon:.2f}\n⚠️ Wetter-API nicht erreichbar"
+
+                except ImportError:
+                    return f"📍 Standort: {lat:.2f}, {lon:.2f}\n⚠️ requests Modul fehlt"
+                except Exception as e:
+                    return f"📍 Standort: {lat:.2f}, {lon:.2f}\n⚠️ Wetter-API Fehler: {e}"
 
             return None
 
@@ -200,7 +220,12 @@ class LocalCommandHandler:
             )
 
             if result.returncode == 0 and result.stdout:
-                battery = json.loads(result.stdout)
+                try:
+                    battery = json.loads(result.stdout)
+                except json.JSONDecodeError:
+                    print("⚠️ Invalid JSON from termux-battery-status")
+                    return None
+
                 percentage = battery.get("percentage", 0)
                 status = battery.get("status", "Unknown")
 
@@ -225,7 +250,11 @@ class LocalCommandHandler:
                 self.appointments_file.write_text("[]")
 
             # Load existing
-            appointments = json.loads(self.appointments_file.read_text())
+            try:
+                appointments = json.loads(self.appointments_file.read_text())
+            except json.JSONDecodeError:
+                print("⚠️ Corrupt appointments file - resetting")
+                appointments = []
 
             # Add new (simplified - just save the text)
             appointments.append({
@@ -249,7 +278,11 @@ class LocalCommandHandler:
                 self.birthdays_file.write_text("[]")
 
             # Load existing
-            birthdays = json.loads(self.birthdays_file.read_text())
+            try:
+                birthdays = json.loads(self.birthdays_file.read_text())
+            except json.JSONDecodeError:
+                print("⚠️ Corrupt birthdays file - resetting")
+                birthdays = []
 
             # Add new
             birthdays.append({

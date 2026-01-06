@@ -187,14 +187,12 @@ Antworte immer im JSON Format."""
 
         # If Python code execution is needed
         else:
-            try:
-                # Execute fix code
-                exec(fix_code)
-                self.logger.info("Fix code executed successfully")
-                return True
-            except Exception as e:
-                self.logger.error(f"Fix execution failed: {e}")
-                return False
+            # 🚨 SECURITY: exec() disabled - arbitrary code execution is dangerous!
+            # Self-debugger is not fully implemented yet
+            self.logger.warning("⚠️ Code execution requested but disabled for security")
+            self.logger.info(f"Suggested fix code:\n{fix_code}")
+            self.logger.info("💡 Please apply fix manually or implement safe sandbox")
+            return False
 
         return False
 

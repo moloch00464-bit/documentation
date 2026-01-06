@@ -9,7 +9,8 @@ import subprocess
 from typing import Tuple, Optional
 import shlex
 
-from core.config import BASH_SAFE_COMMANDS, BASH_DANGEROUS_COMMANDS
+from core.config import BASH_SAFE_COMMANDS, BASH_DANGEROUS_COMMANDS, BASH_DANGEROUS_PATTERNS
+import re
 
 
 class BashTool:
@@ -76,9 +77,14 @@ class BashTool:
         Returns:
             True if safe, False if dangerous
         """
-        command_lower = command.lower()
+        # Use regex patterns for robust matching
+        for pattern in BASH_DANGEROUS_PATTERNS:
+            if re.search(pattern, command, re.IGNORECASE):
+                print(f"🚨 Blocked dangerous command pattern: {pattern[:30]}...")
+                return False
 
-        # Check for dangerous commands
+        # Legacy blacklist check (backward compatibility)
+        command_lower = command.lower()
         for dangerous in BASH_DANGEROUS_COMMANDS:
             if dangerous.lower() in command_lower:
                 print(f"🚨 Blocked dangerous command: {dangerous}")
@@ -87,13 +93,20 @@ class BashTool:
         # Additional safety checks
 
         # No root operations without explicit permission
-        if command_lower.startswith("sudo "):
-            print("🚨 Blocked sudo command (needs explicit permission)")
+        if command_lower.startswith("sudo ") or command_lower.startswith("su "):
+            print("🚨 Blocked root command (needs explicit permission)")
             return False
 
         # No pipe to bash/sh (code injection risk)
-        if "| sh" in command_lower or "| bash" in command_lower:
+        if re.search(r'\|\s*(sh|bash)\b', command_lower):
             print("🚨 Blocked pipe to shell (injection risk)")
+            return False
+
+        # Check for command parsing issues
+        try:
+            shlex.split(command)
+        except ValueError:
+            print("🚨 Blocked malformed command (potential injection)")
             return False
 
         return True

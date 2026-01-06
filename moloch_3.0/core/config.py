@@ -324,10 +324,28 @@ BASH_SAFE_COMMANDS = [
     "ffmpeg", "python", "pip"
 ]
 
-# Dangerous commands to block
+# Dangerous commands to block (regex patterns for better matching)
+import re
+BASH_DANGEROUS_PATTERNS = [
+    r'\brm\s+.*-rf\s*/',          # rm -rf with any path starting with /
+    r'\brm\s+.*-rf\s*~',          # rm -rf home dir
+    r'\bdd\b',                    # dd command (disk destroyer)
+    r'\bmkfs\b',                  # format filesystem
+    r'\bwget\b',                  # all wget (download risk)
+    r'\bcurl\b.*https?://',       # curl to http/https
+    r'\bchmod\s+.*777',           # chmod 777 (any variant)
+    r'\bchown\s+-R',              # recursive chown
+    r'>\s*/dev/',                 # redirect to /dev
+    r'\bkillall\b',               # killall
+    r'\bpkill\b.*-9',             # pkill force
+    r'\bmv\s+/\s+',               # move root
+    r':\(\)\{.*\|\:.*\&\}\;\:',   # fork bomb
+]
+
+# Legacy list for backward compatibility (deprecated - use patterns above)
 BASH_DANGEROUS_COMMANDS = [
-    "rm -rf /", "dd", "mkfs", ":(){:|:&};:", "wget http", "curl http",
-    "chmod -R 777", "chown -R"
+    "rm -rf /", "dd", "mkfs", ":(){:|:&};:", "wget", "curl http",
+    "chmod -R 777", "chown -R", "killall", "pkill -9"
 ]
 
 # ═══════════════════════════════════════════════════════════════════════════════

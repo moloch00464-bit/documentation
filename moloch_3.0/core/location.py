@@ -51,7 +51,11 @@ class LocationTracker:
             )
 
             if result.returncode == 0 and result.stdout:
-                data = json.loads(result.stdout)
+                try:
+                    data = json.loads(result.stdout)
+                except json.JSONDecodeError:
+                    print("⚠️ Invalid JSON from termux-location")
+                    return None
 
                 location = {
                     "lat": data.get("latitude"),
@@ -85,12 +89,48 @@ class LocationTracker:
 
     def _reverse_geocode(self, lat: float, lon: float) -> str:
         """
-        Simple reverse geocoding (city name from coordinates)
+        Reverse geocoding (city name from coordinates)
 
-        Uses simple distance-based lookup for known cities
-        TODO: Add proper reverse geocoding API later
+        Uses Nominatim (OpenStreetMap) free API with fallback to hardcoded cities
         """
-        # Known cities (rough coordinates)
+        # Try Nominatim API first (FREE!)
+        try:
+            import requests
+            url = f"https://nominatim.openstreetmap.org/reverse"
+            params = {
+                "lat": lat,
+                "lon": lon,
+                "format": "json",
+                "addressdetails": 1
+            }
+            headers = {
+                "User-Agent": "M.O.L.O.C.H./3.0"  # Required by Nominatim
+            }
+
+            response = requests.get(url, params=params, headers=headers, timeout=5)
+
+            if response.status_code == 200:
+                data = response.json()
+                address = data.get("address", {})
+
+                # Try to get city name (different keys possible)
+                city = (
+                    address.get("city") or
+                    address.get("town") or
+                    address.get("village") or
+                    address.get("municipality") or
+                    address.get("county")
+                )
+
+                if city:
+                    return city
+
+        except ImportError:
+            print("⚠️ requests module not installed - using fallback")
+        except Exception as e:
+            print(f"⚠️ Nominatim API error: {e} - using fallback")
+
+        # Fallback: Hardcoded cities (for offline use)
         cities = {
             "Nürnberg": (49.45, 11.08),
             "Berlin": (52.52, 13.40),
