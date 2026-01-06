@@ -115,20 +115,33 @@ class VoiceSettings:
     def get_voice_params(
         self,
         stimmung: Optional[str] = None,
-        tageszeit: Optional[str] = None
+        tageszeit: Optional[str] = None,
+        profile: Optional[str] = None
     ) -> Dict[str, float]:
         """
-        Calculate voice parameters based on emotion and time of day
+        Calculate voice parameters based on emotion, time of day, and voice profile
 
         Args:
             stimmung: Current mood (gestresst, gut_drauf, fragend, neutral, dark_side)
             tageszeit: Time of day mode (kaffee, normal, feierabend, dark_side)
+            profile: Custom voice profile to use (e.g., "choice_1", "choice_2", "choice_3")
 
         Returns:
             Dict with pitch, rate, volume parameters
         """
-        # Start with base voice
-        params = self.settings["base_voice"].copy()
+        # Start with base voice OR custom profile
+        if profile and "custom_profiles" in self.settings and profile in self.settings["custom_profiles"]:
+            # Use custom profile as base!
+            custom = self.settings["custom_profiles"][profile]
+            params = {
+                "pitch": custom.get("pitch", 1.0),
+                "rate": custom.get("rate", 1.0),
+                "volume": custom.get("volume", 1.0),
+                "language": self.settings["base_voice"].get("language", "de-DE")
+            }
+        else:
+            # Use default base voice
+            params = self.settings["base_voice"].copy()
 
         # Apply emotion modulation if enabled
         if self.settings["emotion_modulation"]["enabled"]:

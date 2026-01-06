@@ -47,7 +47,7 @@ class VoiceIO:
     # TEXT-TO-SPEECH (Output) - WITH EMOTION SYNTHESIS! 🎭🎤
     # ═══════════════════════════════════════════════════════════════════════════
 
-    def speak(self, text: str, stimmung: str = None, tageszeit: str = None) -> bool:
+    def speak(self, text: str, stimmung: str = None, tageszeit: str = None, profile: str = None) -> bool:
         """
         Speak text via Termux TTS with emotion-based voice modulation!
 
@@ -55,6 +55,7 @@ class VoiceIO:
             text: Text to speak
             stimmung: Current mood (gestresst, gut_drauf, fragend, neutral, dark_side)
             tageszeit: Time of day (kaffee, normal, feierabend, dark_side)
+            profile: Voice profile to use (choice_1, choice_2, choice_3)
 
         Returns:
             Success status
@@ -63,6 +64,7 @@ class VoiceIO:
         - Gestresst → tiefer, schneller
         - Gut drauf → höher, lockerer
         - Dark Side → EXTRA TIEF! 🖤😈
+        - Profile switching → M.O.L.O.C.H. wählt zwischen seinen 3 Stimmen! 🎤
         """
         # Always print (fallback if TTS fails)
         print(f"\n🗣️ {text}\n")
@@ -71,13 +73,14 @@ class VoiceIO:
             # Use full path to avoid PATH issues
             termux_tts = "/data/data/com.termux/files/usr/bin/termux-tts-speak"
 
-            # Get voice parameters based on emotion & time
+            # Get voice parameters based on emotion & time & profile
             cmd = [termux_tts]
 
             if self.voice_settings:
                 params = self.voice_settings.get_voice_params(
                     stimmung=stimmung,
-                    tageszeit=tageszeit
+                    tageszeit=tageszeit,
+                    profile=profile
                 )
 
                 # Add pitch and rate parameters
