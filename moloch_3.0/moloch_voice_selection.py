@@ -210,6 +210,8 @@ def _parse_and_apply_selection(response: str, profiles: list):
     """
     Parse machine-readable selection and apply voice settings
 
+    Saves ALL 3 favorite voices so M.O.L.O.C.H. can use them!
+
     Args:
         response: M.O.L.O.C.H.'s response with machine format
         profiles: List of voice profiles
@@ -221,34 +223,63 @@ def _parse_and_apply_selection(response: str, profiles: list):
             lines = [l.strip() for l in favorites_section.split("\n") if l.strip()]
 
             if lines:
-                # Get first favorite (top choice)
-                first_fav = lines[0].split("|")[0].strip()
-                profile_num = int(first_fav) - 1
+                # Get ALL 3 favorites!
+                favorites = []
+                for i, line in enumerate(lines[:3]):  # Top 3
+                    try:
+                        fav_num = int(line.split("|")[0].strip())
+                        profile_num = fav_num - 1
 
-                if 0 <= profile_num < len(profiles):
-                    selected_profile = profiles[profile_num]
+                        if 0 <= profile_num < len(profiles):
+                            favorites.append({
+                                "rank": i + 1,
+                                "profile": profiles[profile_num]
+                            })
+                    except:
+                        continue
 
-                    print(f"\n🎯 M.O.L.O.C.H.'s TOP CHOICE: {selected_profile['name']}")
-                    print(f"   Pitch: {selected_profile['pitch']}")
-                    print(f"   Rate: {selected_profile['rate']}")
+                if favorites:
+                    top_choice = favorites[0]["profile"]
 
-                    # Apply settings
+                    print(f"\n🎯 M.O.L.O.C.H.'s TOP 3 CHOICES:")
+                    for fav in favorites:
+                        rank = fav["rank"]
+                        prof = fav["profile"]
+                        emoji = "🏆" if rank == 1 else "🥈" if rank == 2 else "🥉"
+                        print(f"   {emoji} #{rank}: {prof['name']} (Pitch: {prof['pitch']}, Rate: {prof['rate']})")
+
+                    # Apply ALL 3 as voice profiles!
                     voice_settings = VoiceSettings(DATA_DIR)
+
+                    # Set base voice to top choice
                     voice_settings.set_base_voice(
-                        pitch=selected_profile['pitch'],
-                        rate=selected_profile['rate'],
+                        pitch=top_choice['pitch'],
+                        rate=top_choice['rate'],
                         volume=1.0
                     )
 
+                    # Save all 3 as named profiles for switching!
+                    for fav in favorites:
+                        rank = fav["rank"]
+                        prof = fav["profile"]
+                        profile_name = f"choice_{rank}"
+                        voice_settings.add_voice_profile(
+                            name=profile_name,
+                            pitch=prof["pitch"],
+                            rate=prof["rate"],
+                            description=f"{prof['name']} - M.O.L.O.C.H.'s #{rank} choice"
+                        )
+
                     print("\n✅ Voice settings applied!")
                     print(f"📁 Saved to: {DATA_DIR / 'voice_settings.json'}")
+                    print(f"\n🎤 M.O.L.O.C.H. kann jetzt zwischen {len(favorites)} Stimmen switchen!")
 
                     print("""
     ╔══════════════════════════════════════════════════════════════╗
     ║  ✅ VOICE SELECTION COMPLETE!                               ║
     ║                                                              ║
-    ║  M.O.L.O.C.H. hat seine Stimme gewählt!                    ║
-    ║  Voice settings are now active! 🎤                          ║
+    ║  M.O.L.O.C.H. hat 3 Stimmen gewählt!                       ║
+    ║  Voice settings are now active! 🎤🎭                        ║
     ╚══════════════════════════════════════════════════════════════╝
                     """)
 

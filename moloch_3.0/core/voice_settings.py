@@ -252,6 +252,30 @@ class VoiceSettings:
         self.save_settings()
         print(f"✅ Custom voice profile '{name}' created!")
 
+    def add_voice_profile(self, name: str, pitch: float, rate: float, description: str = None, volume: float = 1.0):
+        """
+        Add a voice profile (alias for create_custom_profile with description support)
+
+        Args:
+            name: Profile name
+            pitch: Voice pitch (0.5 - 2.0)
+            rate: Speech rate (0.5 - 2.0)
+            description: Optional description of the profile
+            volume: Volume (0.0 - 1.0)
+        """
+        if "custom_profiles" not in self.settings:
+            self.settings["custom_profiles"] = {}
+
+        self.settings["custom_profiles"][name] = {
+            "pitch": max(0.5, min(2.0, pitch)),
+            "rate": max(0.5, min(2.0, rate)),
+            "volume": max(0.0, min(1.0, volume)),
+            "description": description or f"Voice profile {name}",
+            "created_at": datetime.now().isoformat()
+        }
+
+        self.save_settings()
+
     # ═══════════════════════════════════════════════════════════════════════════
     # INFO & DEBUGGING
     # ═══════════════════════════════════════════════════════════════════════════

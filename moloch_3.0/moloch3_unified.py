@@ -462,11 +462,19 @@ Vision Mode:
         print("\n📸 VISION MODE")
         print("="*60)
 
-        voice.speak("Moment, lass mich gucken")
+        # Get tageszeit for voice modulation
+        tageszeit_mode = personality.get_tageszeit_mode() if personality else "normal"
+        tageszeit = "normal"
+        if "Dark Side" in tageszeit_mode:
+            tageszeit = "dark_side"
+        elif "Kaffee" in tageszeit_mode:
+            tageszeit = "kaffee"
+
+        voice.speak("Moment, lass mich gucken", stimmung="neutral", tageszeit=tageszeit)
 
         # Take photo
         if not vision.take_photo():
-            voice.speak("Kamera kaputt?")
+            voice.speak("Kamera kaputt?", stimmung="gestresst", tageszeit=tageszeit)
             return 1
 
         user_text = "Was siehst du auf dem Bild? Beschreib es kurz und direkt, Alter!"
@@ -517,7 +525,12 @@ Vision Mode:
         print(f"\n{response}\n")
         print("="*60)
 
-        voice.speak(response)
+        # Detect stimmung from response for voice modulation
+        stimmung = "neutral"
+        if personality:
+            stimmung = personality.erkennung.detect_stimmung(response)
+
+        voice.speak(response, stimmung=stimmung, tageszeit=tageszeit)
 
         return 0
 
@@ -528,13 +541,23 @@ Vision Mode:
         print("\n🎤 VOICE MODE")
         print("="*60)
 
-        voice.speak("Ja, Alter? Was brauchst du?")
+        # Get tageszeit for voice modulation (before first speak!)
+        tageszeit_mode = personality.get_tageszeit_mode() if personality else "normal"
+        tageszeit = "normal"
+        if "Dark Side" in tageszeit_mode:
+            tageszeit = "dark_side"
+        elif "Kaffee" in tageszeit_mode:
+            tageszeit = "kaffee"
+        elif "Feierabend" in tageszeit_mode:
+            tageszeit = "feierabend"
+
+        voice.speak("Ja, Alter? Was brauchst du?", stimmung="neutral", tageszeit=tageszeit)
 
         # Listen (20 seconds fixed - NO PAUSE DETECTION!)
         user_text = voice.listen(duration=20, smart=False)
 
         if not user_text:
-            voice.speak("Nix verstanden")
+            voice.speak("Nix verstanden", stimmung="fragend", tageszeit=tageszeit)
             return 1
 
         # ═══════════════════════════════════════════════════════════════════════
@@ -557,19 +580,11 @@ Vision Mode:
         theme = personality.detect_theme(user_text)
         context = personality.detect_context(user_text)
 
+        print(f"   🎭 Stimmung erkannt: {stimmung}")
         print(f"   🎯 Theme erkannt: {theme}")
         print(f"   📍 Context: {context['location']} / {context['activity']}")
 
-        # Get tageszeit mode for voice modulation! 🎭
-        tageszeit_raw = personality.get_tageszeit_mode()
-        # Extract mode name (e.g., "kaffee", "dark_side")
-        tageszeit = "normal"
-        if "Kaffee" in tageszeit_raw:
-            tageszeit = "kaffee"
-        elif "Feierabend" in tageszeit_raw:
-            tageszeit = "feierabend"
-        elif "Dark Side" in tageszeit_raw:
-            tageszeit = "dark_side"
+        # tageszeit already calculated at start of voice mode for early speak() calls!
 
         # Save to memory (with Stimmung + Theme!)
         memory.add_to_history("user", user_text, metadata={
