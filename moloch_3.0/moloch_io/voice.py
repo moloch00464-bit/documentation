@@ -150,20 +150,25 @@ class VoiceIO:
             output_file.unlink()
 
         try:
-            # Record with termux-microphone-record
-            # -f <file> = output file
-            # -l <limit> = duration limit in seconds
-            # -e <encoder> = audio encoder (aac, amr_nb, amr_wb)
-            result = subprocess.run(
-                ["termux-microphone-record", "-f", str(output_file), "-l", str(duration), "-e", "aac"],
-                capture_output=True,
-                text=True,
-                timeout=duration + 5  # Extra 5s for processing
+            # Start recording in background
+            print(f"🎙️ Aufnahme läuft für {duration} Sekunden...")
+
+            # Start termux-microphone-record (no -l, just record)
+            proc = subprocess.Popen(
+                ["termux-microphone-record", "-f", str(output_file), "-e", "aac"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
             )
 
-            if result.returncode != 0:
-                print(f"❌ Aufnahme fehlgeschlagen: {result.stderr}")
-                return False
+            # Wait for specified duration
+            time.sleep(duration)
+
+            # Stop recording
+            proc.terminate()
+            proc.wait(timeout=5)
+
+            print(f"⏹️ Aufnahme gestoppt")
 
             # Check if file was created
             if not output_file.exists():
@@ -184,12 +189,13 @@ class VoiceIO:
             print("   Install: pkg install termux-api")
             return False
 
-        except subprocess.TimeoutExpired:
-            print("⚠️ Aufnahme Timeout")
-            return False
-
         except Exception as e:
             print(f"❌ Aufnahme Fehler: {e}")
+            # Try to kill process if still running
+            try:
+                proc.kill()
+            except:
+                pass
             return False
 
     def _convert_to_wav(self, input_file: Path, output_file: Path) -> bool:
