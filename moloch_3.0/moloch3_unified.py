@@ -17,11 +17,12 @@ sys.path.insert(0, os.path.expanduser("~/documentation/moloch_3.0"))
 from moloch_io.voice import VoiceIO
 from moloch_io.vision import VisionIO
 import requests
-from core.config import ANTHROPIC_API_KEY, CLAUDE_MODEL, IMAGE_FILE
+from core.config import ANTHROPIC_API_KEY, CLAUDE_MODEL, IMAGE_FILE, DATA_DIR
 from core.memory import Memory
 from core.brain import Brain
 from core.personality import Personality
 from core.api_safeguards import get_api_guard
+from core.local_commands import LocalCommandHandler
 
 def ask_claude_vision(user_text, image_path, memory=None, brain=None, personality=None):
     """Ask Claude with image - with AUTONOMY!"""
@@ -341,6 +342,9 @@ Vision Mode:
     brain = Brain()
     personality = Personality()
 
+    # Create Local Command Handler (API-SPAREN! 💰)
+    local_handler = LocalCommandHandler(DATA_DIR)
+
     # ═══════════════════════════════════════════════════════════════════════
     # VISION MODE
     # ═══════════════════════════════════════════════════════════════════════
@@ -423,9 +427,20 @@ Vision Mode:
             voice.speak("Nix verstanden")
             return 1
 
-        # Ask Claude (with AUTONOMY!)
-        print("\n🧠 M.O.L.O.C.H. denkt...")
-        response = ask_claude_text(user_text, memory=memory, brain=brain, personality=personality)
+        # ═══════════════════════════════════════════════════════════════════════
+        # HYBRID: Check local commands first! 💰
+        # ═══════════════════════════════════════════════════════════════════════
+
+        print("\n🔍 Checking local commands...")
+        handled_locally, local_response = local_handler.handle(user_text)
+
+        if handled_locally:
+            print("✅ HANDLED LOCALLY (NO API!)")
+            response = local_response
+        else:
+            # Not local → Ask Claude (with AUTONOMY!)
+            print("🧠 M.O.L.O.C.H. denkt... (API)")
+            response = ask_claude_text(user_text, memory=memory, brain=brain, personality=personality)
 
         # AUTONOMIE: Theme & Context Detection! 🎯
         stimmung = personality.detect_stimmung(user_text)
