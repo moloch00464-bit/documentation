@@ -2,12 +2,13 @@
 """
 M.O.L.O.C.H. 3.0 - Voice I/O
 =============================
-Speech-to-Text (Termux STT) + Text-to-Speech (Termux TTS)
+Speech-to-Text (20s Fixed Recording) + Text-to-Speech (Termux TTS)
 
 KOSTENLOS WIE 2.0!
-- termux-speech-to-text (lokal, kostenlos!)
+- termux-microphone-record (20s fixe Aufnahme!)
+- Google Web Speech API (KOSTENLOS!)
 - termux-tts-speak (lokal, kostenlos!)
-- KEIN OpenAI Key nötig!
+- KEIN OpenAI/Anthropic Key nötig!
 """
 
 import subprocess
@@ -17,6 +18,12 @@ from pathlib import Path
 from typing import Optional
 
 from core.config import DATA_DIR
+
+# Try to import speech_recognition (will install if needed)
+try:
+    import speech_recognition as sr
+except ImportError:
+    sr = None
 
 
 class VoiceIO:
@@ -76,91 +83,218 @@ class VoiceIO:
     # SPEECH-TO-TEXT (Input) - TERMUX STT (KOSTENLOS!)
     # ═══════════════════════════════════════════════════════════════════════════
 
-    def listen(self, duration: int = 60, smart: bool = False) -> Optional[str]:
+    def listen(self, duration: int = 20, smart: bool = False) -> Optional[str]:
         """
-        Listen to user via Termux Speech-to-Text
+        Record audio for fixed duration and transcribe via Google Speech API
 
-        KOSTENLOS! Nutzt Termux API (lokal, kein Cloud-Service!)
-        - Google Speech Recognition (on-device oder Google Cloud je nach Android)
-        - KEIN API Key nötig!
+        KOSTENLOS! KEINE API Keys nötig!
+        - termux-microphone-record (fixe Dauer, kein Auto-Stopp!)
+        - Google Web Speech API (kostenlos!)
         - KEINE Kosten!
 
         Args:
-            duration: Max recording duration in seconds (default: 60)
+            duration: Recording duration in seconds (default: 20)
             smart: Ignored (kept for backwards compatibility)
 
         Returns:
             Transcribed text or None
         """
-        print("🎤 SPRICH JETZT!")
-        print("   (Drücke CTRL+C zum Abbrechen)")
+        # Audio file paths (MP3 not MP4!)
+        audio_raw = DATA_DIR / "voice_recording.mp3"
+        audio_wav = DATA_DIR / "voice_recording.wav"
+
+        print(f"🎤 AUFNAHME STARTET - {duration} SEKUNDEN!")
+        print("   Sprich jetzt - Aufnahme stoppt NICHT bei Pausen!")
         print()
 
         try:
-            # Run termux-speech-to-text (no -l option needed, uses system default)
-            result = subprocess.run(
-                ["termux-speech-to-text"],
-                capture_output=True,
-                text=True,
-                timeout=duration  # Use provided duration
-            )
+            # Step 1: Record audio for fixed duration
+            if not self._record_audio(audio_raw, duration):
+                return self._fallback_text_input()
 
-            if result.returncode != 0:
-                stderr = result.stderr.strip()
-                if stderr:
-                    print(f"❌ STT Fehler: {stderr}")
-                else:
-                    print("❌ STT fehlgeschlagen (Mikrofon-Berechtigung?)")
+            # Step 2: Convert to WAV (needed for SpeechRecognition)
+            if not self._convert_to_wav(audio_raw, audio_wav):
+                return self._fallback_text_input()
 
-                # FALLBACK: Use text input
-                print("   📝 FALLBACK: Text-Eingabe aktiviert")
-                print()
-                try:
-                    text = input("💬 Tippe deine Nachricht: ").strip()
-                    if text:
-                        print(f"📝 Du: {text}")
-                        return text
-                except (KeyboardInterrupt, EOFError):
-                    print("\n⚠️ Abgebrochen")
-                return None
+            # Step 3: Transcribe with Google Speech API (FREE!)
+            text = self._transcribe_audio(audio_wav)
 
-            # Get transcribed text
-            text = result.stdout.strip()
-
-            if not text:
+            if text:
+                print(f"📝 Du: {text}")
+                return text
+            else:
                 print("⚠️ Nichts verstanden")
-                return None
-
-            print(f"📝 Du: {text}")
-            return text
-
-        except subprocess.TimeoutExpired:
-            print("⏱️ Timeout - zu lange gewartet")
-            return None
-
-        except FileNotFoundError:
-            # FALLBACK: Use text input if termux-speech-to-text not available
-            print("⚠️ termux-speech-to-text nicht verfügbar")
-            print("   📝 FALLBACK: Text-Eingabe aktiviert")
-            print("   (Install termux-api für Voice: pkg install termux-api)")
-            print()
-
-            try:
-                text = input("💬 Tippe deine Nachricht: ").strip()
-                if text:
-                    print(f"📝 Du: {text}")
-                    return text
-                return None
-            except (KeyboardInterrupt, EOFError):
-                print("\n⚠️ Abgebrochen")
-                return None
+                return self._fallback_text_input()
 
         except KeyboardInterrupt:
             print("\n⚠️ Abgebrochen")
             return None
 
         except Exception as e:
-            print(f"❌ STT Fehler: {e}")
+            print(f"❌ Voice Fehler: {e}")
+            return self._fallback_text_input()
+
+    def _record_audio(self, output_file: Path, duration: int) -> bool:
+        """
+        Record audio for fixed duration using termux-microphone-record
+
+        Args:
+            output_file: Path to save audio file
+            duration: Recording duration in seconds
+
+        Returns:
+            Success status
+        """
+        # Remove old file
+        if output_file.exists():
+            output_file.unlink()
+
+        try:
+            # Record with termux-microphone-record
+            # -f <file> = output file
+            # -l <limit> = duration limit in seconds
+            # -e <encoder> = audio encoder (aac, amr_nb, amr_wb)
+            result = subprocess.run(
+                ["termux-microphone-record", "-f", str(output_file), "-l", str(duration), "-e", "aac"],
+                capture_output=True,
+                text=True,
+                timeout=duration + 5  # Extra 5s for processing
+            )
+
+            if result.returncode != 0:
+                print(f"❌ Aufnahme fehlgeschlagen: {result.stderr}")
+                return False
+
+            # Check if file was created
+            if not output_file.exists():
+                print("❌ Audio-Datei wurde nicht erstellt")
+                return False
+
+            # Check file size
+            file_size = output_file.stat().st_size
+            if file_size < 1000:  # Less than 1KB is probably broken
+                print("❌ Audio-Datei zu klein (kaputt?)")
+                return False
+
+            print(f"✅ Aufnahme erfolgreich ({file_size / 1024:.1f} KB)")
+            return True
+
+        except FileNotFoundError:
+            print("❌ termux-microphone-record nicht gefunden!")
+            print("   Install: pkg install termux-api")
+            return False
+
+        except subprocess.TimeoutExpired:
+            print("⚠️ Aufnahme Timeout")
+            return False
+
+        except Exception as e:
+            print(f"❌ Aufnahme Fehler: {e}")
+            return False
+
+    def _convert_to_wav(self, input_file: Path, output_file: Path) -> bool:
+        """
+        Convert audio file to WAV format using ffmpeg
+
+        Args:
+            input_file: Input audio file (.mp3)
+            output_file: Output WAV file
+
+        Returns:
+            Success status
+        """
+        # Remove old WAV file
+        if output_file.exists():
+            output_file.unlink()
+
+        try:
+            # Convert with ffmpeg (silent mode)
+            result = subprocess.run(
+                ["ffmpeg", "-i", str(input_file), "-acodec", "pcm_s16le", "-ar", "16000", str(output_file), "-y", "-loglevel", "error"],
+                capture_output=True,
+                text=True,
+                timeout=30
+            )
+
+            if result.returncode != 0:
+                print(f"⚠️ Konvertierung fehlgeschlagen")
+                print(f"   Install ffmpeg: pkg install ffmpeg")
+                return False
+
+            if not output_file.exists():
+                print("❌ WAV-Datei wurde nicht erstellt")
+                return False
+
+            print("✅ Audio konvertiert")
+            return True
+
+        except FileNotFoundError:
+            print("❌ ffmpeg nicht gefunden!")
+            print("   Install: pkg install ffmpeg")
+            return False
+
+        except Exception as e:
+            print(f"❌ Konvertierungs-Fehler: {e}")
+            return False
+
+    def _transcribe_audio(self, audio_file: Path) -> Optional[str]:
+        """
+        Transcribe audio file using Google Web Speech API (FREE!)
+
+        Args:
+            audio_file: Path to audio file
+
+        Returns:
+            Transcribed text or None
+        """
+        if sr is None:
+            print("⚠️ speech_recognition nicht installiert!")
+            print("   Install: pip install SpeechRecognition")
+            return None
+
+        try:
+            # Load audio file
+            recognizer = sr.Recognizer()
+
+            with sr.AudioFile(str(audio_file)) as source:
+                audio_data = recognizer.record(source)
+
+            # Transcribe with Google Web Speech API (FREE!)
+            print("🔄 Transkribiere...")
+            text = recognizer.recognize_google(audio_data, language="de-DE")
+
+            return text.strip()
+
+        except sr.UnknownValueError:
+            print("⚠️ Google Speech konnte Audio nicht verstehen")
+            return None
+
+        except sr.RequestError as e:
+            print(f"❌ Google Speech API Fehler: {e}")
+            return None
+
+        except Exception as e:
+            print(f"❌ Transkriptions-Fehler: {e}")
+            return None
+
+    def _fallback_text_input(self) -> Optional[str]:
+        """
+        Fallback to text input if voice fails
+
+        Returns:
+            User text input or None
+        """
+        print("   📝 FALLBACK: Text-Eingabe aktiviert")
+        print()
+
+        try:
+            text = input("💬 Tippe deine Nachricht: ").strip()
+            if text:
+                print(f"📝 Du: {text}")
+                return text
+            return None
+        except (KeyboardInterrupt, EOFError):
+            print("\n⚠️ Abgebrochen")
             return None
 
 
