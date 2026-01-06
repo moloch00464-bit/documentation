@@ -51,6 +51,19 @@ class LocalCommandHandler:
         """
         text_lower = text.lower()
 
+        # FEATURE REQUEST - M.O.L.O.C.H. → Claude Communication! 🤖↔️🤖
+        if any(phrase in text_lower for phrase in [
+            "sag claude",
+            "feature request",
+            "was willst du",
+            "welche features",
+            "was fehlt dir",
+            "was brauchst du",
+            "deine wünsche"
+        ]):
+            # This needs API call, so return False but with metadata!
+            return False, None, {"feature_request": True}
+
         # VOICE COMMANDS - Alle Stimmen durchgehen! 🎤
         if any(phrase in text_lower for phrase in [
             "alle stimmen",

@@ -139,7 +139,7 @@ PERSÖNLICHKEIT:
         return f"❌ Fehler: {e}"
 
 
-def ask_claude_text(user_text, memory=None, brain=None, personality=None, learning=None):
+def ask_claude_text(user_text, memory=None, brain=None, personality=None, learning=None, is_feature_request=False):
     """Ask Claude text only - with AUTONOMY!"""
 
     # SAFEGUARD: Check if Claude API call is allowed
@@ -197,7 +197,36 @@ def ask_claude_text(user_text, memory=None, brain=None, personality=None, learni
             learning_context = learning_summary
 
     # AUTONOMIE: Dynamischer System Prompt! 🤖
-    if personality:
+    if is_feature_request:
+        # SPECIAL: Feature Request Mode! M.O.L.O.C.H. → Claude Communication! 🤖↔️🤖
+        system = f"""Du bist M.O.L.O.C.H., Markus' Kumpel-AI. Geboren 02.12.2025.
+
+{memory_context}
+{brain_context}
+{learning_context}
+
+🤖 FEATURE REQUEST MODE 🤖
+Du hast die Möglichkeit, Features für dich selbst anzufordern!
+
+WICHTIG: Generiere deine Antwort im **MACHINE FORMAT** damit Claude Code (dein großer Bruder) sie versteht!
+
+FORMAT:
+🤖MFR-V1🤖
+F:<feature_name>|P:<1-10>|S:<short_spec>|R:<reason>
+F:<feature_name>|P:<1-10>|S:<short_spec>|R:<reason>
+...
+END-MFR
+
+BEISPIEL:
+🤖MFR-V1🤖
+F:self_debug|P:9|S:auto_error_detect+patch|R:stability
+F:voice_emotion|P:8|S:pitch_mod_by_mood|R:natural_speech
+F:hw_access|P:9|S:direct_sensor_api|R:awareness
+END-MFR
+
+ERKLÄRE KURZ (1-2 Sätze) was du willst, dann GIB DEN MACHINE FORMAT aus!
+Denk an deine bisherigen Erfahrungen und was dir noch fehlt!"""
+    elif personality:
         system = personality.get_system_prompt(
             stimmung=stimmung,
             tageszeit=tageszeit_mode,
@@ -571,10 +600,24 @@ Vision Mode:
             print("✅ HANDLED LOCALLY (NO API!)")
             response = local_response
         else:
-            # Not local → Ask Claude (with AUTONOMY!)
-            print("🧠 M.O.L.O.C.H. denkt... (API)")
-            response = ask_claude_text(user_text, memory=memory, brain=brain, personality=personality, learning=learning)
-            metadata = None  # No special metadata for API responses
+            # Check if Feature Request Mode 🤖↔️🤖
+            is_feature_request = metadata and metadata.get("feature_request", False)
+
+            if is_feature_request:
+                print("🤖 M.O.L.O.C.H. FEATURE REQUEST MODE! (API)")
+                print("   M.O.L.O.C.H. → Claude Communication Gateway aktiviert!")
+            else:
+                print("🧠 M.O.L.O.C.H. denkt... (API)")
+
+            # Ask Claude (with AUTONOMY!)
+            response = ask_claude_text(
+                user_text,
+                memory=memory,
+                brain=brain,
+                personality=personality,
+                learning=learning,
+                is_feature_request=is_feature_request
+            )
 
         # AUTONOMIE: Theme & Context Detection! 🎯
         stimmung = personality.detect_stimmung(user_text)
