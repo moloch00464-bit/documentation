@@ -158,11 +158,7 @@ def ask_claude_text(user_text, memory=None, brain=None, personality=None, learni
         "content-type": "application/json"
     }
 
-    # AUTONOMIE: Stimmungs-Erkennung! 🧠
-    stimmung = "neutral"
-    if personality:
-        stimmung = personality.detect_stimmung(user_text)
-        print(f"   🎭 Stimmung erkannt: {stimmung}")
+    # PERFORMANCE MODE: NO stimmung detection! ⚡
 
     # AUTONOMIE: Tageszeit-Persönlichkeit! ⏰
     tageszeit_mode = None
@@ -228,7 +224,7 @@ ERKLÄRE KURZ (1-2 Sätze) was du willst, dann GIB DEN MACHINE FORMAT aus!
 Denk an deine bisherigen Erfahrungen und was dir noch fehlt!"""
     elif personality:
         system = personality.get_system_prompt(
-            stimmung=stimmung,
+            stimmung=None,  # Performance Mode: No stimmung detection!
             tageszeit=tageszeit_mode,
             mode="voice",
             brain_context=brain_context,
