@@ -47,24 +47,30 @@ class VoiceIO:
     # TEXT-TO-SPEECH (Output) - WITH EMOTION SYNTHESIS! 🎭🎤
     # ═══════════════════════════════════════════════════════════════════════════
 
-    def speak(self, text: str, stimmung: str = None, tageszeit: str = None, profile: str = None) -> bool:
+    def speak(self, text: str, stimmung: str = None, tageszeit: str = None, profile: str = None, fast_mode: bool = True) -> bool:
         """
-        Speak text via Termux TTS with emotion-based voice modulation!
+        Speak text via Termux TTS with OPTIONAL emotion-based voice modulation!
 
         Args:
             text: Text to speak
-            stimmung: Current mood (gestresst, gut_drauf, fragend, neutral, dark_side)
-            tageszeit: Time of day (kaffee, normal, feierabend, dark_side)
-            profile: Voice profile to use (choice_1, choice_2, choice_3)
+            stimmung: Current mood (ignored in fast_mode)
+            tageszeit: Time of day (ignored in fast_mode)
+            profile: Voice profile (ignored in fast_mode)
+            fast_mode: Use PERFORMANCE MODE (default=True) ⚡
 
         Returns:
             Success status
 
-        NEW: Emotion Synthesis! Voice changes based on mood & time! 🎭
-        - Gestresst → tiefer, schneller
-        - Gut drauf → höher, lockerer
-        - Dark Side → EXTRA TIEF! 🖤😈
-        - Profile switching → M.O.L.O.C.H. wählt zwischen seinen 3 Stimmen! 🎤
+        PERFORMANCE MODE (fast_mode=True, DEFAULT) ⚡:
+        - Fixed settings: Pitch 0.75, Rate 0.95 (M.O.L.O.C.H.'s Choice #1)
+        - NO emotion synthesis processing
+        - NO debug output
+        - INSTANT responses!
+
+        FEATURE MODE (fast_mode=False) 🎭:
+        - Emotion Synthesis with processing overhead
+        - Profile switching
+        - Slower but more expressive
         """
         # Always print (fallback if TTS fails)
         print(f"\n🗣️ {text}\n")
@@ -72,37 +78,25 @@ class VoiceIO:
         try:
             # Use full path to avoid PATH issues
             termux_tts = "/data/data/com.termux/files/usr/bin/termux-tts-speak"
-
-            # Get voice parameters based on emotion & time & profile
             cmd = [termux_tts]
 
-            if self.voice_settings:
+            if fast_mode:
+                # ⚡ FAST MODE: Fixed settings, zero overhead!
+                # M.O.L.O.C.H.'s favorite voice: Choice #1
+                cmd.extend(["-p", "0.75", "-r", "0.95"])
+            elif self.voice_settings:
+                # 🎭 FEATURE MODE: Emotion synthesis (slower)
                 params = self.voice_settings.get_voice_params(
                     stimmung=stimmung,
                     tageszeit=tageszeit,
                     profile=profile
                 )
-
-                # DEBUG: Print voice parameters!
-                debug_info = f"🎤 Voice Params: Pitch={params['pitch']:.2f}, Rate={params['rate']:.2f}"
-                if profile:
-                    debug_info += f", Profile={profile}"
-                if stimmung:
-                    debug_info += f", Stimmung={stimmung}"
-                print(f"   {debug_info}")
-
-                # Add pitch and rate parameters
-                cmd.extend(["-p", str(params["pitch"])])
-                cmd.extend(["-r", str(params["rate"])])
+                cmd.extend(["-p", str(params["pitch"]), "-r", str(params["rate"])])
 
             # Add text to speak
             cmd.append(text)
 
-            # DEBUG: Print full command (first 100 chars of text)
-            text_preview = text[:100] + "..." if len(text) > 100 else text
-            print(f"   🔊 Command: {' '.join(cmd[:-1])} \"{text_preview}\"")
-
-            # Increased timeout for longer responses (60s)
+            # Run TTS
             result = subprocess.run(
                 cmd,
                 capture_output=True,
