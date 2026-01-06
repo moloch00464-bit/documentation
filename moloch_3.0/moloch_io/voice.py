@@ -175,6 +175,9 @@ class VoiceIO:
             # Wait for process to finish
             proc.wait(timeout=5)
 
+            # IMPORTANT: Give file time to be fully written to disk
+            time.sleep(2)
+
             print(f"⏹️ Aufnahme gestoppt")
 
             # Check if file was created
