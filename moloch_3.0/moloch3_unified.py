@@ -565,7 +565,7 @@ Vision Mode:
         # ═══════════════════════════════════════════════════════════════════════
 
         print("\n🔍 Checking local commands...")
-        handled_locally, local_response = local_handler.handle(user_text)
+        handled_locally, local_response, metadata = local_handler.handle(user_text)
 
         if handled_locally:
             print("✅ HANDLED LOCALLY (NO API!)")
@@ -574,6 +574,7 @@ Vision Mode:
             # Not local → Ask Claude (with AUTONOMY!)
             print("🧠 M.O.L.O.C.H. denkt... (API)")
             response = ask_claude_text(user_text, memory=memory, brain=brain, personality=personality, learning=learning)
+            metadata = None  # No special metadata for API responses
 
         # AUTONOMIE: Theme & Context Detection! 🎯
         stimmung = personality.detect_stimmung(user_text)
@@ -627,7 +628,34 @@ Vision Mode:
         print("="*60)
 
         # Speak with EMOTION SYNTHESIS! 🎭🎤
-        voice.speak(response, stimmung=stimmung, tageszeit=tageszeit)
+        # Check if multi-voice command (show all 3 voice profiles!)
+        if metadata and metadata.get("multi_voice"):
+            print("\n🎤 MULTI-VOICE MODE - Alle 3 Stimmen! 🎭")
+            print("="*60)
+
+            # Check if voice profiles exist
+            if voice_settings and "custom_profiles" in voice_settings.settings:
+                profiles = voice_settings.settings["custom_profiles"]
+
+                for i in range(1, 4):
+                    profile_name = f"choice_{i}"
+                    if profile_name in profiles:
+                        prof = profiles[profile_name]
+                        description = prof.get("description", f"Voice {i}")
+                        emoji = "🏆" if i == 1 else "🥈" if i == 2 else "🥉"
+
+                        print(f"\n{emoji} Stimme #{i}: {description}")
+                        print(f"   Pitch: {prof['pitch']}, Rate: {prof['rate']}")
+                        voice.speak(response, stimmung=stimmung, tageszeit=tageszeit, profile=profile_name)
+                    else:
+                        print(f"\n⚠️  Voice Profile #{i} nicht gefunden - nutze Base Voice")
+                        voice.speak(response, stimmung=stimmung, tageszeit=tageszeit)
+            else:
+                print("⚠️  Keine Voice Profiles gefunden! Nutze normale Stimme.")
+                voice.speak(response, stimmung=stimmung, tageszeit=tageszeit)
+        else:
+            # Normal single-voice output
+            voice.speak(response, stimmung=stimmung, tageszeit=tageszeit)
 
         return 0
 

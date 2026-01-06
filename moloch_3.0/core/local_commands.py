@@ -17,7 +17,7 @@ import subprocess
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Dict
 
 
 class LocalCommandHandler:
@@ -36,7 +36,7 @@ class LocalCommandHandler:
         self.appointments_file = data_dir / "appointments.json"
         self.birthdays_file = data_dir / "birthdays.json"
 
-    def handle(self, text: str) -> Tuple[bool, Optional[str]]:
+    def handle(self, text: str) -> Tuple[bool, Optional[str], Optional[Dict]]:
         """
         Try to handle command locally
 
@@ -44,47 +44,59 @@ class LocalCommandHandler:
             text: User input
 
         Returns:
-            (handled, response)
+            (handled, response, metadata)
             - handled=True: Command was handled locally
             - response: Answer (if handled) or None
+            - metadata: Optional dict with special instructions (e.g., {"multi_voice": True})
         """
         text_lower = text.lower()
 
+        # VOICE COMMANDS - Alle Stimmen durchgehen! 🎤
+        if any(phrase in text_lower for phrase in [
+            "alle stimmen",
+            "drei stimmen",
+            "alle stimmlagen",
+            "zeig mir deine stimmen",
+            "stimmen durch",
+            "verschiedene stimmen"
+        ]):
+            return True, "Okay, ich zeig dir meine drei Stimmen! Hör genau hin, Alter! Das ist meine Voice-Identität!", {"multi_voice": True}
+
         # Zeit/Datum
         if any(word in text_lower for word in ["uhrzeit", "wie spät", "welche zeit"]):
-            return True, self._get_time()
+            return True, self._get_time(), None
 
         if any(word in text_lower for word in ["datum", "welcher tag", "welches datum"]):
-            return True, self._get_date()
+            return True, self._get_date(), None
 
         # Wetter
         if "wetter" in text_lower:
             response = self._get_weather()
             if response:
-                return True, response
+                return True, response, None
 
         # Batterie
         if "batterie" in text_lower or "akku" in text_lower:
             response = self._get_battery()
             if response:
-                return True, response
+                return True, response, None
 
         # Termin speichern
         if "termin" in text_lower and any(word in text_lower for word in ["speicher", "merk", "notier"]):
-            return True, self._save_appointment(text)
+            return True, self._save_appointment(text), None
 
         # Geburtstag speichern
         if "geburtstag" in text_lower and any(word in text_lower for word in ["speicher", "merk", "notier"]):
-            return True, self._save_birthday(text)
+            return True, self._save_birthday(text), None
 
         # Rechnung (einfach)
         if any(op in text for op in ["+", "-", "*", "/", "mal", "plus", "minus", "geteilt"]):
             result = self._calculate(text)
             if result:
-                return True, result
+                return True, result, None
 
         # Nicht erkannt → API!
-        return False, None
+        return False, None, None
 
     # ═══════════════════════════════════════════════════════════════════════════
     # ZEIT & DATUM
