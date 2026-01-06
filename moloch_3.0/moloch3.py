@@ -16,7 +16,8 @@ from pathlib import Path
 
 # Core
 from core.config import init_directories, validate_api_keys
-from core.api import MolochAPI, MOLOCH_TOOLS
+from core.api import MolochAPI
+from core.tools import MOLOCH_TOOLS  # Tools now defined in core/tools.py!
 from core.brain import Brain
 from core.memory import Memory
 from core.personality import Personality

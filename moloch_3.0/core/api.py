@@ -255,90 +255,10 @@ class MolochAPI:
 # TOOL DEFINITIONS
 # ═══════════════════════════════════════════════════════════════════════════════
 
-MOLOCH_TOOLS = [
-    {
-        "name": "bash",
-        "description": "Execute shell commands in Termux. Use for system operations, running programs, etc.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "command": {
-                    "type": "string",
-                    "description": "Shell command to execute"
-                },
-                "timeout": {
-                    "type": "number",
-                    "description": "Timeout in seconds (default 30)"
-                }
-            },
-            "required": ["command"]
-        }
-    },
-    {
-        "name": "read_file",
-        "description": "Read contents of a file",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "path": {
-                    "type": "string",
-                    "description": "Path to file"
-                }
-            },
-            "required": ["path"]
-        }
-    },
-    {
-        "name": "write_file",
-        "description": "Write content to a file",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "path": {
-                    "type": "string",
-                    "description": "Path to file"
-                },
-                "content": {
-                    "type": "string",
-                    "description": "Content to write"
-                }
-            },
-            "required": ["path", "content"]
-        }
-    },
-    {
-        "name": "search_code",
-        "description": "Search for pattern in code files (grep)",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "pattern": {
-                    "type": "string",
-                    "description": "Search pattern (regex)"
-                },
-                "path": {
-                    "type": "string",
-                    "description": "Path to search in (default: current dir)"
-                }
-            },
-            "required": ["pattern"]
-        }
-    },
-    {
-        "name": "web_search",
-        "description": "Search the web for information",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "query": {
-                    "type": "string",
-                    "description": "Search query"
-                }
-            },
-            "required": ["query"]
-        }
-    }
-]
+# NOTE: MOLOCH_TOOLS is now defined in core/tools.py (with all 9 tools!)
+# This file (core/api.py) is deprecated - use moloch3_unified.py instead!
+# Import MOLOCH_TOOLS from core/tools if needed:
+#   from core.tools import MOLOCH_TOOLS, execute_tool
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
