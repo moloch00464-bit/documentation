@@ -99,8 +99,8 @@ class VoiceIO:
         Returns:
             Transcribed text or None
         """
-        # Audio file paths - use M4A for termux-microphone-record with AAC encoder
-        audio_raw = DATA_DIR / "voice_recording.m4a"
+        # Audio file paths - use default format (let termux decide)
+        audio_raw = DATA_DIR / "voice_recording.mp3"
         audio_wav = DATA_DIR / "voice_recording.wav"
 
         print(f"🎤 AUFNAHME STARTET - {duration} SEKUNDEN!")
@@ -153,9 +153,9 @@ class VoiceIO:
             # Start recording in background
             print(f"🎙️ Aufnahme läuft für {duration} Sekunden...")
 
-            # Start termux-microphone-record (runs in background)
+            # Start termux-microphone-record (runs in background, default encoder)
             proc = subprocess.Popen(
-                ["termux-microphone-record", "-f", str(output_file), "-e", "aac"],
+                ["termux-microphone-record", "-f", str(output_file)],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True
@@ -205,7 +205,7 @@ class VoiceIO:
         Convert audio file to WAV format using ffmpeg
 
         Args:
-            input_file: Input audio file (.m4a)
+            input_file: Input audio file (.mp3 or default format)
             output_file: Output WAV file
 
         Returns:
