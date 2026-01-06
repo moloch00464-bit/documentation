@@ -97,9 +97,9 @@ class VoiceIO:
         print()
 
         try:
-            # Run termux-speech-to-text
+            # Run termux-speech-to-text (no -l option needed, uses system default)
             result = subprocess.run(
-                ["termux-speech-to-text", "-l", "de-DE"],  # German language
+                ["termux-speech-to-text"],
                 capture_output=True,
                 text=True,
                 timeout=duration  # Use provided duration
