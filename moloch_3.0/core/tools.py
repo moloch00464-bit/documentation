@@ -11,12 +11,22 @@ FEATURES:
 - learning_save: Permanent Learning speichern
 - self_modify: Sich selbst modifizieren
 - get_current_stats: System Stats abrufen
+- bash: Shell Commands ausführen
+- read_file: Dateien lesen
+- write_file: Dateien schreiben
+- web_search: Web durchsuchen
 """
 
 from typing import Dict, Any, List
 from datetime import datetime
 from pathlib import Path
 import json
+
+# Import tool implementations
+from tools.bash import BashTool
+from tools.files import FileTool
+from tools.search import SearchTool
+from tools.web import WebTool
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -128,6 +138,70 @@ MOLOCH_TOOLS = [
             },
             "required": ["stat_type"]
         }
+    },
+    {
+        "name": "bash",
+        "description": "Führe Shell Commands in Termux aus. Nutze das für System-Operationen, Programme starten, etc. WICHTIG: Gefährliche Commands werden automatisch geblockt!",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "command": {
+                    "type": "string",
+                    "description": "Shell Command zum Ausführen"
+                },
+                "timeout": {
+                    "type": "number",
+                    "description": "Timeout in Sekunden (default 30)"
+                }
+            },
+            "required": ["command"]
+        }
+    },
+    {
+        "name": "read_file",
+        "description": "Lese Datei-Inhalte. Nutze das um Code zu lesen, Configs zu checken, etc.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "Pfad zur Datei"
+                }
+            },
+            "required": ["path"]
+        }
+    },
+    {
+        "name": "write_file",
+        "description": "Schreibe Content in eine Datei. Nutze das um Code zu schreiben, Configs zu erstellen, etc. WICHTIG: Erstellt automatisch Backup!",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "Pfad zur Datei"
+                },
+                "content": {
+                    "type": "string",
+                    "description": "Content zum Schreiben"
+                }
+            },
+            "required": ["path", "content"]
+        }
+    },
+    {
+        "name": "web_search",
+        "description": "Durchsuche das Web nach Informationen (DuckDuckGo). Nutze das um aktuelle Infos zu finden, Fragen zu beantworten, etc.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "Suchanfrage"
+                }
+            },
+            "required": ["query"]
+        }
     }
 ]
 
@@ -166,6 +240,18 @@ def execute_tool(tool_name: str, tool_input: Dict[str, Any], brain, memory, lear
 
         elif tool_name == "get_current_stats":
             return _tool_get_stats(tool_input, memory, brain, learning)
+
+        elif tool_name == "bash":
+            return _tool_bash(tool_input)
+
+        elif tool_name == "read_file":
+            return _tool_read_file(tool_input)
+
+        elif tool_name == "write_file":
+            return _tool_write_file(tool_input)
+
+        elif tool_name == "web_search":
+            return _tool_web_search(tool_input)
 
         else:
             return {
@@ -311,3 +397,100 @@ def _tool_get_stats(tool_input: Dict, memory, brain, learning) -> Dict:
         "success": True,
         "stats": stats
     }
+
+
+def _tool_bash(tool_input: Dict) -> Dict:
+    """Execute bash command"""
+    command = tool_input["command"]
+    timeout = tool_input.get("timeout", 30)
+
+    bash = BashTool()
+    stdout, stderr, returncode = bash.execute(command, timeout=timeout)
+
+    # Build result
+    success = (returncode == 0)
+    message = f"✅ Command erfolgreich (exit code {returncode})" if success else f"⚠️ Command fehlgeschlagen (exit code {returncode})"
+
+    return {
+        "success": success,
+        "message": message,
+        "stdout": stdout,
+        "stderr": stderr,
+        "returncode": returncode
+    }
+
+
+def _tool_read_file(tool_input: Dict) -> Dict:
+    """Read file"""
+    path = tool_input["path"]
+
+    files = FileTool()
+    content = files.read(path)
+
+    if content is not None:
+        return {
+            "success": True,
+            "message": f"✅ Datei gelesen: {path}",
+            "content": content,
+            "path": path
+        }
+    else:
+        return {
+            "success": False,
+            "error": f"Konnte Datei nicht lesen: {path}"
+        }
+
+
+def _tool_write_file(tool_input: Dict) -> Dict:
+    """Write file"""
+    path = tool_input["path"]
+    content = tool_input["content"]
+
+    files = FileTool()
+    success = files.write(path, content, backup=True)
+
+    if success:
+        return {
+            "success": True,
+            "message": f"✅ Datei geschrieben: {path}",
+            "path": path
+        }
+    else:
+        return {
+            "success": False,
+            "error": f"Konnte Datei nicht schreiben: {path}"
+        }
+
+
+def _tool_web_search(tool_input: Dict) -> Dict:
+    """Web search"""
+    query = tool_input["query"]
+
+    web = WebTool()
+    results = web.search(query, max_results=5)
+
+    if results:
+        # Format results for M.O.L.O.C.H.
+        formatted = []
+        for r in results:
+            formatted.append({
+                "title": r.get("title", "N/A"),
+                "url": r.get("url", ""),
+                "snippet": r.get("snippet", "")
+            })
+
+        return {
+            "success": True,
+            "message": f"✅ {len(results)} Ergebnisse gefunden für '{query}'",
+            "query": query,
+            "results": formatted,
+            "count": len(results)
+        }
+    else:
+        return {
+            "success": False,
+            "message": f"❌ Keine Ergebnisse gefunden für '{query}'",
+            "query": query,
+            "results": [],
+            "count": 0
+        }
