@@ -147,8 +147,8 @@ class VoiceSettings:
         if self.settings["emotion_modulation"]["enabled"]:
             intensity = self.settings["emotion_modulation"]["intensity"]
 
-            # Apply emotion profile
-            if stimmung and stimmung in self.settings["emotion_profiles"]:
+            # Apply emotion profile (SKIP "neutral" - it should change nothing!)
+            if stimmung and stimmung != "neutral" and stimmung in self.settings["emotion_profiles"]:
                 emotion_profile = self.settings["emotion_profiles"][stimmung]
 
                 # Blend base + emotion based on intensity
@@ -159,8 +159,8 @@ class VoiceSettings:
                         # Linear interpolation
                         params[key] = base_val + (emotion_val - base_val) * intensity
 
-            # Apply tageszeit profile (lower intensity)
-            if tageszeit and tageszeit in self.settings["tageszeit_profiles"]:
+            # Apply tageszeit profile (lower intensity) - SKIP "normal"!
+            if tageszeit and tageszeit != "normal" and tageszeit in self.settings["tageszeit_profiles"]:
                 tageszeit_profile = self.settings["tageszeit_profiles"][tageszeit]
 
                 for key in ["pitch", "rate"]:
