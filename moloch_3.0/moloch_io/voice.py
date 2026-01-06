@@ -59,10 +59,11 @@ class VoiceIO:
 
         try:
             # Use full path to avoid PATH issues
+            # Increased timeout for longer responses (60s)
             result = subprocess.run(
                 ["/data/data/com.termux/files/usr/bin/termux-tts-speak", text],
                 capture_output=True,
-                timeout=30,
+                timeout=60,
                 text=True
             )
             return result.returncode == 0
