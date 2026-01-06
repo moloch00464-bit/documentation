@@ -53,9 +53,12 @@ class VisionIO:
 
         print("📸 Taking photo...")
 
+        # Use full path to avoid PATH issues (same fix as Voice!)
+        termux_camera = "/data/data/com.termux/files/usr/bin/termux-camera-photo"
+
         try:
             result = subprocess.run(
-                ["termux-camera-photo", output_path],
+                [termux_camera, output_path],
                 capture_output=True,
                 timeout=10,
                 text=True
