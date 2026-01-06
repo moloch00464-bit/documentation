@@ -153,7 +153,7 @@ class VoiceIO:
             # Start recording in background
             print(f"🎙️ Aufnahme läuft für {duration} Sekunden...")
 
-            # Start termux-microphone-record (no -l, just record)
+            # Start termux-microphone-record (runs in background)
             proc = subprocess.Popen(
                 ["termux-microphone-record", "-f", str(output_file), "-e", "aac"],
                 stdout=subprocess.PIPE,
@@ -164,8 +164,10 @@ class VoiceIO:
             # Wait for specified duration
             time.sleep(duration)
 
-            # Stop recording
-            proc.terminate()
+            # Stop recording properly with termux-microphone-stop (not terminate!)
+            subprocess.run(["termux-microphone-stop"], timeout=5)
+
+            # Wait for process to finish
             proc.wait(timeout=5)
 
             print(f"⏹️ Aufnahme gestoppt")
