@@ -154,10 +154,42 @@ read -p "▶️  Weiter mit STEP 5? [Enter]"
 echo ""
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# STEP 5: VERIFY INSTALLATION
+# STEP 5: API KEYS SETUP
 # ═══════════════════════════════════════════════════════════════════════════════
 
-echo "✅ STEP 5: Installation verifizieren..."
+echo "🔑 STEP 5: API Keys setup..."
+echo ""
+
+# Try to get keys from 2.0
+echo "Suche API Keys in M.O.L.O.C.H. 2.0..."
+ANTHROPIC_KEY=$(grep -oP 'sk-ant-api03-[A-Za-z0-9_-]+' "$HOME/moloch/moloch.py" 2>/dev/null | head -1)
+
+if [ -n "$ANTHROPIC_KEY" ]; then
+    echo "✅ Anthropic Key gefunden: ${ANTHROPIC_KEY:0:20}..."
+
+    # Set in config.py
+    sed -i "s/DEIN_ANTHROPIC_KEY_HIER/$ANTHROPIC_KEY/g" "$HOME/moloch_3.0/core/config.py"
+
+    echo "✅ API Key in config.py gesetzt!"
+else
+    echo "⚠️  Kein API Key in 2.0 gefunden!"
+    echo ""
+    echo "📝 WICHTIG: Setze deinen API Key manuell:"
+    echo "   nano ~/moloch_3.0/core/config.py"
+    echo ""
+    echo "Oder als Environment Variable:"
+    echo "   export ANTHROPIC_API_KEY='sk-ant-api03-...'"
+fi
+
+echo ""
+read -p "▶️  Weiter mit STEP 6? [Enter]"
+echo ""
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# STEP 6: VERIFY INSTALLATION
+# ═══════════════════════════════════════════════════════════════════════════════
+
+echo "✅ STEP 6: Installation verifizieren..."
 echo ""
 
 echo "📊 M.O.L.O.C.H. UNIFIED Status:"
