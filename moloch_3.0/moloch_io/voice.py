@@ -16,23 +16,12 @@ class VoiceIO:
     def listen(self, duration=20, smart=False):
         """Record audio and transcribe using Google Speech API"""
         try:
-            print(f"🎤 Recording for {duration} seconds...")
+            print(f"🎤 Sprich jetzt...")
 
-            # Record audio with termux-microphone-record
+            # DIRECT Speech-to-Text (wie 2.0!)
+            # Kein File-Recording, direkt Google Speech API
             result = subprocess.run(
-                ["termux-microphone-record", "-f", str(self.audio_file), "-l", str(duration)],
-                capture_output=True,
-                text=True,
-                timeout=duration + 5
-            )
-
-            if result.returncode != 0:
-                print(f"❌ Recording failed: {result.stderr}")
-                return None
-
-            # Transcribe with Google Speech API (free on Android!)
-            result = subprocess.run(
-                ["termux-speech-to-text", "-f", str(self.audio_file)],
+                ["termux-speech-to-text"],
                 capture_output=True,
                 text=True,
                 timeout=30
