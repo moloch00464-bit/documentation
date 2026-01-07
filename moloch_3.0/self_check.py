@@ -344,10 +344,49 @@ def test_function_calling_tools():
         return False
 
 
+def generate_mfr_report(results):
+    """Generate MFR-V1 format report for Claude Code"""
+    from datetime import datetime
+
+    passed = sum(1 for v in results.values() if v)
+    failed = len(results) - passed
+    failed_systems = [name for name, result in results.items() if not result]
+
+    # Build MFR-V1 formatted report
+    report = []
+    report.append("🤖MFR-V1🤖")
+
+    if failed == 0:
+        # All systems OK - just status report
+        report.append(f"F:self_check_all_ok|P:1|S:All {len(results)} systems operational|R:Status report - no issues")
+    else:
+        # Some systems failed
+        priority = min(10, 3 + failed * 2)  # Scale priority by failures
+        failed_list = ", ".join(failed_systems)
+
+        report.append(f"F:self_check_failures|P:{priority}|S:{failed}/{len(results)} systems failed: {failed_list}|R:Auto-diagnostic detected issues")
+
+        # Add individual failures
+        for system_name, result in results.items():
+            if not result:
+                safe_name = system_name.lower().replace(" ", "_").replace("/", "_")
+                report.append(f"F:{safe_name}_broken|P:{priority}|S:{system_name} test failed|R:Needs investigation")
+
+    report.append("END-MFR")
+
+    return "\n".join(report)
+
+
 def main():
     """Run all tests"""
-    print_header("M.O.L.O.C.H. 3.0 - SELF-CHECK")
-    print("Testing all systems & tools...\n")
+    import sys
+
+    # Check for --mfr flag (machine-readable output only)
+    mfr_only = "--mfr" in sys.argv
+
+    if not mfr_only:
+        print_header("M.O.L.O.C.H. 3.0 - SELF-CHECK")
+        print("Testing all systems & tools...\n")
 
     results = {}
 
@@ -366,24 +405,35 @@ def main():
     results["Function Calling"] = test_function_calling_tools()
 
     # Summary
-    print_header("SUMMARY")
-
     passed = sum(1 for v in results.values() if v)
     failed = len(results) - passed
 
-    for test_name, result in results.items():
-        status = "✅ PASS" if result else "❌ FAIL"
-        print(f"{status:10} {test_name}")
+    if not mfr_only:
+        print_header("SUMMARY")
 
-    print(f"\n{'='*60}")
-    print(f"  TOTAL: {passed}/{len(results)} tests passed")
+        for test_name, result in results.items():
+            status = "✅ PASS" if result else "❌ FAIL"
+            print(f"{status:10} {test_name}")
 
-    if failed == 0:
-        print(f"  🎉 ALL SYSTEMS OPERATIONAL!")
+        print(f"\n{'='*60}")
+        print(f"  TOTAL: {passed}/{len(results)} tests passed")
+
+        if failed == 0:
+            print(f"  🎉 ALL SYSTEMS OPERATIONAL!")
+        else:
+            print(f"  ⚠️  {failed} systems need attention")
+
+        print(f"{'='*60}\n")
+
+    # Always generate MFR report
+    if mfr_only:
+        # Only output MFR format
+        print(generate_mfr_report(results))
     else:
-        print(f"  ⚠️  {failed} systems need attention")
-
-    print(f"{'='*60}\n")
+        # Show both
+        print_header("MFR-V1 REPORT (Copy & Send to Claude Code)")
+        print(generate_mfr_report(results))
+        print()
 
     return 0 if failed == 0 else 1
 
