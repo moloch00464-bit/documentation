@@ -99,7 +99,25 @@ fi
 echo ""
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# SCHRITT 6: Permissions
+# SCHRITT 6: Widgets installieren
+# ═══════════════════════════════════════════════════════════════════════════════
+
+echo "🎛️  Widgets installieren..."
+mkdir -p ~/.shortcuts
+cp "$TARGET_DIR/widgets/moloch_voice.sh" ~/.shortcuts/ 2>/dev/null || echo "⚠️  Voice Widget nicht gefunden"
+cp "$TARGET_DIR/widgets/moloch_vision.sh" ~/.shortcuts/ 2>/dev/null || echo "⚠️  Vision Widget nicht gefunden"
+chmod +x ~/.shortcuts/*.sh 2>/dev/null || true
+
+WIDGET_COUNT=$(ls ~/.shortcuts/moloch_*.sh 2>/dev/null | wc -l)
+if [ "$WIDGET_COUNT" -eq 2 ]; then
+    echo "✅ Widgets installiert ($WIDGET_COUNT)"
+else
+    echo "⚠️  Nur $WIDGET_COUNT Widgets gefunden"
+fi
+echo ""
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SCHRITT 7: Permissions
 # ═══════════════════════════════════════════════════════════════════════════════
 
 echo "🔧 Permissions setzen..."
@@ -130,6 +148,11 @@ echo ""
 echo "🔑 API:"
 echo "   ✅ NUR Anthropic Claude API"
 echo "   ❌ KEIN OpenAI nötig!"
+echo ""
+echo "🎛️  WIDGETS:"
+echo "   ✅ Voice Widget in ~/.shortcuts/"
+echo "   ✅ Vision Widget in ~/.shortcuts/"
+echo "   📱 Termux:Widget App nutzen!"
 echo ""
 echo "🖤 VIEL ERFOLG!"
 echo ""
