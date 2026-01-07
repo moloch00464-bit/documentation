@@ -813,6 +813,8 @@ Vision Mode:
         time.sleep(1.0)  # LÄNGERE Pause nach TTS-Stop für Android Audio System!
 
         print("🎙️  BEREIT - Aufnahme startet JETZT!")
+        print("👉 DRÜCK ENTER UM AUFNAHME ZU STARTEN...")
+        input()  # Warte auf Enter
 
         # Listen (20 seconds fixed - NO PAUSE DETECTION!)
         user_text = voice.listen(duration=20, smart=False)
