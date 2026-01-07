@@ -47,7 +47,8 @@ class WebTool:
             url = f"https://api.duckduckgo.com/?q={quote_plus(query)}&format=json"
 
             response = self.session.get(url, timeout=10)
-            if response.status_code != 200:
+            # Accept both 200 (OK) and 202 (Accepted) - DDG sometimes returns 202
+            if response.status_code not in [200, 202]:
                 print(f"⚠️ Search API error: {response.status_code}")
                 return []
 
