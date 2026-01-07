@@ -12,12 +12,9 @@ from pathlib import Path
 # API KEYS - SETZE DEINE KEYS HIER! 🔑
 # ═══════════════════════════════════════════════════════════════════════════════
 
-# ANTHROPIC API KEY (Claude)
+# ANTHROPIC API KEY (Claude) - NUR ANTHROPIC, KEIN OPENAI!
 # Hol dir deinen Key von: https://console.anthropic.com/
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "DEIN_ANTHROPIC_KEY_HIER")
-
-# OPENAI API KEY (optional - falls du OpenAI nutzen willst)
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "DEIN_OPENAI_KEY_HIER")
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # MODEL SETTINGS

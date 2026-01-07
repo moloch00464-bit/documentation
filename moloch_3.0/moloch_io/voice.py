@@ -11,7 +11,7 @@ class VoiceIO:
 
     def __init__(self, voice_settings=None):
         self.voice_settings = voice_settings
-        self.audio_file = Path(tempfile.gettempdir()) / "moloch_audio.wav"
+        self.audio_file = Path(tempfile.gettempdir()) / "moloch_audio.mp3"
 
     def listen(self, duration=20, smart=False):
         """Record audio and transcribe using Google Speech API"""
