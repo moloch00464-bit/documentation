@@ -696,20 +696,9 @@ Vision Mode:
 
         voice.speak("Moment, lass mich gucken")  # Fast Mode (default)
 
-        # PROBLEM: termux-tts-speak ist ASYNC! Es kehrt sofort zurück aber TTS läuft im Hintergrund!
-        # Android blockiert Kamera wenn TTS noch läuft!
-        # Text: ~4 Wörter = ca. 1.5-2s Sprechen
-        # + TTS Engine Start/Stop/Cleanup: 2-3s
-        # = Mindestens 4.5 Sekunden warten!
-        print("⏳ Warte bis TTS fertig ist...")
-        time.sleep(4.5)
-
-        # TTS explizit stoppen (falls noch läuft) - WICHTIG für Android!
-        try:
-            subprocess.run(["termux-tts-speak", "-e"], timeout=2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        except:
-            pass
-        time.sleep(1.0)  # LÄNGERE Pause nach TTS-Stop für Android Audio System!
+        # Manuelle Steuerung: DU entscheidest wann die Kamera startet!
+        print("\n👉 DRÜCK ENTER WENN DU BEREIT BIST FÜR FOTO...")
+        input()  # Warte auf Enter
 
         print("📸 BEREIT - Kamera startet JETZT!")
 
@@ -797,23 +786,8 @@ Vision Mode:
 
         voice.speak(tts_text)  # Fast Mode (default)
 
-        # PROBLEM: termux-tts-speak ist ASYNC! Es kehrt sofort zurück aber TTS läuft im Hintergrund!
-        # Android blockiert Speech-to-Text wenn TTS noch läuft!
-        # Text: 30 Zeichen, ~5 Wörter = ca. 2-2.5s Sprechen
-        # + TTS Engine Start/Stop/Cleanup: 2-3s
-        # = Mindestens 5 Sekunden warten!
-        print("⏳ Warte bis TTS fertig ist...")
-        time.sleep(5.5)
-
-        # TTS explizit stoppen (falls noch läuft) - WICHTIG für Android!
-        try:
-            subprocess.run(["termux-tts-speak", "-e"], timeout=2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        except:
-            pass
-        time.sleep(1.0)  # LÄNGERE Pause nach TTS-Stop für Android Audio System!
-
-        print("🎙️  BEREIT - Aufnahme startet JETZT!")
-        print("👉 DRÜCK ENTER UM AUFNAHME ZU STARTEN...")
+        # Manuelle Steuerung: DU entscheidest wann das Mikro startet!
+        print("\n👉 DRÜCK ENTER WENN DU BEREIT BIST ZU SPRECHEN...")
         input()  # Warte auf Enter
 
         # Listen (20 seconds fixed - NO PAUSE DETECTION!)
