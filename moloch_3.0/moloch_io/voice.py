@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """M.O.L.O.C.H. 3.1 - Voice I/O"""
 
+import os
 import subprocess
 import tempfile
 from pathlib import Path
@@ -28,13 +29,20 @@ class VoiceIO:
             temp_file = Path(tempfile.gettempdir()) / "moloch_voice_input.txt"
 
             # Run termux-speech-to-text und schreibe Output in File
+            # VERSUCH: Setze Locale auf Deutsch - vielleicht respektiert Google das!
+            env = os.environ.copy()
+            env['LANG'] = 'de_DE.UTF-8'
+            env['LC_ALL'] = 'de_DE.UTF-8'
+            env['LANGUAGE'] = 'de_DE:de'
+
             with open(temp_file, 'w') as f:
                 result = subprocess.run(
                     ["termux-speech-to-text"],
                     stdout=f,
                     stderr=subprocess.PIPE,
                     text=True,
-                    timeout=30
+                    timeout=30,
+                    env=env
                 )
 
             # Lese die Datei
