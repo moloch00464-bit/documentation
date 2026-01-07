@@ -703,7 +703,10 @@ Vision Mode:
         time.sleep(3.5)
 
         # TTS explizit stoppen (falls noch läuft) - WICHTIG für Android!
-        subprocess.run(["termux-tts-speak", "-e"], timeout=2, capture_output=True, stderr=subprocess.DEVNULL)
+        try:
+            subprocess.run(["termux-tts-speak", "-e"], timeout=2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except:
+            pass
         time.sleep(0.5)  # Kurze Pause nach TTS-Stop
 
         print("📸 BEREIT - Kamera startet JETZT!")
@@ -795,7 +798,10 @@ Vision Mode:
         time.sleep(4.0)
 
         # TTS explizit stoppen (falls noch läuft) - WICHTIG für Android!
-        subprocess.run(["termux-tts-speak", "-e"], timeout=2, capture_output=True, stderr=subprocess.DEVNULL)
+        try:
+            subprocess.run(["termux-tts-speak", "-e"], timeout=2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except:
+            pass
         time.sleep(0.5)  # Kurze Pause nach TTS-Stop
 
         print("🎙️  BEREIT - Aufnahme startet JETZT!")
