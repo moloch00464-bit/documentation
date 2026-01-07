@@ -10,6 +10,7 @@ import os
 import base64
 import signal
 import json
+import time
 from pathlib import Path
 from datetime import datetime
 
@@ -696,6 +697,9 @@ Vision Mode:
 
         voice.speak("Moment, lass mich gucken")  # Fast Mode (default)
 
+        # Brief pause to ensure TTS completes before camera opens
+        time.sleep(1.5)
+
         # Take photo
         if not vision.take_photo():
             voice.speak("Kamera kaputt?")  # Fast Mode (default)
@@ -775,6 +779,9 @@ Vision Mode:
             tageszeit = "feierabend"
 
         voice.speak("Ja, Alter? Was brauchst du?")  # Fast Mode (default)
+
+        # Brief pause to ensure TTS completes and system is ready
+        time.sleep(1.5)
 
         # Listen (20 seconds fixed - NO PAUSE DETECTION!)
         user_text = voice.listen(duration=20, smart=False)
