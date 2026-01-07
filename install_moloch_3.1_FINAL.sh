@@ -18,7 +18,22 @@ echo ""
 TARGET_DIR="$HOME/moloch_3.1_final"
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# SCHRITT 1: Cleanup
+# SCHRITT 1: API Key Backup (WICHTIG!)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+OLD_API_KEY=""
+if [ -f "$TARGET_DIR/core/config.py" ]; then
+    echo "💾 Sichere alten API Key..."
+    OLD_API_KEY=$(grep "ANTHROPIC_API_KEY = " "$TARGET_DIR/core/config.py" | sed 's/.*"\(.*\)".*/\1/')
+    if [ -n "$OLD_API_KEY" ] && [ "$OLD_API_KEY" != "DEIN_ANTHROPIC_KEY_HIER" ]; then
+        echo "✅ API Key gesichert!"
+    else
+        OLD_API_KEY=""
+    fi
+fi
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SCHRITT 2: Cleanup
 # ═══════════════════════════════════════════════════════════════════════════════
 
 echo "🗑️  CLEANUP alte Installationen..."
@@ -27,7 +42,7 @@ echo "✅ Cleanup done"
 echo ""
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# SCHRITT 2: GitHub Code holen
+# SCHRITT 3: GitHub Code holen
 # ═══════════════════════════════════════════════════════════════════════════════
 
 echo "🌐 GitHub Code holen..."
@@ -50,7 +65,7 @@ echo "✅ Code von GitHub geholt"
 echo ""
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# SCHRITT 3: Deploy
+# SCHRITT 4: Deploy
 # ═══════════════════════════════════════════════════════════════════════════════
 
 echo "🚀 Deploy nach $TARGET_DIR..."
@@ -59,7 +74,7 @@ echo "✅ Code deployed"
 echo ""
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# SCHRITT 4: Verify Module
+# SCHRITT 5: Verify Module
 # ═══════════════════════════════════════════════════════════════════════════════
 
 echo "🔍 Verify Module..."
@@ -78,28 +93,36 @@ echo "✅ Alle Module vorhanden"
 echo ""
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# SCHRITT 5: API Key Setup
+# SCHRITT 6: API Key Setup (mit Auto-Restore!)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 echo "🔑 API Key Setup..."
 echo ""
-echo "WICHTIG: Du brauchst NUR deinen ANTHROPIC API Key!"
-echo "         KEIN OpenAI Key nötig!"
-echo ""
-read -p "Anthropic API Key eingeben (oder Enter für später): " API_KEY
 
-if [ -n "$API_KEY" ]; then
-    sed -i "s/DEIN_ANTHROPIC_KEY_HIER/$API_KEY/g" "$TARGET_DIR/core/config.py"
-    echo "✅ API Key gesetzt"
+# Restore alter API Key falls vorhanden
+if [ -n "$OLD_API_KEY" ]; then
+    echo "♻️  Alter API Key gefunden - wird wiederhergestellt!"
+    sed -i "s/DEIN_ANTHROPIC_KEY_HIER/$OLD_API_KEY/g" "$TARGET_DIR/core/config.py"
+    echo "✅ API Key wiederhergestellt!"
 else
-    echo "⚠️  Kein API Key - setze später mit:"
-    echo "   nano $TARGET_DIR/core/config.py"
+    echo "WICHTIG: Du brauchst NUR deinen ANTHROPIC API Key!"
+    echo "         KEIN OpenAI Key nötig!"
+    echo ""
+    read -p "Anthropic API Key eingeben (oder Enter für später): " API_KEY
+
+    if [ -n "$API_KEY" ]; then
+        sed -i "s/DEIN_ANTHROPIC_KEY_HIER/$API_KEY/g" "$TARGET_DIR/core/config.py"
+        echo "✅ API Key gesetzt"
+    else
+        echo "⚠️  Kein API Key - setze später mit:"
+        echo "   nano $TARGET_DIR/core/config.py"
+    fi
 fi
 
 echo ""
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# SCHRITT 6: Widgets installieren
+# SCHRITT 7: Widgets installieren
 # ═══════════════════════════════════════════════════════════════════════════════
 
 echo "🎛️  Widgets installieren..."
@@ -117,7 +140,7 @@ fi
 echo ""
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# SCHRITT 7: Permissions
+# SCHRITT 8: Permissions
 # ═══════════════════════════════════════════════════════════════════════════════
 
 echo "🔧 Permissions setzen..."
