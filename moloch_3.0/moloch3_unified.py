@@ -791,7 +791,11 @@ Vision Mode:
         elif "Feierabend" in tageszeit_mode:
             tageszeit = "feierabend"
 
-        voice.speak("Ja, Alter? Was brauchst du?")  # Fast Mode (default)
+        # Zeige im Terminal was Moloch sagt
+        tts_text = "Ja, Alter? Was brauchst du?"
+        print(f"\n🗣️  M.O.L.O.C.H.: {tts_text}")
+
+        voice.speak(tts_text)  # Fast Mode (default)
 
         # PROBLEM: termux-tts-speak ist ASYNC! Es kehrt sofort zurück aber TTS läuft im Hintergrund!
         # Android blockiert Speech-to-Text wenn TTS noch läuft!
