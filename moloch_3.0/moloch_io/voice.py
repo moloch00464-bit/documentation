@@ -17,6 +17,7 @@ class VoiceIO:
         """Record audio and transcribe using Google Speech API"""
         try:
             print(f"🎤 Sprich jetzt...")
+            print(f"DEBUG: Starte termux-speech-to-text...")
 
             # DIRECT Speech-to-Text (wie 2.0!)
             # Kein File-Recording, direkt Google Speech API
@@ -28,14 +29,21 @@ class VoiceIO:
                 timeout=30
             )
 
+            print(f"DEBUG: Return code: {result.returncode}")
+            print(f"DEBUG: STDOUT: '{result.stdout}'")
+            print(f"DEBUG: STDERR: '{result.stderr}'")
+
             if result.returncode == 0 and result.stdout.strip():
                 text = result.stdout.strip()
                 print(f"👂 Verstanden: {text}")
                 return text
 
-            print("❌ Nichts verstanden")
+            print(f"❌ Nichts verstanden (returncode: {result.returncode})")
             return None
 
+        except subprocess.TimeoutExpired as e:
+            print(f"❌ Timeout nach 30 Sekunden!")
+            return None
         except Exception as e:
             print(f"❌ Voice Error: {e}")
             return None

@@ -790,6 +790,13 @@ Vision Mode:
         print("\n👉 DRÜCK ENTER WENN DU BEREIT BIST ZU SPRECHEN...")
         input()  # Warte auf Enter
 
+        # Stoppe TTS komplett + gib Android Audio-System Zeit
+        try:
+            subprocess.run(["termux-tts-speak", "-e"], timeout=2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except:
+            pass
+        time.sleep(2.0)  # Android Audio-System braucht Zeit zum Umschalten!
+
         # Listen (20 seconds fixed - NO PAUSE DETECTION!)
         user_text = voice.listen(duration=20, smart=False)
 
