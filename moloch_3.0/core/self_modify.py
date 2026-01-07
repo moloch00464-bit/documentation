@@ -109,7 +109,7 @@ class SelfModificationSystem:
 
         Returns: True wenn erfolgreich
         """
-        voice_settings_path = self.base_path / "config" / "voice_settings.json"
+        voice_settings_path = self.base_path / "data" / "voice_settings.json"
 
         # Validation
         if pitch is not None and not (0.5 <= pitch <= 2.0):
