@@ -696,18 +696,20 @@ Vision Mode:
 
         voice.speak("Moment, lass mich gucken")  # Fast Mode (default)
 
-        # WICHTIG: Warte bis TTS WIRKLICH fertig gesprochen hat!
+        # PROBLEM: termux-tts-speak ist ASYNC! Es kehrt sofort zurück aber TTS läuft im Hintergrund!
         # Android blockiert Kamera wenn TTS noch läuft!
-        # Satz dauert ca. 1.5-2s + TTS Engine Start/Stop ca. 1s = 3.5s total
+        # Text: ~4 Wörter = ca. 1.5-2s Sprechen
+        # + TTS Engine Start/Stop/Cleanup: 2-3s
+        # = Mindestens 4.5 Sekunden warten!
         print("⏳ Warte bis TTS fertig ist...")
-        time.sleep(3.5)
+        time.sleep(4.5)
 
         # TTS explizit stoppen (falls noch läuft) - WICHTIG für Android!
         try:
             subprocess.run(["termux-tts-speak", "-e"], timeout=2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         except:
             pass
-        time.sleep(0.5)  # Kurze Pause nach TTS-Stop
+        time.sleep(1.0)  # LÄNGERE Pause nach TTS-Stop für Android Audio System!
 
         print("📸 BEREIT - Kamera startet JETZT!")
 
@@ -791,18 +793,20 @@ Vision Mode:
 
         voice.speak("Ja, Alter? Was brauchst du?")  # Fast Mode (default)
 
-        # WICHTIG: Warte bis TTS WIRKLICH fertig gesprochen hat!
+        # PROBLEM: termux-tts-speak ist ASYNC! Es kehrt sofort zurück aber TTS läuft im Hintergrund!
         # Android blockiert Speech-to-Text wenn TTS noch läuft!
-        # Satz dauert ca. 2-3s + TTS Engine Start/Stop ca. 1s = 4s total
+        # Text: 30 Zeichen, ~5 Wörter = ca. 2-2.5s Sprechen
+        # + TTS Engine Start/Stop/Cleanup: 2-3s
+        # = Mindestens 5 Sekunden warten!
         print("⏳ Warte bis TTS fertig ist...")
-        time.sleep(4.0)
+        time.sleep(5.5)
 
         # TTS explizit stoppen (falls noch läuft) - WICHTIG für Android!
         try:
             subprocess.run(["termux-tts-speak", "-e"], timeout=2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         except:
             pass
-        time.sleep(0.5)  # Kurze Pause nach TTS-Stop
+        time.sleep(1.0)  # LÄNGERE Pause nach TTS-Stop für Android Audio System!
 
         print("🎙️  BEREIT - Aufnahme startet JETZT!")
 
