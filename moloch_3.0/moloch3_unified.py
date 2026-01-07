@@ -695,8 +695,9 @@ Vision Mode:
 
         voice.speak("Moment, lass mich gucken")  # Fast Mode (default)
 
-        # Brief pause to ensure TTS completes before camera opens
-        time.sleep(1.5)
+        # WICHTIG: 3 Sekunden Pause damit TTS komplett fertig ist!
+        time.sleep(3.0)
+        print("📸 BEREIT - Kamera startet JETZT!")
 
         # Take photo
         if not vision.take_photo():
@@ -778,8 +779,9 @@ Vision Mode:
 
         voice.speak("Ja, Alter? Was brauchst du?")  # Fast Mode (default)
 
-        # Brief pause to ensure TTS completes and system is ready
-        time.sleep(1.5)
+        # WICHTIG: 3 Sekunden Pause damit TTS komplett fertig ist!
+        time.sleep(3.0)
+        print("🎙️  BEREIT - Aufnahme startet JETZT!")
 
         # Listen (20 seconds fixed - NO PAUSE DETECTION!)
         user_text = voice.listen(duration=20, smart=False)
