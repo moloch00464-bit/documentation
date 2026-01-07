@@ -23,9 +23,10 @@ class VoiceIO:
 
             # DIRECT Speech-to-Text (wie 2.0!)
             # Kein File-Recording, direkt Google Speech API
-            # -l de-DE = DEUTSCH (nicht Englisch!)
+            # HINWEIS: Nutzt Google App Sprache (keine -l Option in alter termux-api!)
+            # WICHTIG: Stelle Google App Sprache auf Deutsch in Android Settings!
             result = subprocess.run(
-                ["termux-speech-to-text", "-l", "de-DE"],
+                ["termux-speech-to-text"],
                 capture_output=True,
                 text=True,
                 timeout=30
@@ -102,9 +103,10 @@ class VoiceIO:
                     pitch = self.voice_settings.settings.get("pitch", 1.0)
                     rate = self.voice_settings.settings.get("rate", 1.0)
 
-            # Speak with termux-tts (DEUTSCH!)
+            # Speak with termux-tts (nutzt System-Sprache)
+            # HINWEIS: -l Option nicht in alter termux-api! Nutzt Android TTS Engine.
             subprocess.run(
-                ["termux-tts-speak", "-l", "de-DE", "-p", str(pitch), "-r", str(rate), text],
+                ["termux-tts-speak", "-p", str(pitch), "-r", str(rate), text],
                 timeout=60
             )
 

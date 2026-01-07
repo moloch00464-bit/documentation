@@ -803,15 +803,9 @@ Vision Mode:
         print("👉 DRÜCK ENTER WENN DU SPRECHEN WILLST...")
         input()  # Warte auf Enter
 
-        # Extra Sicherheit: Stoppe TTS explizit (falls noch aktiv)
-        print("\n🔧 Stoppe TTS + bereite Mikrofon vor...")
-        try:
-            subprocess.run(["termux-tts-speak", "-e"], timeout=1, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        except:
-            pass
-
         # Android Audio-System braucht Zeit zum Umschalten von TTS zu Mic!
-        time.sleep(1.5)
+        print("\n🔧 Bereite Mikrofon vor...")
+        time.sleep(1.0)
 
         # Jetzt erst Mikrofon starten!
         print("🎤 Mikrofon wird aktiviert...\n")

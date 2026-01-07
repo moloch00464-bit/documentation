@@ -83,9 +83,8 @@ if command -v termux-tts-speak &> /dev/null; then
     echo "✅ termux-tts-speak gefunden!"
     echo ""
     echo "🗣️  TTS TEST - Hörst du mich?"
-    termux-tts-speak -l de-DE "Test. Hörst du mich?"
-    sleep 2
-    termux-tts-speak -e  # Stop TTS
+    termux-tts-speak "Test. Hörst du mich?"
+    sleep 3
     echo "✅ TTS Test abgeschlossen"
 else
     echo "⚠️  termux-tts-speak nicht gefunden"
@@ -102,7 +101,7 @@ echo "────────────────────────�
 echo ""
 echo "WICHTIG:"
 echo "  - Dieser Test öffnet das Google Voice Dialog"
-echo "  - Sprich DEUTSCH ins Mikrofon"
+echo "  - Sprich in deine Handy-Sprache (nutzt System-Sprache)"
 echo "  - Sag etwas einfaches wie 'Hallo Test'"
 echo ""
 echo "👉 DRÜCK ENTER WENN BEREIT..."
@@ -111,8 +110,8 @@ read
 echo ""
 echo "🎤 Sprich JETZT..."
 
-# Run termux-speech-to-text with German language
-TEXT=$(termux-speech-to-text -l de-DE 2>&1)
+# Run termux-speech-to-text (nutzt System-Sprache)
+TEXT=$(termux-speech-to-text 2>&1)
 RETURN_CODE=$?
 
 echo ""
@@ -172,8 +171,9 @@ else
     echo "NÄCHSTE SCHRITTE:"
     echo "  1. Überprüfe Android Permissions für Termux"
     echo "  2. Stelle sicher dass 'Termux:API' App installiert ist"
-    echo "  3. Teste mit: termux-speech-to-text -l de-DE"
-    echo "  4. Wenn Problem bleibt: Termux + Termux:API neu installieren"
+    echo "  3. Teste mit: termux-speech-to-text"
+    echo "  4. Update termux-api: pkg upgrade termux-api"
+    echo "  5. Wenn Problem bleibt: Termux + Termux:API neu installieren"
 fi
 
 echo ""
