@@ -538,7 +538,6 @@ def main():
         migration_flag.unlink()
 
         # Small pause for effect
-        import time
         time.sleep(3)
 
     # ═══════════════════════════════════════════════════════════════════════════
@@ -597,7 +596,6 @@ def main():
         feature_update_flag.unlink()
 
         # Small pause for effect
-        import time
         time.sleep(3)
 
     # Check API key
@@ -872,7 +870,6 @@ Vision Mode:
 
                         # Kurze Pause zwischen Stimmen (damit man sie unterscheiden kann!)
                         if i < 3:
-                            import time
                             time.sleep(1.5)  # 1.5 Sekunden Pause
                     else:
                         print(f"\n⚠️  Voice Profile #{i} nicht gefunden - nutze Base Voice")
