@@ -128,7 +128,7 @@ def test_learning():
     print("📚 Testing Learning System...")
 
     try:
-        learning = PersistentLearning()
+        learning = PersistentLearning(DATA_DIR)  # Pass data_dir!
 
         # Get facts
         facts = learning.get_facts()
@@ -152,8 +152,10 @@ def test_voice_settings():
     try:
         voice_settings = VoiceSettings(DATA_DIR)
 
-        pitch = voice_settings.get_pitch()
-        rate = voice_settings.get_rate()
+        # Get voice params (not get_pitch!)
+        params = voice_settings.get_voice_params()
+        pitch = params.get('pitch', 1.0)
+        rate = params.get('rate', 1.0)
 
         print(f"   ✅ Voice settings loaded (Pitch: {pitch}, Rate: {rate})")
 
@@ -169,7 +171,7 @@ def test_location():
     print("📍 Testing Location/GPS...")
 
     try:
-        location = LocationTracker()
+        location = LocationTracker(DATA_DIR)  # Pass data_dir!
 
         # Try to get location (with short timeout)
         current = location.get_current_location(timeout=5)
@@ -316,10 +318,10 @@ def test_function_calling_tools():
 
     # Test tool execution (get_current_stats - safe to test)
     try:
-        # Create mock instances
+        # Create mock instances WITH data_dir!
         brain = Brain()
         memory = Memory()
-        learning = PersistentLearning()
+        learning = PersistentLearning(DATA_DIR)  # Pass data_dir!
         sm = None  # Not needed for stats
 
         result = execute_tool(
