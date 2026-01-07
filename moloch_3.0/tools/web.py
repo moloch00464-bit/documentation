@@ -96,7 +96,15 @@ class WebTool:
             # Use DuckDuckGo HTML search
             url = f"https://html.duckduckgo.com/html/?q={quote_plus(query)}"
 
+            # DEBUG
+            print(f"🔍 DEBUG: Fetching {url}")
+
             response = self.session.get(url, timeout=10)
+
+            # DEBUG
+            print(f"🔍 DEBUG: Status code: {response.status_code}")
+            print(f"🔍 DEBUG: Response length: {len(response.text)} chars")
+
             if response.status_code != 200:
                 return []
 
@@ -113,8 +121,14 @@ class WebTool:
             pattern = r'class="result__a"[^>]+href="([^"]+)"[^>]*>([^<]+)</a>'
             matches = re.findall(pattern, html)
 
+            # DEBUG
+            print(f"🔍 DEBUG: Found {len(matches)} title matches")
+
             snippet_pattern = r'class="result__snippet">([^<]+)</a>'
             snippets = re.findall(snippet_pattern, html)
+
+            # DEBUG
+            print(f"🔍 DEBUG: Found {len(snippets)} snippet matches")
 
             for i, (url, title) in enumerate(matches[:max_results]):
                 snippet = snippets[i] if i < len(snippets) else ""
@@ -125,6 +139,10 @@ class WebTool:
                     "snippet": snippet.strip()[:200]
                 })
 
+                # DEBUG
+                if i == 0:
+                    print(f"🔍 DEBUG: First result: {title[:50]}...")
+
             return results
 
         except requests.exceptions.Timeout:
@@ -132,6 +150,8 @@ class WebTool:
             return []
         except Exception as e:
             print(f"⚠️ HTML search fallback failed: {e}")
+            import traceback
+            traceback.print_exc()
             return []
 
     # ═══════════════════════════════════════════════════════════════════════════
