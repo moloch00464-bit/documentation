@@ -694,13 +694,19 @@ Vision Mode:
         elif "Kaffee" in tageszeit_mode:
             tageszeit = "kaffee"
 
+        # Start TTS (async - läuft im Hintergrund!)
         voice.speak("Moment, lass mich gucken")  # Fast Mode (default)
 
-        # Manuelle Steuerung: DU entscheidest wann die Kamera startet!
-        print("\n👉 DRÜCK ENTER WENN DU BEREIT BIST FÜR FOTO...")
+        # CRITICAL FIX: Warte bis TTS FERTIG ist!
+        # "Moment, lass mich gucken" = ca. 1.5 Sekunden
+        time.sleep(2.5)  # TTS muss FERTIG sein!
+
+        # Jetzt ist TTS fertig - Zeige "BEREIT" Message
+        print("\n✅ M.O.L.O.C.H. bereit für Foto!")
+        print("👉 DRÜCK ENTER FÜR FOTO...")
         input()  # Warte auf Enter
 
-        print("📸 BEREIT - Kamera startet JETZT!")
+        print("\n📸 Kamera startet JETZT!")
 
         # Take photo
         if not vision.take_photo():
@@ -784,20 +790,31 @@ Vision Mode:
         tts_text = "Ja, Alter? Was brauchst du?"
         print(f"\n🗣️  M.O.L.O.C.H.: {tts_text}")
 
+        # Start TTS (async - läuft im Hintergrund!)
         voice.speak(tts_text)  # Fast Mode (default)
 
-        # Manuelle Steuerung: DU entscheidest wann das Mikro startet!
-        print("\n👉 DRÜCK ENTER WENN DU BEREIT BIST ZU SPRECHEN...")
+        # CRITICAL FIX: Warte bis TTS FERTIG ist!
+        # "Ja, Alter? Was brauchst du?" = ca. 2 Sekunden
+        # Gib TTS Zeit zu Ende zu sprechen BEVOR User Enter drückt!
+        time.sleep(3.0)  # TTS muss FERTIG sein!
+
+        # Jetzt ist TTS fertig - Zeige "BEREIT" Message
+        print("\n✅ M.O.L.O.C.H. bereit!")
+        print("👉 DRÜCK ENTER WENN DU SPRECHEN WILLST...")
         input()  # Warte auf Enter
 
-        # Stoppe TTS komplett + gib Android Audio-System Zeit
+        # Extra Sicherheit: Stoppe TTS explizit (falls noch aktiv)
+        print("\n🔧 Stoppe TTS + bereite Mikrofon vor...")
         try:
-            subprocess.run(["termux-tts-speak", "-e"], timeout=2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.run(["termux-tts-speak", "-e"], timeout=1, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         except:
             pass
-        time.sleep(2.0)  # Android Audio-System braucht Zeit zum Umschalten!
 
-        # Listen (20 seconds fixed - NO PAUSE DETECTION!)
+        # Android Audio-System braucht Zeit zum Umschalten von TTS zu Mic!
+        time.sleep(1.5)
+
+        # Jetzt erst Mikrofon starten!
+        print("🎤 Mikrofon wird aktiviert...\n")
         user_text = voice.listen(duration=20, smart=False)
 
         if not user_text:
