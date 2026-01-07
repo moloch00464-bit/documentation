@@ -130,8 +130,8 @@ def test_learning():
     try:
         learning = PersistentLearning(DATA_DIR)  # Pass data_dir!
 
-        # Get facts
-        facts = learning.get_facts()
+        # Get facts (correct method name!)
+        facts = learning.get_learned_facts()
         print(f"   ✅ Facts loaded ({len(facts)} facts)")
 
         # Test add
@@ -233,8 +233,9 @@ def test_file_tool():
     try:
         files = FileTool()
 
-        # Test write
-        test_file = "/tmp/moloch_self_check.txt"
+        # Test write (use home dir instead of /tmp for Termux compatibility)
+        import os
+        test_file = os.path.expanduser("~/moloch_self_check_test.txt")
         success = files.write(test_file, "Self-check test", backup=False)
         if success:
             print("   ✅ File write works")

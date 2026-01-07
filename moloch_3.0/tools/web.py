@@ -42,18 +42,28 @@ class WebTool:
         Returns:
             List of results: [{"title": "...", "url": "...", "snippet": "..."}]
         """
+        # Try API first (fast but sometimes empty)
+        results = self._search_api(query, max_results)
+
+        # Fallback to HTML scraping if API gave no results
+        if not results:
+            results = self._search_html(query, max_results)
+
+        return results
+
+    def _search_api(self, query: str, max_results: int) -> List[Dict[str, str]]:
+        """
+        DuckDuckGo Instant Answer API (fast but sometimes empty)
+        """
         try:
-            # Use DuckDuckGo Instant Answer API
             url = f"https://api.duckduckgo.com/?q={quote_plus(query)}&format=json"
 
             response = self.session.get(url, timeout=10)
             # Accept both 200 (OK) and 202 (Accepted) - DDG sometimes returns 202
             if response.status_code not in [200, 202]:
-                print(f"⚠️ Search API error: {response.status_code}")
                 return []
 
             data = response.json()
-
             results = []
 
             # Get instant answer
@@ -75,11 +85,53 @@ class WebTool:
 
             return results[:max_results]
 
+        except:
+            return []
+
+    def _search_html(self, query: str, max_results: int) -> List[Dict[str, str]]:
+        """
+        DuckDuckGo HTML scraping (robust fallback)
+        """
+        try:
+            # Use DuckDuckGo HTML search
+            url = f"https://html.duckduckgo.com/html/?q={quote_plus(query)}"
+
+            response = self.session.get(url, timeout=10)
+            if response.status_code != 200:
+                return []
+
+            html = response.text
+            results = []
+
+            # Simple regex-based extraction (no BeautifulSoup dependency)
+            import re
+
+            # Find result blocks
+            # Pattern: <a class="result__a" href="URL">TITLE</a>
+            # Then later: <a class="result__snippet">SNIPPET</a>
+
+            pattern = r'class="result__a"[^>]+href="([^"]+)"[^>]*>([^<]+)</a>'
+            matches = re.findall(pattern, html)
+
+            snippet_pattern = r'class="result__snippet">([^<]+)</a>'
+            snippets = re.findall(snippet_pattern, html)
+
+            for i, (url, title) in enumerate(matches[:max_results]):
+                snippet = snippets[i] if i < len(snippets) else ""
+
+                results.append({
+                    "title": title.strip(),
+                    "url": url.strip(),
+                    "snippet": snippet.strip()[:200]
+                })
+
+            return results
+
         except requests.exceptions.Timeout:
             print("⚠️ Search timeout")
             return []
         except Exception as e:
-            print(f"❌ Search error: {e}")
+            print(f"⚠️ HTML search fallback failed: {e}")
             return []
 
     # ═══════════════════════════════════════════════════════════════════════════
