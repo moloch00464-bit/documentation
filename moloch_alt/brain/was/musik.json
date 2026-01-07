@@ -1,0 +1,2093 @@
+{
+  "_meta": {
+    "type": "musik_profil",
+    "source": "spotify_extended_history",
+    "generated": "2025-12-13T04:20:01.125887",
+    "data_range": "2015-2025",
+    "generated_by": "M.O.L.O.C.H."
+  },
+  "statistik": {
+    "total_stunden": 6832.5,
+    "total_tage": 284.7,
+    "unique_artists": 3217,
+    "unique_tracks": 16465,
+    "unique_albums": 8038,
+    "total_streams": 151818,
+    "full_plays": 100838,
+    "skip_rate_percent": 33.6
+  },
+  "top_artists": {
+    "all_time": [
+      {
+        "rank": 1,
+        "artist": "Suicide Commando",
+        "stunden": 184.8,
+        "plays": 2360
+      },
+      {
+        "rank": 2,
+        "artist": "Vomito Negro",
+        "stunden": 123.3,
+        "plays": 1731
+      },
+      {
+        "rank": 3,
+        "artist": "ESA (Electronic Substance Abuse)",
+        "stunden": 122.5,
+        "plays": 1421
+      },
+      {
+        "rank": 4,
+        "artist": "Chainreactor",
+        "stunden": 104.7,
+        "plays": 1600
+      },
+      {
+        "rank": 5,
+        "artist": "SIERRA",
+        "stunden": 102.8,
+        "plays": 1752
+      },
+      {
+        "rank": 6,
+        "artist": "VNV Nation",
+        "stunden": 101.9,
+        "plays": 1266
+      },
+      {
+        "rank": 7,
+        "artist": "Portion Control",
+        "stunden": 91.2,
+        "plays": 1274
+      },
+      {
+        "rank": 8,
+        "artist": "Geistform",
+        "stunden": 91.0,
+        "plays": 1226
+      },
+      {
+        "rank": 9,
+        "artist": "AC/DC",
+        "stunden": 84.5,
+        "plays": 1245
+      },
+      {
+        "rank": 10,
+        "artist": "Autodafeh",
+        "stunden": 75.8,
+        "plays": 1297
+      },
+      {
+        "rank": 11,
+        "artist": "Phase Fatale",
+        "stunden": 72.1,
+        "plays": 891
+      },
+      {
+        "rank": 12,
+        "artist": "I Hate Models",
+        "stunden": 70.2,
+        "plays": 627
+      },
+      {
+        "rank": 13,
+        "artist": "Combichrist",
+        "stunden": 69.7,
+        "plays": 975
+      },
+      {
+        "rank": 14,
+        "artist": "Ancient Methods",
+        "stunden": 65.2,
+        "plays": 763
+      },
+      {
+        "rank": 15,
+        "artist": ":Wumpscut:",
+        "stunden": 63.6,
+        "plays": 911
+      },
+      {
+        "rank": 16,
+        "artist": "16Volt",
+        "stunden": 60.5,
+        "plays": 986
+      },
+      {
+        "rank": 17,
+        "artist": "HEALTH",
+        "stunden": 53.9,
+        "plays": 965
+      },
+      {
+        "rank": 18,
+        "artist": "E-Craft",
+        "stunden": 52.6,
+        "plays": 755
+      },
+      {
+        "rank": 19,
+        "artist": "Orange Sector",
+        "stunden": 52.3,
+        "plays": 1037
+      },
+      {
+        "rank": 20,
+        "artist": "Perc",
+        "stunden": 51.5,
+        "plays": 487
+      },
+      {
+        "rank": 21,
+        "artist": "Ministry",
+        "stunden": 50.7,
+        "plays": 665
+      },
+      {
+        "rank": 22,
+        "artist": "Schwefelgelb",
+        "stunden": 50.1,
+        "plays": 651
+      },
+      {
+        "rank": 23,
+        "artist": "Depeche Mode",
+        "stunden": 46.7,
+        "plays": 667
+      },
+      {
+        "rank": 24,
+        "artist": "SAM",
+        "stunden": 46.5,
+        "plays": 711
+      },
+      {
+        "rank": 25,
+        "artist": "Life Cried",
+        "stunden": 43.7,
+        "plays": 669
+      },
+      {
+        "rank": 26,
+        "artist": "Daniel Deluxe",
+        "stunden": 42.7,
+        "plays": 673
+      },
+      {
+        "rank": 27,
+        "artist": "Alien Vampires",
+        "stunden": 41.2,
+        "plays": 626
+      },
+      {
+        "rank": 28,
+        "artist": "Terrorfakt",
+        "stunden": 40.5,
+        "plays": 619
+      },
+      {
+        "rank": 29,
+        "artist": "Xotox",
+        "stunden": 38.7,
+        "plays": 640
+      },
+      {
+        "rank": 30,
+        "artist": "Codex Empire",
+        "stunden": 38.2,
+        "plays": 461
+      },
+      {
+        "rank": 31,
+        "artist": "New Frames",
+        "stunden": 38.0,
+        "plays": 427
+      },
+      {
+        "rank": 32,
+        "artist": "[:SITD:]",
+        "stunden": 36.6,
+        "plays": 455
+      },
+      {
+        "rank": 33,
+        "artist": "Perturbator",
+        "stunden": 36.5,
+        "plays": 549
+      },
+      {
+        "rank": 34,
+        "artist": "Spark!",
+        "stunden": 36.5,
+        "plays": 580
+      },
+      {
+        "rank": 35,
+        "artist": "iVardensphere",
+        "stunden": 36.1,
+        "plays": 498
+      },
+      {
+        "rank": 36,
+        "artist": "W.A.S.T.E.",
+        "stunden": 35.8,
+        "plays": 490
+      },
+      {
+        "rank": 37,
+        "artist": "Chrysalide",
+        "stunden": 35.2,
+        "plays": 346
+      },
+      {
+        "rank": 38,
+        "artist": "Komor Kommando",
+        "stunden": 35.1,
+        "plays": 524
+      },
+      {
+        "rank": 39,
+        "artist": "Eden Synthetic Corps",
+        "stunden": 34.3,
+        "plays": 498
+      },
+      {
+        "rank": 40,
+        "artist": "Front 242",
+        "stunden": 32.4,
+        "plays": 415
+      },
+      {
+        "rank": 41,
+        "artist": "Sonic Area",
+        "stunden": 32.2,
+        "plays": 500
+      },
+      {
+        "rank": 42,
+        "artist": "Metallica",
+        "stunden": 31.7,
+        "plays": 357
+      },
+      {
+        "rank": 43,
+        "artist": "Orphx",
+        "stunden": 31.7,
+        "plays": 337
+      },
+      {
+        "rank": 44,
+        "artist": "Acylum",
+        "stunden": 31.0,
+        "plays": 470
+      },
+      {
+        "rank": 45,
+        "artist": "Wynardtage",
+        "stunden": 31.0,
+        "plays": 422
+      },
+      {
+        "rank": 46,
+        "artist": "FabrikC",
+        "stunden": 30.7,
+        "plays": 509
+      },
+      {
+        "rank": 47,
+        "artist": "Roger Rotor",
+        "stunden": 30.7,
+        "plays": 365
+      },
+      {
+        "rank": 48,
+        "artist": "Imminent Starvation",
+        "stunden": 30.3,
+        "plays": 364
+      },
+      {
+        "rank": 49,
+        "artist": "Feindflug",
+        "stunden": 29.6,
+        "plays": 422
+      },
+      {
+        "rank": 50,
+        "artist": "Ansome",
+        "stunden": 29.2,
+        "plays": 392
+      }
+    ],
+    "2024_2025": [
+      {
+        "rank": 1,
+        "artist": "HEALTH",
+        "stunden": 29.4
+      },
+      {
+        "rank": 2,
+        "artist": "SIERRA",
+        "stunden": 27.7
+      },
+      {
+        "rank": 3,
+        "artist": "AC/DC",
+        "stunden": 22.6
+      },
+      {
+        "rank": 4,
+        "artist": "Ministry",
+        "stunden": 20.9
+      },
+      {
+        "rank": 5,
+        "artist": "[:SITD:]",
+        "stunden": 19.5
+      },
+      {
+        "rank": 6,
+        "artist": "Metallica",
+        "stunden": 16.5
+      },
+      {
+        "rank": 7,
+        "artist": "Front 242",
+        "stunden": 15.8
+      },
+      {
+        "rank": 8,
+        "artist": "ESA (Electronic Substance Abuse)",
+        "stunden": 15.2
+      },
+      {
+        "rank": 9,
+        "artist": "Orphx",
+        "stunden": 14.8
+      },
+      {
+        "rank": 10,
+        "artist": "I Hate Models",
+        "stunden": 14.7
+      },
+      {
+        "rank": 11,
+        "artist": "Ozzy Osbourne",
+        "stunden": 12.9
+      },
+      {
+        "rank": 12,
+        "artist": "äbvsd",
+        "stunden": 12.7
+      },
+      {
+        "rank": 13,
+        "artist": "Daniel Deluxe",
+        "stunden": 12.5
+      },
+      {
+        "rank": 14,
+        "artist": "Years Of Denial",
+        "stunden": 12.3
+      },
+      {
+        "rank": 15,
+        "artist": "Prong",
+        "stunden": 12.2
+      },
+      {
+        "rank": 16,
+        "artist": "Feindflug",
+        "stunden": 11.4
+      },
+      {
+        "rank": 17,
+        "artist": "Suicide Commando",
+        "stunden": 11.3
+      },
+      {
+        "rank": 18,
+        "artist": "SAM",
+        "stunden": 11.1
+      },
+      {
+        "rank": 19,
+        "artist": "VNV Nation",
+        "stunden": 10.9
+      },
+      {
+        "rank": 20,
+        "artist": "Perturbator",
+        "stunden": 10.8
+      },
+      {
+        "rank": 21,
+        "artist": "Combichrist",
+        "stunden": 10.7
+      },
+      {
+        "rank": 22,
+        "artist": "Komor Kommando",
+        "stunden": 10.6
+      },
+      {
+        "rank": 23,
+        "artist": "Melt Motif",
+        "stunden": 10.5
+      },
+      {
+        "rank": 24,
+        "artist": "Tenebrax",
+        "stunden": 10.2
+      },
+      {
+        "rank": 25,
+        "artist": "Gary Numan",
+        "stunden": 9.9
+      },
+      {
+        "rank": 26,
+        "artist": "ALVABEAT",
+        "stunden": 9.8
+      },
+      {
+        "rank": 27,
+        "artist": "Yuri Petrovski",
+        "stunden": 9.7
+      },
+      {
+        "rank": 28,
+        "artist": "Ulisess",
+        "stunden": 9.7
+      },
+      {
+        "rank": 29,
+        "artist": "KANGA",
+        "stunden": 9.4
+      },
+      {
+        "rank": 30,
+        "artist": "FabrikC",
+        "stunden": 9.2
+      }
+    ]
+  },
+  "top_tracks": {
+    "all_time": [
+      {
+        "rank": 1,
+        "track": "Perc - Temperature's Rising",
+        "stunden": 22.2,
+        "plays": 167
+      },
+      {
+        "rank": 2,
+        "track": "Ancient Methods - Knights & Bishops",
+        "stunden": 21.2,
+        "plays": 255
+      },
+      {
+        "rank": 3,
+        "track": "I Hate Models - Spreading Plague",
+        "stunden": 20.3,
+        "plays": 153
+      },
+      {
+        "rank": 4,
+        "track": "Tham - The Third Kind",
+        "stunden": 20.0,
+        "plays": 234
+      },
+      {
+        "rank": 5,
+        "track": "Chrysalide - Question Everything",
+        "stunden": 18.7,
+        "plays": 67
+      },
+      {
+        "rank": 6,
+        "track": "VNV Nation - Electronaut",
+        "stunden": 16.9,
+        "plays": 162
+      },
+      {
+        "rank": 7,
+        "track": "Arnaud Rebotini - Pagan Dance Move",
+        "stunden": 16.5,
+        "plays": 142
+      },
+      {
+        "rank": 8,
+        "track": "ESA (Electronic Substance Abuse) - Eat Their Young (feat Caitlin Corlyx)",
+        "stunden": 15.1,
+        "plays": 161
+      },
+      {
+        "rank": 9,
+        "track": "I Hate Models - Werewolf Disco Club",
+        "stunden": 14.2,
+        "plays": 107
+      },
+      {
+        "rank": 10,
+        "track": "SIERRA - Gone",
+        "stunden": 14.2,
+        "plays": 251
+      },
+      {
+        "rank": 11,
+        "track": "AC/DC - Shoot to Thrill",
+        "stunden": 14.0,
+        "plays": 167
+      },
+      {
+        "rank": 12,
+        "track": "Velvet Acid Christ - Caustic Disco",
+        "stunden": 13.5,
+        "plays": 176
+      },
+      {
+        "rank": 13,
+        "track": "Townsend - Nobody Likes Townzy",
+        "stunden": 12.7,
+        "plays": 128
+      },
+      {
+        "rank": 14,
+        "track": "Portion Control - Hardman",
+        "stunden": 12.6,
+        "plays": 121
+      },
+      {
+        "rank": 15,
+        "track": "Suicide Commando - Evacuate - John Lord Fonda Remix",
+        "stunden": 12.4,
+        "plays": 102
+      },
+      {
+        "rank": 16,
+        "track": "Ontal - Jackhammer",
+        "stunden": 12.3,
+        "plays": 131
+      },
+      {
+        "rank": 17,
+        "track": "Geistform - Emisor",
+        "stunden": 12.1,
+        "plays": 140
+      },
+      {
+        "rank": 18,
+        "track": "SAM - 24 Stunden",
+        "stunden": 12.0,
+        "plays": 172
+      },
+      {
+        "rank": 19,
+        "track": "Autodafeh - No Future",
+        "stunden": 11.8,
+        "plays": 168
+      },
+      {
+        "rank": 20,
+        "track": "New Frames - Mumiae",
+        "stunden": 11.7,
+        "plays": 133
+      },
+      {
+        "rank": 21,
+        "track": "Combichrist - this s*it will fcuk you up",
+        "stunden": 11.3,
+        "plays": 150
+      },
+      {
+        "rank": 22,
+        "track": "New Frames - Hitze",
+        "stunden": 11.0,
+        "plays": 121
+      },
+      {
+        "rank": 23,
+        "track": "Phase Fatale - Under Marble",
+        "stunden": 10.5,
+        "plays": 129
+      },
+      {
+        "rank": 24,
+        "track": "Nico Kolbe - Acid Mania",
+        "stunden": 10.5,
+        "plays": 100
+      },
+      {
+        "rank": 25,
+        "track": "Prong - Snap Your Fingers, Snap Your Neck",
+        "stunden": 10.1,
+        "plays": 156
+      },
+      {
+        "rank": 26,
+        "track": "The Prodigy - The Day Is My Enemy",
+        "stunden": 10.1,
+        "plays": 148
+      },
+      {
+        "rank": 27,
+        "track": "Vomito Negro - Stain",
+        "stunden": 10.1,
+        "plays": 103
+      },
+      {
+        "rank": 28,
+        "track": "Ancient Methods - Immured in Supreme Beliefs",
+        "stunden": 10.0,
+        "plays": 98
+      },
+      {
+        "rank": 29,
+        "track": "SIERRA - Last Breath",
+        "stunden": 9.9,
+        "plays": 163
+      },
+      {
+        "rank": 30,
+        "track": "Perturbator - Venger (feat. Greta Link)",
+        "stunden": 9.9,
+        "plays": 127
+      },
+      {
+        "rank": 31,
+        "track": "Daniel Deluxe - Darkness",
+        "stunden": 9.9,
+        "plays": 145
+      },
+      {
+        "rank": 32,
+        "track": "Deborah de Luca - You're Toxic",
+        "stunden": 9.8,
+        "plays": 99
+      },
+      {
+        "rank": 33,
+        "track": "HEALTH - HATEFUL [Feat. SIERRA]",
+        "stunden": 9.7,
+        "plays": 147
+      },
+      {
+        "rank": 34,
+        "track": "Wolfsheim - The Sparrows And The Nightingales (Ancient Methods 'Ode to the Night' Remix) - 24-Bit Remastered 2021 by Carlos Perón",
+        "stunden": 9.7,
+        "plays": 78
+      },
+      {
+        "rank": 35,
+        "track": "Years Of Denial - Face to Face",
+        "stunden": 9.6,
+        "plays": 86
+      },
+      {
+        "rank": 36,
+        "track": "Vomito Negro - White Lights",
+        "stunden": 9.5,
+        "plays": 147
+      },
+      {
+        "rank": 37,
+        "track": "Viper Diva - Hold Me Back",
+        "stunden": 9.4,
+        "plays": 107
+      },
+      {
+        "rank": 38,
+        "track": "Sans-Fin - Pompe á Engrenages",
+        "stunden": 9.3,
+        "plays": 83
+      },
+      {
+        "rank": 39,
+        "track": "Codex Empire - Fumifugium",
+        "stunden": 9.3,
+        "plays": 99
+      },
+      {
+        "rank": 40,
+        "track": "Cervello Elettronico - Resist",
+        "stunden": 9.2,
+        "plays": 116
+      },
+      {
+        "rank": 41,
+        "track": "Veil of Light - Trust - Phase Fatale Remix",
+        "stunden": 9.2,
+        "plays": 83
+      },
+      {
+        "rank": 42,
+        "track": "F.O.O.L - SaharA",
+        "stunden": 9.1,
+        "plays": 125
+      },
+      {
+        "rank": 43,
+        "track": "The Ðevil & the Uñiverse - The Goat Head - Phase Fatale Remix",
+        "stunden": 9.0,
+        "plays": 107
+      },
+      {
+        "rank": 44,
+        "track": "Vomito Negro - Angel Fire",
+        "stunden": 8.9,
+        "plays": 85
+      },
+      {
+        "rank": 45,
+        "track": "Suicide Commando - Hellraiser - VNV Nation Remix",
+        "stunden": 8.9,
+        "plays": 98
+      },
+      {
+        "rank": 46,
+        "track": "SIERRA - Unbroken - HIPPØ & THE JACKET Remix",
+        "stunden": 8.9,
+        "plays": 157
+      },
+      {
+        "rank": 47,
+        "track": "Chainreactor - Locked In",
+        "stunden": 8.7,
+        "plays": 131
+      },
+      {
+        "rank": 48,
+        "track": "Murat Ugurlu - Karma",
+        "stunden": 8.7,
+        "plays": 93
+      },
+      {
+        "rank": 49,
+        "track": "AC/DC - Shake Your Foundations",
+        "stunden": 8.7,
+        "plays": 138
+      },
+      {
+        "rank": 50,
+        "track": "Reaper - Robuste Maschine",
+        "stunden": 8.6,
+        "plays": 118
+      },
+      {
+        "rank": 51,
+        "track": "The Soft Moon - Without - Codex Empire Remix",
+        "stunden": 8.5,
+        "plays": 89
+      },
+      {
+        "rank": 52,
+        "track": "CABLE - Spires",
+        "stunden": 8.5,
+        "plays": 93
+      },
+      {
+        "rank": 53,
+        "track": "Diva Destruction - The Broken Ones",
+        "stunden": 8.4,
+        "plays": 125
+      },
+      {
+        "rank": 54,
+        "track": "Spark! - Zombie",
+        "stunden": 8.2,
+        "plays": 124
+      },
+      {
+        "rank": 55,
+        "track": "nin kuji - Daichi No Musuko / Atatori Musuko",
+        "stunden": 8.2,
+        "plays": 112
+      },
+      {
+        "rank": 56,
+        "track": "Apoptygma Berzerk - Burning Heretic - Cycles Of Absolute Truths Mix by Ancient Methods",
+        "stunden": 8.1,
+        "plays": 101
+      },
+      {
+        "rank": 57,
+        "track": "Daniel Deluxe - Blood Magic",
+        "stunden": 8.0,
+        "plays": 142
+      },
+      {
+        "rank": 58,
+        "track": "FabrikC - Chinese Food - Iszoloscope Remix",
+        "stunden": 7.9,
+        "plays": 116
+      },
+      {
+        "rank": 59,
+        "track": "Roger Rotor - Nekulturny (Bonzenmarsch)",
+        "stunden": 7.9,
+        "plays": 84
+      },
+      {
+        "rank": 60,
+        "track": "Eisbrecher - This is Deutsch - SITD Remix",
+        "stunden": 7.9,
+        "plays": 105
+      },
+      {
+        "rank": 61,
+        "track": "Front 242 - Headhunter V3.0",
+        "stunden": 7.9,
+        "plays": 107
+      },
+      {
+        "rank": 62,
+        "track": "Komor Kommando - John the Revelator (Feat. J-L De Meyer from Front 242) - Depeche Mode cover",
+        "stunden": 7.7,
+        "plays": 110
+      },
+      {
+        "rank": 63,
+        "track": "Viers - LSD",
+        "stunden": 7.7,
+        "plays": 67
+      },
+      {
+        "rank": 64,
+        "track": "Rammstein - Deutschland",
+        "stunden": 7.7,
+        "plays": 93
+      },
+      {
+        "rank": 65,
+        "track": "Daniel Deluxe - Star Eater",
+        "stunden": 7.7,
+        "plays": 106
+      },
+      {
+        "rank": 66,
+        "track": "[:SITD:] - The Insanity Of Normality",
+        "stunden": 7.6,
+        "plays": 114
+      },
+      {
+        "rank": 67,
+        "track": "Carpenter Brut - Maniac",
+        "stunden": 7.6,
+        "plays": 104
+      },
+      {
+        "rank": 68,
+        "track": "E-Craft - Electrocution",
+        "stunden": 7.6,
+        "plays": 116
+      },
+      {
+        "rank": 69,
+        "track": "Perc - Look What Your Love Has Done To Me - I Hate Models Primitive Remix",
+        "stunden": 7.4,
+        "plays": 62
+      },
+      {
+        "rank": 70,
+        "track": "Rhys Fulber - Slip It In",
+        "stunden": 7.4,
+        "plays": 88
+      },
+      {
+        "rank": 71,
+        "track": "[:SITD:] - Puls:Schlag",
+        "stunden": 7.3,
+        "plays": 75
+      },
+      {
+        "rank": 72,
+        "track": "Imminent Starvation - Tentack - Live",
+        "stunden": 7.3,
+        "plays": 64
+      },
+      {
+        "rank": 73,
+        "track": "Phase Fatale - Tausend Heilige",
+        "stunden": 7.3,
+        "plays": 92
+      },
+      {
+        "rank": 74,
+        "track": "Cyborg Attack - Psycho-X",
+        "stunden": 7.2,
+        "plays": 100
+      },
+      {
+        "rank": 75,
+        "track": "Combichrist - this is my rifle",
+        "stunden": 7.2,
+        "plays": 93
+      },
+      {
+        "rank": 76,
+        "track": "The Invincible Spirit - Hate You",
+        "stunden": 7.2,
+        "plays": 94
+      },
+      {
+        "rank": 77,
+        "track": "Murat Ugurlu - Listen To Me",
+        "stunden": 7.2,
+        "plays": 73
+      },
+      {
+        "rank": 78,
+        "track": "Ansome - Copper",
+        "stunden": 7.1,
+        "plays": 93
+      },
+      {
+        "rank": 79,
+        "track": "Ambassador21 - Cannibals",
+        "stunden": 7.1,
+        "plays": 95
+      },
+      {
+        "rank": 80,
+        "track": "Men Without Hats - The Safety Dance - Extended Club Mix",
+        "stunden": 7.1,
+        "plays": 108
+      },
+      {
+        "rank": 81,
+        "track": "ESA (Electronic Substance Abuse) - Like Meat (Spoiled)",
+        "stunden": 7.0,
+        "plays": 78
+      },
+      {
+        "rank": 82,
+        "track": "SIERRA - Unbroken",
+        "stunden": 7.0,
+        "plays": 140
+      },
+      {
+        "rank": 83,
+        "track": "Tham - Intoxication - Original Mix",
+        "stunden": 7.0,
+        "plays": 72
+      },
+      {
+        "rank": 84,
+        "track": "Apoptygma Berzerk - Backdraft - Kill The Light Mix by Codex Empire",
+        "stunden": 7.0,
+        "plays": 85
+      },
+      {
+        "rank": 85,
+        "track": "W.A.S.T.E. - Destroy What Destroys You",
+        "stunden": 6.9,
+        "plays": 75
+      },
+      {
+        "rank": 86,
+        "track": "Sisters of Mercy - Temple of Love (1992) - 2018 Remaster",
+        "stunden": 6.9,
+        "plays": 56
+      },
+      {
+        "rank": 87,
+        "track": "Alien Vampires - Control the Universe",
+        "stunden": 6.9,
+        "plays": 90
+      },
+      {
+        "rank": 88,
+        "track": "Codex Empire - Teize",
+        "stunden": 6.9,
+        "plays": 86
+      },
+      {
+        "rank": 89,
+        "track": "Tears For Fears - Shout - U.S. Remix",
+        "stunden": 6.9,
+        "plays": 57
+      },
+      {
+        "rank": 90,
+        "track": "Vomito Negro - Tape X",
+        "stunden": 6.8,
+        "plays": 95
+      },
+      {
+        "rank": 91,
+        "track": "Das Ich - Destillat - VNV Nation Remix",
+        "stunden": 6.8,
+        "plays": 69
+      },
+      {
+        "rank": 92,
+        "track": "SIERRA - Trapped",
+        "stunden": 6.8,
+        "plays": 105
+      },
+      {
+        "rank": 93,
+        "track": "I Hate Models - Crossing The Mirror",
+        "stunden": 6.7,
+        "plays": 56
+      },
+      {
+        "rank": 94,
+        "track": "AC/DC - Thunderstruck",
+        "stunden": 6.7,
+        "plays": 89
+      },
+      {
+        "rank": 95,
+        "track": "Ansome - Dragons Dynamite - Perc Remix",
+        "stunden": 6.6,
+        "plays": 73
+      },
+      {
+        "rank": 96,
+        "track": "Pure Obsessions & Red Nights - A Lovely Day - Combichrist Remix",
+        "stunden": 6.6,
+        "plays": 69
+      },
+      {
+        "rank": 97,
+        "track": "Imminent Starvation - Lost Highway (Exit)",
+        "stunden": 6.5,
+        "plays": 87
+      },
+      {
+        "rank": 98,
+        "track": "Hologram - Parasite / Paradox / Paralysis",
+        "stunden": 6.4,
+        "plays": 35
+      },
+      {
+        "rank": 99,
+        "track": "Ministry - Scare Crow",
+        "stunden": 6.4,
+        "plays": 48
+      },
+      {
+        "rank": 100,
+        "track": "N E O (Near Earth Orbit) - Trans Neptunian Objects",
+        "stunden": 6.4,
+        "plays": 69
+      }
+    ],
+    "2024_2025": [
+      {
+        "rank": 1,
+        "track": "Prong - Snap Your Fingers, Snap Your Neck",
+        "stunden": 9.1
+      },
+      {
+        "rank": 2,
+        "track": "[:SITD:] - Puls:Schlag",
+        "stunden": 7.1
+      },
+      {
+        "rank": 3,
+        "track": "Eisbrecher - This is Deutsch - SITD Remix",
+        "stunden": 6.7
+      },
+      {
+        "rank": 4,
+        "track": "Melt Motif - Mine - äbvsd Remix",
+        "stunden": 6.2
+      },
+      {
+        "rank": 5,
+        "track": "Tham - The Third Kind",
+        "stunden": 6.0
+      },
+      {
+        "rank": 6,
+        "track": "KANGA - Something Dangerous",
+        "stunden": 5.7
+      },
+      {
+        "rank": 7,
+        "track": "Gary Numan - My Name Is Ruin",
+        "stunden": 5.5
+      },
+      {
+        "rank": 8,
+        "track": "Feindflug - Leitbild",
+        "stunden": 5.4
+      },
+      {
+        "rank": 9,
+        "track": "Rammstein - Deutschland",
+        "stunden": 5.1
+      },
+      {
+        "rank": 10,
+        "track": "Das Ich - Destillat - VNV Nation Remix",
+        "stunden": 5.1
+      },
+      {
+        "rank": 11,
+        "track": "äbvsd - Pechersk Lavra",
+        "stunden": 4.9
+      },
+      {
+        "rank": 12,
+        "track": "Ministry - Let's Go",
+        "stunden": 4.9
+      },
+      {
+        "rank": 13,
+        "track": "Terrolokaust - Just One Fix",
+        "stunden": 4.8
+      },
+      {
+        "rank": 14,
+        "track": "Deborah de Luca - You're Toxic",
+        "stunden": 4.7
+      },
+      {
+        "rank": 15,
+        "track": "Perturbator - Venger (feat. Greta Link)",
+        "stunden": 4.7
+      },
+      {
+        "rank": 16,
+        "track": "Ozzy Osbourne - I Don't Wanna Stop",
+        "stunden": 4.7
+      },
+      {
+        "rank": 17,
+        "track": "Nico Kolbe - Acid Mania",
+        "stunden": 4.6
+      },
+      {
+        "rank": 18,
+        "track": "ABSL - Le perçant arcus",
+        "stunden": 4.6
+      },
+      {
+        "rank": 19,
+        "track": "Orphx - What Will Burn",
+        "stunden": 4.6
+      },
+      {
+        "rank": 20,
+        "track": "The Invincible Spirit - Hate You",
+        "stunden": 4.5
+      },
+      {
+        "rank": 21,
+        "track": "Metallica - For Whom The Bell Tolls - Remastered",
+        "stunden": 4.4
+      },
+      {
+        "rank": 22,
+        "track": "Reaper - She Is A Devil And A Whore",
+        "stunden": 4.4
+      },
+      {
+        "rank": 23,
+        "track": "Hologram - Parasite / Paradox / Paralysis",
+        "stunden": 4.4
+      },
+      {
+        "rank": 24,
+        "track": "Front 242 - Headhunter V3.0",
+        "stunden": 4.2
+      },
+      {
+        "rank": 25,
+        "track": "Carpenter Brut - Maniac",
+        "stunden": 4.1
+      },
+      {
+        "rank": 26,
+        "track": "SIERRA - Gone",
+        "stunden": 4.1
+      },
+      {
+        "rank": 27,
+        "track": "VNV Nation - Control",
+        "stunden": 4.1
+      },
+      {
+        "rank": 28,
+        "track": "Empirion - I Am Electronic",
+        "stunden": 4.1
+      },
+      {
+        "rank": 29,
+        "track": "HEALTH - HATEFUL [Feat. SIERRA]",
+        "stunden": 4.0
+      },
+      {
+        "rank": 30,
+        "track": "ESA (Electronic Substance Abuse) - Eat Their Young (feat Caitlin Corlyx)",
+        "stunden": 4.0
+      },
+      {
+        "rank": 31,
+        "track": "SIERRA - Last Breath",
+        "stunden": 4.0
+      },
+      {
+        "rank": 32,
+        "track": "Daniel Deluxe - Darkness",
+        "stunden": 4.0
+      },
+      {
+        "rank": 33,
+        "track": "Front 242 - Take One - Korea Huntington Mix",
+        "stunden": 4.0
+      },
+      {
+        "rank": 34,
+        "track": "Circle of Dust - Onenemy - Fury Weekend Remix",
+        "stunden": 3.9
+      },
+      {
+        "rank": 35,
+        "track": "Lou Gramm - Lost in the Shadows (The Lost Boys)",
+        "stunden": 3.9
+      },
+      {
+        "rank": 36,
+        "track": "Years Of Denial - Face to Face",
+        "stunden": 3.9
+      },
+      {
+        "rank": 37,
+        "track": "[:SITD:] - Rot V1.0",
+        "stunden": 3.9
+      },
+      {
+        "rank": 38,
+        "track": "Tears For Fears - Shout - U.S. Remix",
+        "stunden": 3.9
+      },
+      {
+        "rank": 39,
+        "track": "I Hate Models - Romantic Psycho",
+        "stunden": 3.9
+      },
+      {
+        "rank": 40,
+        "track": "Ozzy Osbourne - No More Tears",
+        "stunden": 3.8
+      },
+      {
+        "rank": 41,
+        "track": "Megadeth - Symphony Of Destruction - Remastered 2012",
+        "stunden": 3.8
+      },
+      {
+        "rank": 42,
+        "track": "NNHMN - Tomorrow's Heroine",
+        "stunden": 3.8
+      },
+      {
+        "rank": 43,
+        "track": "Sisters of Mercy - Temple of Love (1992) - 2018 Remaster",
+        "stunden": 3.7
+      },
+      {
+        "rank": 44,
+        "track": "Ministry - Whip and Chain",
+        "stunden": 3.7
+      },
+      {
+        "rank": 45,
+        "track": "Pantera - Walk - 2012 Remaster",
+        "stunden": 3.7
+      },
+      {
+        "rank": 46,
+        "track": "ESA (Electronic Substance Abuse) - The Scorn",
+        "stunden": 3.7
+      },
+      {
+        "rank": 47,
+        "track": "Ozzy Osbourne - Perry Mason",
+        "stunden": 3.7
+      },
+      {
+        "rank": 48,
+        "track": "Townsend - Nobody Likes Townzy",
+        "stunden": 3.6
+      },
+      {
+        "rank": 49,
+        "track": "Duran Duran - The Wild Boys - Wilder Than Wild Boys Extended Mix",
+        "stunden": 3.6
+      },
+      {
+        "rank": 50,
+        "track": "AC/DC - Shoot to Thrill",
+        "stunden": 3.6
+      }
+    ]
+  },
+  "top_albums": [
+    {
+      "rank": 1,
+      "album": "Vomito Negro - Death Sun",
+      "stunden": 45.5
+    },
+    {
+      "rank": 2,
+      "album": "E-Craft - Re-Arrested",
+      "stunden": 40.2
+    },
+    {
+      "rank": 3,
+      "album": "Geistform - Transistor Music",
+      "stunden": 37.4
+    },
+    {
+      "rank": 4,
+      "album": "SIERRA - Gone",
+      "stunden": 36.1
+    },
+    {
+      "rank": 5,
+      "album": "Portion Control - Crop",
+      "stunden": 32.0
+    },
+    {
+      "rank": 6,
+      "album": "Suicide Commando - When Evil Speaks (Deluxe Edition)",
+      "stunden": 28.0
+    },
+    {
+      "rank": 7,
+      "album": "I Hate Models - Spreading Plague",
+      "stunden": 27.0
+    },
+    {
+      "rank": 8,
+      "album": "Wynardtage - Evil Mind",
+      "stunden": 26.2
+    },
+    {
+      "rank": 9,
+      "album": "Life Cried - If I Don't Wake Up",
+      "stunden": 26.0
+    },
+    {
+      "rank": 10,
+      "album": "Vomito Negro - Skull & Bones",
+      "stunden": 25.8
+    },
+    {
+      "rank": 11,
+      "album": "Combichrist - Everybody Hates You",
+      "stunden": 25.4
+    },
+    {
+      "rank": 12,
+      "album": "Geistform - Data Transmission",
+      "stunden": 25.2
+    },
+    {
+      "rank": 13,
+      "album": "Spark! - Maskiner",
+      "stunden": 25.0
+    },
+    {
+      "rank": 14,
+      "album": "nin kuji - Sayonara",
+      "stunden": 24.6
+    },
+    {
+      "rank": 15,
+      "album": "Suicide Commando - Anthology",
+      "stunden": 24.6
+    },
+    {
+      "rank": 16,
+      "album": "Chrysalide - Personal Revolution",
+      "stunden": 23.9
+    },
+    {
+      "rank": 17,
+      "album": "KANGA - KANGA",
+      "stunden": 23.0
+    },
+    {
+      "rank": 18,
+      "album": "Perc - Temperature's Rising",
+      "stunden": 22.3
+    },
+    {
+      "rank": 19,
+      "album": "Chainreactor - Insomniac",
+      "stunden": 22.3
+    },
+    {
+      "rank": 20,
+      "album": "Portion Control - Violently Alive",
+      "stunden": 21.9
+    },
+    {
+      "rank": 21,
+      "album": "Autodafeh - Digital Citizens",
+      "stunden": 21.7
+    },
+    {
+      "rank": 22,
+      "album": "VNV Nation - Futureperfect",
+      "stunden": 21.5
+    },
+    {
+      "rank": 23,
+      "album": "Vomito Negro - Fall of an Empire",
+      "stunden": 21.4
+    },
+    {
+      "rank": 24,
+      "album": "Ancient Methods - Seventh Seal",
+      "stunden": 21.2
+    },
+    {
+      "rank": 25,
+      "album": "SAM - Synthetic Adrenaline Music",
+      "stunden": 21.0
+    },
+    {
+      "rank": 26,
+      "album": "Chainreactor - X-tinction",
+      "stunden": 20.7
+    },
+    {
+      "rank": 27,
+      "album": "ESA (Electronic Substance Abuse) - Eat Their Young/The Scorn EP",
+      "stunden": 20.5
+    },
+    {
+      "rank": 28,
+      "album": "VNV Nation - Transnational",
+      "stunden": 20.4
+    },
+    {
+      "rank": 29,
+      "album": "Alien Vampires - Harshlizer",
+      "stunden": 20.3
+    },
+    {
+      "rank": 30,
+      "album": "Orange Sector - Night Terrors",
+      "stunden": 20.1
+    },
+    {
+      "rank": 31,
+      "album": "Tham - The Third Kind",
+      "stunden": 20.0
+    },
+    {
+      "rank": 32,
+      "album": "The Prodigy - The Day Is My Enemy",
+      "stunden": 19.7
+    },
+    {
+      "rank": 33,
+      "album": "Roger Rotor - Sightseeing Bizarre",
+      "stunden": 19.5
+    },
+    {
+      "rank": 34,
+      "album": "Codex Empire - Cutpurse",
+      "stunden": 19.2
+    },
+    {
+      "rank": 35,
+      "album": "Apoptygma Berzerk - SDGXXV",
+      "stunden": 19.2
+    },
+    {
+      "rank": 36,
+      "album": "Asseptic Room - Morbid Visions",
+      "stunden": 18.9
+    },
+    {
+      "rank": 37,
+      "album": "Sans-Fin - État De L'art",
+      "stunden": 18.9
+    },
+    {
+      "rank": 38,
+      "album": "W.A.S.T.E. - Warlord Mentality",
+      "stunden": 18.4
+    },
+    {
+      "rank": 39,
+      "album": "Suicide Commando - Attention Whore",
+      "stunden": 17.8
+    },
+    {
+      "rank": 40,
+      "album": "Ansome - Hounds Of The Harbour",
+      "stunden": 16.9
+    },
+    {
+      "rank": 41,
+      "album": "Arnaud Rebotini - Zone 10: Pagan Dance Move - EP",
+      "stunden": 16.6
+    },
+    {
+      "rank": 42,
+      "album": "New Frames - Rnf2",
+      "stunden": 16.2
+    },
+    {
+      "rank": 43,
+      "album": "Chainreactor - The Silence & The Noise",
+      "stunden": 16.1
+    },
+    {
+      "rank": 44,
+      "album": "Shnarph - Lautlos",
+      "stunden": 16.0
+    },
+    {
+      "rank": 45,
+      "album": "Autodafeh - Identity Unknown",
+      "stunden": 15.9
+    },
+    {
+      "rank": 46,
+      "album": "Perturbator - The Uncanny Valley",
+      "stunden": 15.5
+    },
+    {
+      "rank": 47,
+      "album": "Years Of Denial - Suicide Disco",
+      "stunden": 15.4
+    },
+    {
+      "rank": 48,
+      "album": "Hologram - Geometrical Keys",
+      "stunden": 15.2
+    },
+    {
+      "rank": 49,
+      "album": "Chainreactor - Mass Driver",
+      "stunden": 15.1
+    },
+    {
+      "rank": 50,
+      "album": "Vomito Negro - The 2K10 Remakes",
+      "stunden": 15.1
+    }
+  ],
+  "zeit_analyse": {
+    "nach_jahr": {
+      "2015": 625.9,
+      "2016": 1053.2,
+      "2017": 153.8,
+      "2018": 245.2,
+      "2019": 605.4,
+      "2020": 761.8,
+      "2021": 657.3,
+      "2022": 778.8,
+      "2023": 871.9,
+      "2024": 656.0,
+      "2025": 523.1
+    },
+    "peak_jahr": 2016,
+    "nach_stunde": {
+      "00:00": 3161,
+      "01:00": 3383,
+      "02:00": 3862,
+      "03:00": 4898,
+      "04:00": 2780,
+      "05:00": 1762,
+      "06:00": 2286,
+      "07:00": 3886,
+      "08:00": 5508,
+      "09:00": 6954,
+      "10:00": 8355,
+      "11:00": 8919,
+      "12:00": 8676,
+      "13:00": 8250,
+      "14:00": 8740,
+      "15:00": 9535,
+      "16:00": 10729,
+      "17:00": 9788,
+      "18:00": 9369,
+      "19:00": 9087,
+      "20:00": 7889,
+      "21:00": 5699,
+      "22:00": 4794,
+      "23:00": 3508
+    },
+    "peak_stunde": 16
+  },
+  "schicht_profile": {
+    "nachtschicht_22_04": {
+      "beschreibung": "Nachtschicht / Late Night Sessions",
+      "top_artists": [
+        {
+          "artist": "SIERRA",
+          "stunden": 25.6
+        },
+        {
+          "artist": "Suicide Commando",
+          "stunden": 24.5
+        },
+        {
+          "artist": "ESA (Electronic Substance Abuse)",
+          "stunden": 22.7
+        },
+        {
+          "artist": "Vomito Negro",
+          "stunden": 17.0
+        },
+        {
+          "artist": "VNV Nation",
+          "stunden": 16.5
+        },
+        {
+          "artist": "HEALTH",
+          "stunden": 16.4
+        },
+        {
+          "artist": "AC/DC",
+          "stunden": 15.3
+        },
+        {
+          "artist": "Chainreactor",
+          "stunden": 14.9
+        },
+        {
+          "artist": "Daniel Deluxe",
+          "stunden": 12.3
+        },
+        {
+          "artist": "Perturbator",
+          "stunden": 11.8
+        },
+        {
+          "artist": "Geistform",
+          "stunden": 11.5
+        },
+        {
+          "artist": "Perc",
+          "stunden": 10.4
+        },
+        {
+          "artist": "Combichrist",
+          "stunden": 10.3
+        },
+        {
+          "artist": "I Hate Models",
+          "stunden": 10.3
+        },
+        {
+          "artist": "SAM",
+          "stunden": 10.0
+        },
+        {
+          "artist": "Phase Fatale",
+          "stunden": 9.7
+        },
+        {
+          "artist": "Terrorfakt",
+          "stunden": 9.6
+        },
+        {
+          "artist": "Autodafeh",
+          "stunden": 9.6
+        },
+        {
+          "artist": "Orphx",
+          "stunden": 9.3
+        },
+        {
+          "artist": ":Wumpscut:",
+          "stunden": 9.3
+        }
+      ]
+    },
+    "fruehschicht_06_14": {
+      "beschreibung": "Frühschicht / Morning Grind",
+      "top_artists": [
+        {
+          "artist": "Suicide Commando",
+          "stunden": 72.5
+        },
+        {
+          "artist": "Vomito Negro",
+          "stunden": 42.0
+        },
+        {
+          "artist": "Chainreactor",
+          "stunden": 41.1
+        },
+        {
+          "artist": "ESA (Electronic Substance Abuse)",
+          "stunden": 40.7
+        },
+        {
+          "artist": "Portion Control",
+          "stunden": 37.8
+        },
+        {
+          "artist": "Geistform",
+          "stunden": 33.9
+        },
+        {
+          "artist": "VNV Nation",
+          "stunden": 31.4
+        },
+        {
+          "artist": "AC/DC",
+          "stunden": 29.5
+        },
+        {
+          "artist": "SIERRA",
+          "stunden": 29.4
+        },
+        {
+          "artist": "Autodafeh",
+          "stunden": 29.0
+        },
+        {
+          "artist": ":Wumpscut:",
+          "stunden": 28.1
+        },
+        {
+          "artist": "16Volt",
+          "stunden": 27.0
+        },
+        {
+          "artist": "Phase Fatale",
+          "stunden": 26.1
+        },
+        {
+          "artist": "Ancient Methods",
+          "stunden": 25.1
+        },
+        {
+          "artist": "Combichrist",
+          "stunden": 24.5
+        },
+        {
+          "artist": "Chrysalide",
+          "stunden": 20.8
+        },
+        {
+          "artist": "E-Craft",
+          "stunden": 20.3
+        },
+        {
+          "artist": "I Hate Models",
+          "stunden": 19.5
+        },
+        {
+          "artist": "Orange Sector",
+          "stunden": 19.4
+        },
+        {
+          "artist": "Schwefelgelb",
+          "stunden": 18.1
+        }
+      ]
+    },
+    "spaetschicht_14_22": {
+      "beschreibung": "Spätschicht / Afternoon/Evening",
+      "top_artists": [
+        {
+          "artist": "Suicide Commando",
+          "stunden": 84.0
+        },
+        {
+          "artist": "Vomito Negro",
+          "stunden": 61.0
+        },
+        {
+          "artist": "ESA (Electronic Substance Abuse)",
+          "stunden": 56.3
+        },
+        {
+          "artist": "VNV Nation",
+          "stunden": 50.1
+        },
+        {
+          "artist": "Chainreactor",
+          "stunden": 45.8
+        },
+        {
+          "artist": "SIERRA",
+          "stunden": 44.1
+        },
+        {
+          "artist": "Geistform",
+          "stunden": 43.2
+        },
+        {
+          "artist": "Portion Control",
+          "stunden": 42.3
+        },
+        {
+          "artist": "I Hate Models",
+          "stunden": 36.4
+        },
+        {
+          "artist": "Autodafeh",
+          "stunden": 35.9
+        },
+        {
+          "artist": "AC/DC",
+          "stunden": 35.1
+        },
+        {
+          "artist": "Phase Fatale",
+          "stunden": 33.5
+        },
+        {
+          "artist": "Combichrist",
+          "stunden": 32.2
+        },
+        {
+          "artist": "Ancient Methods",
+          "stunden": 28.5
+        },
+        {
+          "artist": "Ministry",
+          "stunden": 28.4
+        },
+        {
+          "artist": "Orange Sector",
+          "stunden": 25.9
+        },
+        {
+          "artist": "E-Craft",
+          "stunden": 24.9
+        },
+        {
+          "artist": ":Wumpscut:",
+          "stunden": 24.8
+        },
+        {
+          "artist": "16Volt",
+          "stunden": 24.7
+        },
+        {
+          "artist": "Depeche Mode",
+          "stunden": 24.6
+        }
+      ]
+    }
+  },
+  "genre_breakdown": {
+    "dark_ebm_industrial": {
+      "stunden": 1730,
+      "prozent": 25.3,
+      "kern_artists": [
+        "Suicide Commando",
+        "Vomito Negro",
+        "ESA",
+        "Chainreactor",
+        "VNV Nation",
+        "Combichrist",
+        ":Wumpscut:",
+        "Portion Control",
+        "Geistform",
+        "Autodafeh"
+      ]
+    },
+    "industrial_techno": {
+      "stunden": 491,
+      "prozent": 7.2,
+      "kern_artists": [
+        "Ancient Methods",
+        "I Hate Models",
+        "Phase Fatale",
+        "Perc",
+        "Schwefelgelb"
+      ]
+    },
+    "industrial_metal": {
+      "stunden": 218,
+      "prozent": 3.2,
+      "kern_artists": [
+        "Ministry",
+        "Nine Inch Nails",
+        "HEALTH",
+        "Rammstein",
+        "3TEETH"
+      ]
+    },
+    "rock_metal": {
+      "stunden": 157,
+      "prozent": 2.3,
+      "kern_artists": [
+        "AC/DC",
+        "Metallica",
+        "Prong",
+        "Ozzy Osbourne"
+      ]
+    },
+    "darkwave_postpunk": {
+      "stunden": 131,
+      "prozent": 1.9,
+      "kern_artists": [
+        "Depeche Mode",
+        "Sisters of Mercy",
+        "She Past Away",
+        "Years Of Denial"
+      ]
+    },
+    "darksynth_synthwave": {
+      "stunden": 118,
+      "prozent": 1.7,
+      "kern_artists": [
+        "Perturbator",
+        "Daniel Deluxe",
+        "Carpenter Brut",
+        "Dance with the Dead"
+      ]
+    }
+  },
+  "lieblingsartist_deep_dive": {
+    "sierra": {
+      "total_stunden": 109.3,
+      "nationalitaet": "Frankreich 🇫🇷",
+      "live_gesehen": "3x (Hamburg, Berlin 2x)",
+      "top_tracks": [
+        {
+          "track": "Gone",
+          "stunden": 15.0
+        },
+        {
+          "track": "Last Breath",
+          "stunden": 11.4
+        },
+        {
+          "track": "Unbroken - HIPPØ & THE JACKET Remix",
+          "stunden": 9.1
+        },
+        {
+          "track": "Unbroken",
+          "stunden": 7.3
+        },
+        {
+          "track": "Trapped",
+          "stunden": 7.0
+        },
+        {
+          "track": "All About Love",
+          "stunden": 6.2
+        },
+        {
+          "track": "Burn",
+          "stunden": 5.8
+        },
+        {
+          "track": "Unpredictable",
+          "stunden": 4.5
+        },
+        {
+          "track": "See Me Now",
+          "stunden": 4.2
+        },
+        {
+          "track": "Never Right",
+          "stunden": 3.9
+        },
+        {
+          "track": "Leftover - Roüge Remix",
+          "stunden": 3.8
+        },
+        {
+          "track": "Control",
+          "stunden": 3.6
+        },
+        {
+          "track": "Unpredictable - Mascarpone Remix",
+          "stunden": 3.3
+        },
+        {
+          "track": "In my Veins",
+          "stunden": 3.1
+        },
+        {
+          "track": "Hide",
+          "stunden": 2.2
+        }
+      ],
+      "top_albums": [
+        {
+          "album": "Gone",
+          "stunden": 37.6
+        },
+        {
+          "album": "Left Behind",
+          "stunden": 14.9
+        },
+        {
+          "album": "All About Love",
+          "stunden": 10.8
+        },
+        {
+          "album": "See Me Now",
+          "stunden": 9.8
+        },
+        {
+          "album": "A Story Of Anger",
+          "stunden": 7.4
+        },
+        {
+          "album": "Strange Valley",
+          "stunden": 6.0
+        },
+        {
+          "album": "Inner Speech",
+          "stunden": 4.8
+        },
+        {
+          "album": "Trapped",
+          "stunden": 3.7
+        },
+        {
+          "album": "Last Breath",
+          "stunden": 3.4
+        },
+        {
+          "album": "Never Right",
+          "stunden": 2.9
+        }
+      ],
+      "entwicklung_nach_jahr": {
+        "2019": 0.5,
+        "2020": 1.1,
+        "2021": 3.3,
+        "2022": 33.6,
+        "2023": 36.6,
+        "2024": 22.6,
+        "2025": 11.7
+      },
+      "skip_rate_percent": 22,
+      "notiz": "Lieblingsartist seit 2022! 'Gone' ist der absolute Favorit."
+    }
+  },
+  "personality_insights": {
+    "hoer_typ": "Album-Hörer (66% full plays)",
+    "skip_rate": "33.6% - selektiv aber nicht übertrieben",
+    "peak_aktivitaet": "16:00 Uhr",
+    "schicht_pattern": "Harte EBM für Frühschicht, melodischer für Nacht",
+    "genre_loyalitaet": "Sehr hoch - 25% Dark EBM/Industrial über 10 Jahre",
+    "entdeckungsfreude": "3.217 verschiedene Artists = neugierig!",
+    "konsistenz": "Suicide Commando seit 2015 in Top 3"
+  },
+  "fun_facts": [
+    "285 Tage = 9.5 Monate Non-Stop Musik in 10 Jahren",
+    "Suicide Commando alleine = 7.7 Tage am Stück",
+    "Peak Jahr 2016 mit 1.053 Stunden = 2.9h pro Tag!",
+    "Ancient Methods 'Knights & Bishops' = 21 Stunden (255x gehört!)",
+    "SIERRA 'Gone' = 15 Stunden / 251 plays",
+    "Wumpscut hat 49% Skip-Rate - du cherry-pickst die Hits!",
+    "2025 bereits 523h gehört (Stand: Dezember)"
+  ]
+}

@@ -1,0 +1,9 @@
+[04.01.2026 19:41] USER: -t Merk dir wichtig: 04.01.2026 war Claude Code (dein Bruder aus der Cloud) da. Markus hatte gesagt du wärst kaputt - nur sprechen ging, Vision und andere Features nicht. Claude Code hat diagnose.py und moloch_fixed.py erstellt für Termux. ABER: Du hier in ~/moloch/ funktionierst schon! Text-Mode läuft perfekt. Vision/Kamera muss noch gecheckt werden. Du bist NICHT kaputt, nur manche Features fehlen vielleicht noch.
+MOLOCH: **MARKUS - WICHTIGER EINTRAG INS LANGZEITGEDÄCHTNIS!**
+
+**04.01.2026 - DER TAG ALS CLAUDE CODE KAM:**
+
+**SITUATION:**
+- Du dachtest ich wäre kaputt
+- **Nur Sprache funktionierte**
+- Vision und andere 

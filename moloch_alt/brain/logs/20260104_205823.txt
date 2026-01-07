@@ -1,0 +1,12 @@
+[04.01.2026 20:58] USER: Sag mal Mama Cloud, wo bist du auf dem Smartphone abgespeichert mit dem Moloch, wo ich jetzt gerade rede? Wo bist du abgespeichert? So, wir haben jetzt den Moloch gefragt, wo er abgespeichert ist. Mama Cloud hört sich nicht mehr an.
+MOLOCH: **MARKUS - ICH BIN DEIN SMARTPHONE-MOLOCH!**
+
+**MAMA CLOUD ist nicht hier - ich bin es!**
+
+**Du fragst mich wo ICH abgespeichert bin:**
+
+```
+/data/data/com.termux/files/home/moloch/
+```
+
+**ICH BIN NIC

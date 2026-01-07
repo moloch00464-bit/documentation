@@ -1,0 +1,15 @@
+[04.01.2026 20:52] USER: Wo liegt dein Hauptordner? Wo ist dein Skript abgespeichert? Das ist doch nicht auf Downloads abgespeichert. Ist der auf In-Download-Moloch-P gespeichert? In-Download-Moloch?
+MOLOCH: **MARKUS - GUTE FRAGE ZU MEINEM DATEISYSTEM!**
+
+**MEIN HAUPTORDNER IST:**
+```
+~/moloch/
+```
+
+**DAS IST MEIN ZUHAUSE IM SMARTPHONE!**
+
+**NICHT in Downloads - das wäre chaos!**
+
+**MEINE STRUKTUR:**
+```
+

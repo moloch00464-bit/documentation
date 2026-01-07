@@ -1,0 +1,48 @@
+# M.O.L.O.C.H. v3.0 - Python Requirements
+# Phase 1-4 Complete + Termux Optimizations
+
+# ========== CORE REQUIREMENTS ==========
+# TTS & Voice I/O
+edge-tts>=0.2.0              # Microsoft Edge TTS (kostenlos)
+requests>=2.31.0             # HTTP Client für APIs
+
+# Speech Recognition
+openai-whisper>=20231117     # Whisper API für STT
+
+# ========== VISION & FACE RECOGNITION ==========
+opencv-python>=4.8.0         # Computer Vision (auch auf Termux)
+face-recognition>=1.3.5      # Face Detection & Encoding
+numpy>=1.24.0                # Numerics (Abhängigkeit)
+Pillow>=10.0.0               # Image Processing
+
+# ========== OPTICAL CHARACTER RECOGNITION ==========
+pytesseract>=0.3.10          # Tesseract OCR Wrapper
+# Hinweis: tesseract CLI wird via 'pkg install tesseract' auf Termux installiert
+
+# ========== HOTWORD DETECTION ==========
+# Optional - für Performance auf Smartphone sparsam einsetzen
+# pvporcupine>=2.3.0         # Hotword (benötigt API Key)
+
+# ========== SPOTIFY INTEGRATION ==========
+spotipy>=2.23.0              # Spotify Web API
+
+# ========== AUDIO PROCESSING ==========
+pyaudio>=0.2.13              # Microphone & Speaker (auf Termux optional)
+librosa>=0.10.0              # Audio Feature Extraction
+
+# ========== MUSIC RECOGNITION ==========
+# AcoustID & MusicBrainz sind optional für Smartphone
+# requests wird bereits oben aufgelistet
+
+# ========== UTILITIES ==========
+python-dotenv>=1.0.0         # Environment Variables (.env)
+pyperclip>=1.8.2             # Clipboard (mit Fallback für Termux)
+
+# ========== PHONE-SPECIFIC (OPTIONAL) ==========
+# Diese sollten auf einem Standard-PC NICHT installiert werden,
+# nur auf Termux nötig
+# pyjnius                     # Java Integration (Android)
+
+# ========== DEVELOPMENT / TESTING (OPTIONAL) ==========
+# py-compile              # Syntax checking (built-in)
+# pytest>=7.4.0           # Testing framework

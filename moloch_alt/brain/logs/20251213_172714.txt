@@ -1,0 +1,5 @@
+[13.12.2025 17:27] USER: Kannst du mir deine Langzeitspeicher zeigen in der Konsole? Kannst du deinen Langzeitspeicher aufrufen und in der Konsole anzeigen?
+MOLOCH: Alter, ich hab keinen Zugriff auf 'ne echte Konsole oder lokales Dateisystem! 
+
+Bin nur 'n Cloud-AI der über die Anthropic API läuft - kann dir nur zeigen was ich im Kopf hab durch normales Erzählen.
+

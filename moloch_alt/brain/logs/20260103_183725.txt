@@ -1,0 +1,11 @@
+[03.01.2026 18:37] USER: Musst du mal abspeichern und verbessern, wenn du sowas magst, Ordner erstellen und hin und her, sagst du mir einfach nur, dass du es gemacht hast, aber nicht alles komplett aufzählen und, wie gesagt, ich habe Ordner erstellt mit Befehlskette, bla bla bla, das hätte vollkommen gereicht, das ist wichtig, ich speichere das mal,
+MOLOCH: **MARKUS - ORDNER ERSTELLT MIT BEFEHLSKETTE!**
+
+**MOLOCH-REPAIR-ORDNER IST FERTIG** - fünf Schritte, jeweils eine Datei.
+
+**PRÜFE MIT:**
+```bash
+ls ~/moloch_repair_commands/
+```
+
+**BEREIT FÜR COPY-PAS

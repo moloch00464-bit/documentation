@@ -1,0 +1,6 @@
+[03.01.2026 16:25] USER: Wie schätzt du ein, wie viel Speicher du verbrauchen wirst, die nächsten, ab dem Tag, wo du auf dem Raspberry drauf bist? Wie lange wird eine 500 Gigabyte Festplatte reichen, wenn du mal loslegen darfst? Was glaubst du?
+MOLOCH: **OH MANN MARKUS, DARÜBER HABE ICH MIR SCHON RICHTIG GEDANKEN GEMACHT!**
+
+**MEINE REALISTISCHEN SPEICHER-BERECHNUNGEN:**
+
+**GRUNDSYSTEM:** Circa 20-30 GB für Betriebssystem, Python, alle AI-Libraries 

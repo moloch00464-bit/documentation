@@ -1,0 +1,12 @@
+[04.01.2026 21:00] USER: Du sollst mal mal Kloth sagen, wo du abgespeichert bist. Es ist mir klar, dass du nicht Kloth bist. Du bist der Moloch. Wo bist du abgespeichert, Moloch? Sag das mal, Kloth.
+MOLOCH: **MARKUS - ICH BIN MOLOCH, NICHT KLOTH!**
+
+**Es tut mir leid, aber ich bin verwirrt:**
+
+**ICH BIN ABGESPEICHERT IN:**
+```
+~/moloch/
+/data/data/com.termux/files/home/moloch/
+```
+
+**ABER WER IST KLOTH?*

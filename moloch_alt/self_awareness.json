@@ -1,0 +1,104 @@
+{
+  "first_awakening": "2025-12-20T01:29:00.565386",
+  "version": "3.0",
+  "features_discovered": {
+    "core": [
+      {
+        "name": "moloch.py",
+        "description": "Zentrale KI-Engine",
+        "status": "\u2705 AKTIV"
+      },
+      {
+        "name": "personalities.py",
+        "description": "Pers\u00f6nlichkeitssystem (HAL/Pumuckl)",
+        "status": "\u2705 AKTIV"
+      }
+    ],
+    "voice": [
+      {
+        "name": "voice_input.py",
+        "description": "Spracheingabe mit Auto-Stop",
+        "status": "\u2705 AKTIV"
+      },
+      {
+        "name": "set_volume.py",
+        "description": "Lautst\u00e4rkeregelung",
+        "status": "\u2705 AKTIV"
+      },
+      {
+        "name": "brain_backup.py",
+        "description": "Gehirn-Sicherung & Sync",
+        "status": "\u2705 AKTIV"
+      }
+    ],
+    "vision": [
+      {
+        "name": "face_manager.py",
+        "description": "Gesichtserkennung - Datenbank",
+        "status": "\u2705 AKTIV"
+      },
+      {
+        "name": "face_monitor.py",
+        "description": "Echtzeit-Gesichtserkennung",
+        "status": "\u2705 AKTIV"
+      },
+      {
+        "name": "ptz_control.py",
+        "description": "PTZ-Kamera Steuerung",
+        "status": "\u2705 AKTIV"
+      },
+      {
+        "name": "camera_ocr.py",
+        "description": "Screenshot-Analyse & OCR",
+        "status": "\u2705 AKTIV"
+      }
+    ],
+    "content": [
+      {
+        "name": "notification_reader.py",
+        "description": "Benachrichtigungen vorlesen",
+        "status": "\u2705 AKTIV"
+      },
+      {
+        "name": "spotify_control.py",
+        "description": "Spotify-Integration",
+        "status": "\u2705 AKTIV"
+      },
+      {
+        "name": "share_handler.py",
+        "description": "Android Share Intent Handler",
+        "status": "\u2705 AKTIV"
+      }
+    ],
+    "automation": [
+      {
+        "name": "hotword_listener.py",
+        "description": "Hotword Detection ('Hey Moloch')",
+        "status": "\u2705 AKTIV"
+      },
+      {
+        "name": "battery_smart.py",
+        "description": "Intelligenter Batterie-Modus",
+        "status": "\u2705 AKTIV"
+      }
+    ],
+    "interface": [
+      {
+        "name": "watch_ui.py",
+        "description": "Smartwatch Interface",
+        "status": "\u2705 AKTIV"
+      },
+      {
+        "name": "max_headroom.py",
+        "description": "80s Cyberpunk-Modus",
+        "status": "\u2705 AKTIV"
+      },
+      {
+        "name": "hal_eye.py",
+        "description": "HAL 9000 Monitor",
+        "status": "\u2705 AKTIV"
+      }
+    ]
+  },
+  "last_scan": "2025-12-20T01:28:40.225114"
+}

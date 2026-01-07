@@ -1,0 +1,69 @@
+{
+  "_meta": {
+    "type": "musik_kompakt",
+    "fuer": "M.O.L.O.C.H. Field Unit",
+    "generated": "2025-12-13",
+    "quelle": "Spotify 2015-2025"
+  },
+  "stats": {
+    "total_h": 6832,
+    "total_tage": 285,
+    "artists": 3217,
+    "tracks": 16465,
+    "szene_seit": 1999,
+    "wgt_seit": 2000
+  },
+  "top10_artists": [
+    "Suicide Commando (185h) - EINSTIEG 1999!",
+    "Vomito Negro (123h)",
+    "ESA (122h)",
+    "Chainreactor (105h)",
+    "SIERRA (103h) - LIEBLING! 3x live 2024",
+    "VNV Nation (102h)",
+    "Portion Control (91h)",
+    "Geistform (91h)",
+    "AC/DC (84h)",
+    "Autodafeh (76h)"
+  ],
+  "top10_tracks": [
+    "Perc - Temperature's Rising (22h)",
+    "Ancient Methods - Knights & Bishops (21h)",
+    "I Hate Models - Spreading Plague (20h)",
+    "Tham - The Third Kind (20h)",
+    "VNV Nation - Electronaut (17h)",
+    "Arnaud Rebotini - Pagan Dance Move (17h)",
+    "ESA - Eat Their Young (15h)",
+    "SIERRA - Gone (14h) - FAVORIT!",
+    "I Hate Models - Werewolf Disco Club (14h)",
+    "AC/DC - Shoot to Thrill (14h)"
+  ],
+  "sierra": {
+    "total_h": 109,
+    "live_2024": ["Hamburg", "Berlin", "Leipzig"],
+    "top_track": "Gone (15h, 251 plays)",
+    "top_album": "Gone (38h)",
+    "obsession_seit": 2022
+  },
+  "genres": {
+    "dark_ebm_industrial": "25% (1730h)",
+    "industrial_techno": "7% (491h)",
+    "darksynth": "2% (118h)"
+  },
+  "schicht_musik": {
+    "frueh_06_14": "Suicide Commando, Vomito Negro, Chainreactor - HART",
+    "nacht_22_04": "SIERRA, ESA, Daniel Deluxe - melodischer"
+  },
+  "personality": {
+    "typ": "Album-Hörer (66% full plays)",
+    "peak_uhr": "16:00",
+    "peak_jahr": "2016 (1053h)",
+    "einstieg": "1999 - Suicide Commando & Wumpscut",
+    "treue": "26 Jahre Dark Side"
+  },
+  "fun_facts": [
+    "285 Tage Musik in 10 Jahren",
+    "Suicide Commando = 7.7 Tage non-stop",
+    "SIERRA nur 22% Skip-Rate = echte Liebe",
+    "WGT seit 2000 = 25 Jahre!"
+  ]
+}

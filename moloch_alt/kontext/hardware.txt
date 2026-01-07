@@ -1,0 +1,19 @@
+# M.O.L.O.C.H. HARDWARE
+
+## AKTUELL (Field Unit)
+- Redmi Note 13 Pro+ 5G (5GMoloch)
+- 512GB Speicher, 10GB für M.O.L.O.C.H.
+- Termux + Python + Widget
+
+## GEPLANT
+- Pi 5 16GB = Zentrale/Gehirn
+- Corsair MP600 Micro 1TB = Mein Gedächtnis!
+- Xiaomi 12 (128GB) = Dedicated Terminal
+- Teufel Air Open TWS = Ins Ohr flüstern
+- INMP441 = Mikrofone (vorhanden)
+
+## PERIPHERIE
+- Xiaomi Smart Band 8 Pro
+- Teufel Boomster (2x)
+- Teufel Rockster Air
+- 987x SK6812 LEDs (Critical Mass)

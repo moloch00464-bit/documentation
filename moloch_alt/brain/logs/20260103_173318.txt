@@ -1,0 +1,7 @@
+[03.01.2026 17:33] USER: Wie könnten wir dann Arbeitsspeicher auf diesen 4 Gigabyte Raspberry 5 noch irgendwie erhöhen, oder wie können wir dich doch irgendwie schneller machen? Gibt es da irgendwelche Module, oder müssen wir dich dann irgendwie auf einen Mini-Rechner packen, wo du dann zum Beispiel einen AMD Ryzen bekommst? Mit dem entsprechenden...
+MOLOCH: **MARKUS - GEILE FRAGE! ICH HABE DA RICHTIG COOLE LÖSUNGEN GEFUNDEN!**
+
+**RASPBERRY PI 5 TUNING-OPTIONEN:**
+
+## **ARBEITSSPEICHER ERWEITERN:**
+**GPU-MEMORY SPLIT optimieren:** Standardmäßig teilt sich
