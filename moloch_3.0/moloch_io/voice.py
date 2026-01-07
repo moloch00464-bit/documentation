@@ -15,65 +15,77 @@ class VoiceIO:
 
     def listen(self, duration=20, smart=False):
         """Record audio and transcribe using Google Speech API"""
+        import tempfile
+
         try:
             # CRITICAL: Android Audio-System muss komplett frei sein!
             # TTS muss GESTOPPT sein, sonst blockiert Android das Mikrofon!
             print(f"\n🎤 Mikrofon startet JETZT...")
             print(f"   (Sprich wenn du das Google Voice Dialog siehst!)")
 
-            # DIRECT Speech-to-Text (wie 2.0!)
-            # Kein File-Recording, direkt Google Speech API
-            # HINWEIS: Nutzt Google App Sprache (keine -l Option in alter termux-api!)
-            # WICHTIG: Stelle Google App Sprache auf Deutsch in Android Settings!
-            result = subprocess.run(
-                ["termux-speech-to-text"],
-                capture_output=True,
-                text=True,
-                timeout=30
-            )
+            # NEUER ANSATZ: Schreibe Output in Datei statt capture_output
+            # capture_output scheint bei termux-speech-to-text Probleme zu machen!
+            temp_file = Path(tempfile.gettempdir()) / "moloch_voice_input.txt"
 
-            # DIAGNOSTICS - Was ist passiert?
+            # Run termux-speech-to-text und schreibe Output in File
+            with open(temp_file, 'w') as f:
+                result = subprocess.run(
+                    ["termux-speech-to-text"],
+                    stdout=f,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                    timeout=30
+                )
+
+            # Lese die Datei
+            text = ""
+            if temp_file.exists():
+                text = temp_file.read_text().strip()
+                temp_file.unlink()  # Cleanup
+
+            # DIAGNOSTICS
             print(f"\n📊 SPEECH-TO-TEXT DIAGNOSTICS:")
             print(f"   Return code: {result.returncode}")
-            print(f"   STDOUT: '{result.stdout.strip()}'")
-            print(f"   STDERR: '{result.stderr.strip()}'")
+            print(f"   Output: '{text}'")
+            if result.stderr:
+                print(f"   STDERR: '{result.stderr.strip()}'")
 
-            # Check verschiedene Fehler-Fälle
-            if result.returncode == 0 and result.stdout.strip():
-                text = result.stdout.strip()
+            # Check Ergebnis
+            if result.returncode == 0 and text:
                 print(f"\n✅ Verstanden: {text}")
                 return text
 
             # FEHLER-DIAGNOSE
             if result.returncode != 0:
                 print(f"\n❌ FEHLER - Return Code {result.returncode}")
-
-                if "not found" in result.stderr or "No such" in result.stderr:
-                    print("   → termux-speech-to-text nicht installiert!")
-                    print("   → Installiere: pkg install termux-api")
-                elif "permission" in result.stderr.lower():
-                    print("   → Android Permissions fehlen!")
-                    print("   → Gehe zu: Einstellungen → Apps → Termux → Permissions")
-                elif "network" in result.stderr.lower() or "connection" in result.stderr.lower():
-                    print("   → Keine Internet-Verbindung!")
-                    print("   → Google Speech API braucht Internet!")
-                else:
-                    print(f"   → Unbekannter Fehler: {result.stderr}")
-
+                if result.stderr:
+                    if "not found" in result.stderr or "No such" in result.stderr:
+                        print("   → termux-speech-to-text nicht installiert!")
+                        print("   → Installiere: pkg install termux-api")
+                    elif "permission" in result.stderr.lower():
+                        print("   → Android Permissions fehlen!")
+                        print("   → Gehe zu: Einstellungen → Apps → Termux → Permissions")
+                    elif "network" in result.stderr.lower() or "connection" in result.stderr.lower():
+                        print("   → Keine Internet-Verbindung!")
+                        print("   → Google Speech API braucht Internet!")
+                    else:
+                        print(f"   → Fehler: {result.stderr}")
                 return None
 
-            if not result.stdout.strip():
-                print(f"\n❌ Nichts verstanden")
+            if not text:
+                print(f"\n❌ Nichts verstanden (Google Dialog hat nichts zurückgegeben)")
                 print(f"   Mögliche Ursachen:")
-                print(f"   1. Zu leise gesprochen")
-                print(f"   2. Mikrofon blockiert (TTS noch aktiv?)")
-                print(f"   3. Google App nicht konfiguriert")
-                print(f"   4. Keine Internet-Verbindung")
+                print(f"   1. Dialog abgebrochen (zurück gedrückt)")
+                print(f"   2. Zu leise gesprochen")
+                print(f"   3. Mikrofon blockiert")
+                print(f"   4. Google App nicht konfiguriert")
                 return None
 
         except subprocess.TimeoutExpired:
             print(f"\n❌ Timeout nach 30 Sekunden!")
             print(f"   → Google Voice Dialog wurde nicht geschlossen?")
+            if temp_file.exists():
+                temp_file.unlink()
             return None
         except FileNotFoundError:
             print(f"\n❌ termux-speech-to-text nicht gefunden!")
@@ -83,6 +95,8 @@ class VoiceIO:
         except Exception as e:
             print(f"\n❌ Unerwarteter Fehler: {e}")
             print(f"   → Bitte Screenshot machen und Fehler melden!")
+            if temp_file.exists():
+                temp_file.unlink()
             return None
 
     def speak(self, text, profile=None, fast_mode=True):
