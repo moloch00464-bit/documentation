@@ -11,6 +11,7 @@ import base64
 import signal
 import json
 import time
+import subprocess
 from pathlib import Path
 from datetime import datetime
 
@@ -696,8 +697,14 @@ Vision Mode:
         voice.speak("Moment, lass mich gucken")  # Fast Mode (default)
 
         # WICHTIG: Warte bis TTS WIRKLICH fertig gesprochen hat!
+        # Android blockiert Kamera wenn TTS noch läuft!
         print("⏳ Warte bis TTS fertig ist...")
-        time.sleep(5.0)
+        time.sleep(6.0)  # Länger warten (6 Sekunden)
+
+        # TTS explizit stoppen (falls noch läuft) - WICHTIG für Android!
+        subprocess.run(["termux-tts-speak", "-e"], timeout=2, capture_output=True, stderr=subprocess.DEVNULL)
+        time.sleep(0.5)  # Kurze Pause nach TTS-Stop
+
         print("📸 BEREIT - Kamera startet JETZT!")
 
         # Take photo
@@ -781,10 +788,14 @@ Vision Mode:
         voice.speak("Ja, Alter? Was brauchst du?")  # Fast Mode (default)
 
         # WICHTIG: Warte bis TTS WIRKLICH fertig gesprochen hat!
-        # Text hat ca. 7 Wörter, dauert ca. 4-5 Sekunden bei normaler Sprechgeschwindigkeit
-        # + 1-2 Sekunden Puffer für TTS Engine Verzögerung
+        # Android blockiert Speech-to-Text wenn TTS noch läuft!
         print("⏳ Warte bis TTS fertig ist...")
-        time.sleep(6.0)
+        time.sleep(7.0)  # Länger warten (7 Sekunden)
+
+        # TTS explizit stoppen (falls noch läuft) - WICHTIG für Android!
+        subprocess.run(["termux-tts-speak", "-e"], timeout=2, capture_output=True, stderr=subprocess.DEVNULL)
+        time.sleep(0.5)  # Kurze Pause nach TTS-Stop
+
         print("🎙️  BEREIT - Aufnahme startet JETZT!")
 
         # Listen (20 seconds fixed - NO PAUSE DETECTION!)
