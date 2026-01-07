@@ -698,8 +698,9 @@ Vision Mode:
 
         # WICHTIG: Warte bis TTS WIRKLICH fertig gesprochen hat!
         # Android blockiert Kamera wenn TTS noch läuft!
+        # Satz dauert ca. 1.5-2s + TTS Engine Start/Stop ca. 1s = 3.5s total
         print("⏳ Warte bis TTS fertig ist...")
-        time.sleep(6.0)  # Länger warten (6 Sekunden)
+        time.sleep(3.5)
 
         # TTS explizit stoppen (falls noch läuft) - WICHTIG für Android!
         subprocess.run(["termux-tts-speak", "-e"], timeout=2, capture_output=True, stderr=subprocess.DEVNULL)
@@ -789,8 +790,9 @@ Vision Mode:
 
         # WICHTIG: Warte bis TTS WIRKLICH fertig gesprochen hat!
         # Android blockiert Speech-to-Text wenn TTS noch läuft!
+        # Satz dauert ca. 2-3s + TTS Engine Start/Stop ca. 1s = 4s total
         print("⏳ Warte bis TTS fertig ist...")
-        time.sleep(7.0)  # Länger warten (7 Sekunden)
+        time.sleep(4.0)
 
         # TTS explizit stoppen (falls noch läuft) - WICHTIG für Android!
         subprocess.run(["termux-tts-speak", "-e"], timeout=2, capture_output=True, stderr=subprocess.DEVNULL)
