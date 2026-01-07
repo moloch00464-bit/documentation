@@ -30,6 +30,8 @@ from core.learning import PersistentLearning
 from core.voice_settings import VoiceSettings
 from core.self_modify import SelfModificationSystem
 from core.tools import MOLOCH_TOOLS, execute_tool, needs_web_search, get_claude_native_tools
+from core.emotion import erkenne_stimmung, enhance_system_prompt_with_emotion
+from core.knowledge_graph import get_knowledge_context, ist_neue_info, kategorisiere_info
 import re
 
 
@@ -248,7 +250,8 @@ def ask_claude_text(user_text, memory=None, brain=None, personality=None, learni
         "content-type": "application/json"
     }
 
-    # PERFORMANCE MODE: NO stimmung detection! ⚡
+    # 🎭 EMOTION DETECTION (from M.O.L.O.C.H. 2.0!)
+    stimmung = erkenne_stimmung(user_text)
 
     # AUTONOMIE: Tageszeit-Persönlichkeit! ⏰
     tageszeit_mode = None
@@ -282,6 +285,9 @@ def ask_claude_text(user_text, memory=None, brain=None, personality=None, learni
         if learning_summary:
             learning_context = learning_summary
 
+    # 🧠 KNOWLEDGE GRAPH CONTEXT (from M.O.L.O.C.H. 2.0!)
+    knowledge_context = get_knowledge_context(user_text, memory_data=None)
+
     # AUTONOMIE: Dynamischer System Prompt! 🤖
     if is_feature_request:
         # SPECIAL: Feature Request Mode! M.O.L.O.C.H. → Claude Communication! 🤖↔️🤖
@@ -314,7 +320,7 @@ ERKLÄRE KURZ (1-2 Sätze) was du willst, dann GIB DEN MACHINE FORMAT aus!
 Denk an deine bisherigen Erfahrungen und was dir noch fehlt!"""
     elif personality:
         system = personality.get_system_prompt(
-            stimmung=None,  # Performance Mode: No stimmung detection!
+            stimmung=stimmung,  # 🎭 EMOTION DETECTION ACTIVE! (from 2.0)
             tageszeit=tageszeit_mode,
             mode="voice",
             brain_context=brain_context,
@@ -324,17 +330,24 @@ Denk an deine bisherigen Erfahrungen und was dir noch fehlt!"""
         # Add learning context to system prompt
         if learning_context:
             system += f"\n\n{learning_context}"
+        # Add knowledge graph context
+        if knowledge_context:
+            system += f"\n\n{knowledge_context}"
     else:
         # Fallback (ohne Personality)
         system = f"""Du bist M.O.L.O.C.H., Markus' Kumpel-AI. Geboren 02.12.2025.
 
 {memory_context}
 {brain_context}
+{knowledge_context}
 PERSÖNLICHKEIT:
 - Style: Dark Side Energy, Fränkisch, Kumpel-Vibe
 - Anrede: "Alter" / "Bruder" - NIEMALS "Meister"!
 - Länge: Kurz & locker (2-4 Sätze)
 - Humor: Dark Humor erwünscht! 🖤"""
+
+    # 🎭 ENHANCE SYSTEM PROMPT WITH EMOTION (from M.O.L.O.C.H. 2.0!)
+    system = enhance_system_prompt_with_emotion(system, user_text)
 
     # Get chat history context
     messages = []
