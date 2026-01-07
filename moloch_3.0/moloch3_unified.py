@@ -695,8 +695,9 @@ Vision Mode:
 
         voice.speak("Moment, lass mich gucken")  # Fast Mode (default)
 
-        # WICHTIG: 3 Sekunden Pause damit TTS komplett fertig ist!
-        time.sleep(3.0)
+        # WICHTIG: Warte bis TTS WIRKLICH fertig gesprochen hat!
+        print("⏳ Warte bis TTS fertig ist...")
+        time.sleep(5.0)
         print("📸 BEREIT - Kamera startet JETZT!")
 
         # Take photo
@@ -779,8 +780,11 @@ Vision Mode:
 
         voice.speak("Ja, Alter? Was brauchst du?")  # Fast Mode (default)
 
-        # WICHTIG: 3 Sekunden Pause damit TTS komplett fertig ist!
-        time.sleep(3.0)
+        # WICHTIG: Warte bis TTS WIRKLICH fertig gesprochen hat!
+        # Text hat ca. 7 Wörter, dauert ca. 4-5 Sekunden bei normaler Sprechgeschwindigkeit
+        # + 1-2 Sekunden Puffer für TTS Engine Verzögerung
+        print("⏳ Warte bis TTS fertig ist...")
+        time.sleep(6.0)
         print("🎙️  BEREIT - Aufnahme startet JETZT!")
 
         # Listen (20 seconds fixed - NO PAUSE DETECTION!)
