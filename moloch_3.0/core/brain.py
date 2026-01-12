@@ -190,19 +190,60 @@ class Brain:
             print(f"❌ Brain save error ({kategorie}/{dateiname}): {e}")
             return False
 
+    def _normalize_data(self, data: Dict, kategorie: str, dateiname: str) -> Dict:
+        """
+        Normalize data to 3.0 format (backward compatible with 2.0)
+
+        M.O.L.O.C.H. 2.0 Format:
+            {"name": "Rebecca", "details": "..."}
+
+        M.O.L.O.C.H. 3.0 Format:
+            {
+                "content": {"name": "Rebecca", "details": "..."},
+                "metadata": {"created": "...", "updated": "...", ...}
+            }
+
+        Args:
+            data: Raw data from JSON file
+            kategorie: Category for metadata
+            dateiname: Filename for metadata
+
+        Returns:
+            Data in 3.0 format
+        """
+        # Check if already in 3.0 format
+        if "content" in data and "metadata" in data:
+            return data
+
+        # Convert 2.0 → 3.0 (in-memory only, don't modify file)
+        return {
+            "content": data,
+            "metadata": {
+                "created": "unknown",  # Can't know original creation time
+                "updated": "unknown",
+                "category": kategorie,
+                "filename": dateiname,
+                "migrated_from_2_0": True  # Flag for tracking
+            }
+        }
+
     def read(self, kategorie: str, dateiname: str) -> Optional[Dict]:
         """
-        Read from Brain Tree
+        Read from Brain Tree (BACKWARD COMPATIBLE with 2.0)
 
         Args:
             kategorie: Category path
             dateiname: Filename
 
         Returns:
-            Content dict or None
+            Content dict in 3.0 format or None
 
         Example:
             data = brain.read("wer/freunde", "rebecca.json")
+
+        Note:
+            Automatically converts 2.0 data to 3.0 format in-memory
+            (does not modify the original file)
         """
         try:
             # Sanitize filename (SECURITY FIX)
@@ -214,7 +255,10 @@ class Brain:
                 return None
 
             with open(file_path, "r", encoding="utf-8") as f:
-                return json.load(f)
+                data = json.load(f)
+
+            # Normalize to 3.0 format (BACKWARD COMPATIBILITY)
+            return self._normalize_data(data, kategorie, dateiname)
 
         except Exception as e:
             print(f"⚠️ Brain read error ({kategorie}/{dateiname}): {e}")
@@ -222,14 +266,14 @@ class Brain:
 
     def find(self, query: str, kategorie: Optional[str] = None) -> List[Dict]:
         """
-        Search in Brain Tree
+        Search in Brain Tree (BACKWARD COMPATIBLE with 2.0)
 
         Args:
             query: Search query (case-insensitive)
             kategorie: Optional category to search in (searches all if None)
 
         Returns:
-            List of matching entries
+            List of matching entries in 3.0 format
 
         Example:
             results = brain.find("Sierra")  # Finds all mentions of Sierra
@@ -243,14 +287,20 @@ class Brain:
             # Search all JSON files
             for json_file in search_path.rglob("*.json"):
                 try:
-                    with open(json_file, "r", encoding="utf-8") as f:
-                        data = json.load(f)
+                    # Read file (automatically normalizes 2.0 → 3.0)
+                    relative_path = json_file.relative_to(self.brain_dir)
+                    kategorie_path = str(relative_path.parent)
+                    dateiname = relative_path.name
+
+                    data = self.read(kategorie_path, dateiname)
+                    if not data:
+                        continue
 
                     # Search in content
                     content_str = json.dumps(data.get("content", {}), ensure_ascii=False).lower()
                     if query.lower() in content_str:
                         results.append({
-                            "file": str(json_file.relative_to(self.brain_dir)),
+                            "file": str(relative_path),
                             "data": data
                         })
 

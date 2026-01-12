@@ -55,7 +55,7 @@ class TermuxHealthCheck:
     def test_01_brain_data_protection(self):
         """Prüfe dass echte Daten existieren und geschützt sind"""
         print("=" * 70)
-        print("TEST 1: BRAIN DATA PROTECTION")
+        print("TEST 1: BRAIN DATA PROTECTION & VERSION DETECTION")
         print("=" * 70)
 
         if self.real_brain.exists():
@@ -64,14 +64,47 @@ class TermuxHealthCheck:
                 real_files = list(self.real_brain.rglob("*.json"))
                 print(f"✅ Echter Brain gefunden: {len(real_files)} JSON-Dateien")
                 print(f"   ⛔ Diese werden NICHT angefasst!")
+                print()
 
                 # Zähle pro Kategorie
+                total_files = 0
                 for category in ["wer", "was", "wo", "wann", "wie", "kontext"]:
                     cat_path = self.real_brain / category
                     if cat_path.exists():
                         count = len(list(cat_path.rglob("*.json")))
                         if count > 0:
                             print(f"   📂 {category:8s}: {count:4d} Dateien")
+                            total_files += count
+
+                print()
+
+                # Detect 2.0 vs 3.0 format (sample check)
+                v2_count = 0
+                v3_count = 0
+                sample_size = min(10, total_files)  # Check first 10 files
+
+                for json_file in list(self.real_brain.rglob("*.json"))[:sample_size]:
+                    try:
+                        with open(json_file, 'r', encoding='utf-8') as f:
+                            data = json.load(f)
+
+                        # Check format
+                        if "content" in data and "metadata" in data:
+                            v3_count += 1
+                        else:
+                            v2_count += 1
+                    except:
+                        pass
+
+                if v2_count > 0 or v3_count > 0:
+                    print(f"   📊 FORMAT DETECTION (Sample: {sample_size} Dateien):")
+                    if v2_count > 0:
+                        print(f"      📦 M.O.L.O.C.H. 2.0 Format: {v2_count} Dateien")
+                        print(f"         → 3.0 Code ist RÜCKWÄRTSKOMPATIBEL ✅")
+                        print(f"         → Alte Daten werden automatisch konvertiert (in-memory)")
+                    if v3_count > 0:
+                        print(f"      📦 M.O.L.O.C.H. 3.0 Format: {v3_count} Dateien")
+                    print()
 
                 self.results.append(("Brain Protected", True))
             except Exception as e:
