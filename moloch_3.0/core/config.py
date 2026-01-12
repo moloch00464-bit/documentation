@@ -15,8 +15,8 @@ from pathlib import Path
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-# Claude Model
-CLAUDE_MODEL = "claude-sonnet-4-20250514"
+# Claude Model (Sonnet 4.5 - Current as of Jan 2026)
+CLAUDE_MODEL = "claude-sonnet-4-5-20250929"
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # PATHS
@@ -197,8 +197,7 @@ def validate_api_keys():
     if not ANTHROPIC_API_KEY or len(ANTHROPIC_API_KEY) < 20:
         errors.append("ANTHROPIC_API_KEY not set or invalid")
 
-    if not OPENAI_API_KEY or len(OPENAI_API_KEY) < 20:
-        errors.append("OPENAI_API_KEY not set or invalid (needed for Whisper)")
+    # OPENAI_API_KEY no longer required - using native Termux STT instead of Whisper
 
     if errors:
         print("❌ API Key Errors:")
@@ -206,7 +205,6 @@ def validate_api_keys():
             print(f"   - {error}")
         print("\n💡 Set in ~/.bashrc:")
         print('   export ANTHROPIC_API_KEY="your-anthropic-key"')
-        print('   export OPENAI_API_KEY="your-openai-key"')
         print("   source ~/.bashrc")
         return False
 
