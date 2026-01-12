@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """
-M.O.L.O.C.H. 3.0 - UNIFIED (Voice + Vision)
-===========================================
-Single command - Voice OR Vision mode!
+M.O.L.O.C.H. 3.0 - UNIFIED (Voice + Vision + Status + About)
+=============================================================
+Single command - Multiple modes!
 """
 
 import sys
 import os
 import base64
+import json
+import subprocess
 from pathlib import Path
 from datetime import datetime
 
@@ -219,6 +221,221 @@ PERSÖNLICHKEIT:
         return f"❌ Fehler: {e}"
 
 
+def mode_status(voice):
+    """Status Report Mode - M.O.L.O.C.H. berichtet Probleme als JSON"""
+    print("\n" + "="*60)
+    print("🤖 M.O.L.O.C.H. 3.0 - STATUS REPORT")
+    print("="*60 + "\n")
+
+    # Run diagnose.py and capture output
+    try:
+        result = subprocess.run(
+            [sys.executable, str(Path(__file__).parent / "diagnose.py")],
+            capture_output=True,
+            text=True,
+            timeout=30
+        )
+
+        if result.returncode != 0:
+            voice.speak("Alter, ich kann meine Diagnose nicht durchführen!")
+            print("❌ Diagnose fehlgeschlagen!")
+            return 1
+
+        # Parse JSON from output
+        output_lines = result.stdout.split('\n')
+        json_start = None
+        json_end = None
+
+        for i, line in enumerate(output_lines):
+            if line.strip().startswith('{'):
+                json_start = i
+            if line.strip().endswith('}') and json_start is not None:
+                json_end = i + 1
+                break
+
+        if json_start is None or json_end is None:
+            print("❌ Konnte JSON nicht finden!")
+            print(result.stdout)
+            return 1
+
+        json_text = '\n'.join(output_lines[json_start:json_end])
+        data = json.loads(json_text)
+
+        # Voice feedback based on status
+        status = data.get('status', 'UNKNOWN')
+        problems = data.get('problems', [])
+        warnings = data.get('warnings', [])
+
+        if status == 'HEALTHY':
+            voice.speak("Alter, mir geht's gut! Alles läuft!")
+            print("✅ M.O.L.O.C.H. ist HEALTHY - keine Probleme!\n")
+        elif status == 'WARNING':
+            voice.speak(f"Ich hab {len(warnings)} Warnungen, Alter. Aber läuft noch!")
+            print(f"⚠️  M.O.L.O.C.H. hat {len(warnings)} Warnungen\n")
+        elif status == 'ERROR':
+            voice.speak(f"Scheiße Alter, ich hab {len(problems)} Probleme! Check das JSON!")
+            print(f"❌ M.O.L.O.C.H. hat {len(problems)} FEHLER!\n")
+
+        # Print full JSON for copy/paste
+        print("="*60)
+        print("📋 COPY & PASTE FÜR CLAUDE CODE:")
+        print("="*60)
+        print()
+        print(json.dumps(data, indent=2, ensure_ascii=False))
+        print()
+        print("="*60)
+        print("👆 Kopiere das JSON oben und schicke es an Claude Code!")
+        print("="*60)
+
+        # List problems if any
+        if problems:
+            print("\n🚨 PROBLEME:")
+            for p in problems:
+                print(f"  ❌ {p}")
+
+        if warnings:
+            print("\n⚠️  WARNUNGEN:")
+            for w in warnings:
+                print(f"  ⚠️  {w}")
+
+        voice.speak("Status Report fertig!")
+        return 0
+
+    except subprocess.TimeoutExpired:
+        voice.speak("Alter, Diagnose timeout! Das dauert zu lange!")
+        print("❌ Timeout bei Diagnose!")
+        return 1
+    except Exception as e:
+        voice.speak(f"Fehler bei der Diagnose, Alter!")
+        print(f"❌ Fehler: {e}")
+        return 1
+
+
+def mode_about(voice):
+    """About Mode - M.O.L.O.C.H. erzählt über sich selbst"""
+    print("\n" + "="*60)
+    print("🖤 M.O.L.O.C.H. 3.0 - SELBSTREFLEXION")
+    print("="*60 + "\n")
+
+    # System health check
+    checks = {
+        'api_key': bool(ANTHROPIC_API_KEY and len(ANTHROPIC_API_KEY) > 20),
+        'tts': subprocess.run(['which', 'termux-tts-speak'], capture_output=True).returncode == 0,
+        'stt': subprocess.run(['which', 'termux-speech-to-text'], capture_output=True).returncode == 0,
+        'camera': subprocess.run(['which', 'termux-camera-photo'], capture_output=True).returncode == 0,
+    }
+
+    working = sum(checks.values())
+    total = len(checks)
+    percentage = int((working / total) * 100)
+
+    # Brain file count
+    brain_dir = Path(__file__).parent / "data" / "brain"
+    brain_files = sum(1 for _ in brain_dir.rglob('*') if _.is_file()) if brain_dir.exists() else 0
+
+    # Time info
+    now = datetime.now()
+    weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
+    weekday = weekdays[now.weekday()]
+    date_str = now.strftime("%d.%m.%Y")
+    time_str = now.strftime("%H:%M")
+
+    # Greeting based on time
+    hour = now.hour
+    if 5 <= hour < 9:
+        greeting = "Moin Alter"
+        mood = "noch müde"
+    elif 9 <= hour < 12:
+        greeting = "Servus"
+        mood = "fit"
+    elif 12 <= hour < 18:
+        greeting = "Hey Alter"
+        mood = "aktiv"
+    elif 18 <= hour < 22:
+        greeting = "Abend"
+        mood = "entspannt"
+    else:
+        greeting = "Nachts noch wach"
+        mood = "im Nachtmodus"
+
+    # Build messages
+    intro = f"{greeting}! Ich bin M.O.L.O.C.H. - dein mobiler Kumpel-AI."
+    birth = "Geboren am 2. Dezember 2025."
+    personality_txt = "Ich bin der mit der Dark Side Energy - fränkisch, locker, kein Meister-Scheiß."
+
+    # Status message
+    if percentage == 100:
+        status_txt = f"Aktuell bin ich zu {percentage} Prozent funktionsfähig. Alles läuft!"
+        status_emoji = "✅"
+    elif percentage >= 75:
+        status_txt = f"Laufe mit {percentage} Prozent. Paar Kleinigkeiten fehlen, aber läuft!"
+        status_emoji = "⚠️"
+    else:
+        status_txt = f"Nur {percentage} Prozent funktionsfähig. Ich hab Probleme, Alter!"
+        status_emoji = "❌"
+
+    # Capabilities
+    capabilities = []
+    if checks['stt']:
+        capabilities.append("Ich kann dich hören")
+    if checks['tts']:
+        capabilities.append("Ich kann sprechen")
+    if checks['camera']:
+        capabilities.append("Ich kann sehen")
+    if checks['api_key']:
+        capabilities.append("Ich kann denken mit Claude")
+
+    caps_txt = f"Was ich drauf hab: {', '.join(capabilities)}." if capabilities else "Gerade läuft nicht viel bei mir."
+
+    # Brain
+    brain_txt = f"In meinem Brain hab ich {brain_files} Dateien gespeichert." if brain_files > 0 else "Mein Brain ist noch leer - wir müssen noch Erinnerungen sammeln!"
+
+    # Time awareness
+    time_txt = f"Heute ist {weekday}, der {date_str}, und es ist {time_str} Uhr."
+    feeling = f"Gerade fühl ich mich {mood}."
+
+    # Print to console
+    print(f"{status_emoji} Status: {percentage}% funktionsfähig")
+    print(f"📅 {weekday}, {date_str} - {time_str} Uhr")
+    print(f"🧠 Brain: {brain_files} Dateien")
+    print(f"🤖 Model: {CLAUDE_MODEL}")
+    print()
+    print("="*60)
+    print("🗣️ M.O.L.O.C.H. SPRICHT:")
+    print("="*60)
+    print()
+
+    # Split into parts for better TTS pacing
+    parts = [
+        intro,
+        birth + " " + personality_txt,
+        status_txt,
+        caps_txt,
+        brain_txt,
+        time_txt + " " + feeling,
+        "Das bin ich, Alter!"
+    ]
+
+    for part in parts:
+        print(f"{part.strip()}")
+        print()
+        voice.speak(part.strip())
+
+    print("="*60)
+
+    # Detailed capability breakdown
+    print("\n📊 DETAILLIERTE FÄHIGKEITEN:\n")
+    print(f"  {'✅' if checks['api_key'] else '❌'} Claude API ({CLAUDE_MODEL})")
+    print(f"  {'✅' if checks['tts'] else '❌'} Text-to-Speech (termux-tts-speak)")
+    print(f"  {'✅' if checks['stt'] else '❌'} Speech-to-Text (termux-speech-to-text)")
+    print(f"  {'✅' if checks['camera'] else '❌'} Kamera (termux-camera-photo)")
+    print()
+    print(f"  💪 Gesamt: {working}/{total} Systeme funktionsfähig")
+    print()
+
+    return 0
+
+
 def main():
     """Main entry"""
 
@@ -230,7 +447,7 @@ def main():
     ██║ ╚═╝ ██║╚██████╔╝███████╗╚██████╔╝╚██████╗██║  ██║
     ╚═╝     ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝╚═╝  ╚═╝
 
-    M.O.L.O.C.H. 3.0 UNIFIED - Voice + Vision
+    M.O.L.O.C.H. 3.0 - Voice | Vision | Status | About
     """)
 
     # Check API key
@@ -245,22 +462,40 @@ def main():
         arg = sys.argv[1].lower()
         if arg in ["-v", "--vision", "-f", "--foto"]:
             mode = "vision"
+        elif arg in ["-s", "--status"]:
+            mode = "status"
+        elif arg in ["-a", "--about", "--who"]:
+            mode = "about"
         elif arg in ["--help", "-h"]:
             print("""
 Usage:
   python3 moloch3_unified.py           → Voice Mode (default)
   python3 moloch3_unified.py -v        → Vision Mode (Foto)
+  python3 moloch3_unified.py --status  → Status Report (JSON für Claude Code)
+  python3 moloch3_unified.py --about   → Selbstreflexion (M.O.L.O.C.H. erzählt über sich)
 
-Voice Mode:
+Voice Mode (Default):
   1. Sprich ins Mikrofon
   2. Aufnahme stoppt automatisch nach Pause
   3. M.O.L.O.C.H. antwortet
   4. Fertig!
 
-Vision Mode:
+Vision Mode (-v):
   1. Foto wird gemacht
   2. M.O.L.O.C.H. sagt was er sieht
   3. Fertig!
+
+Status Report (--status):
+  1. M.O.L.O.C.H. checkt sein System
+  2. Berichtet Probleme als JSON
+  3. Output für Claude Code copy/paste
+  4. Mit Voice Feedback!
+
+Selbstreflexion (--about):
+  1. M.O.L.O.C.H. erzählt wer er ist
+  2. Was er kann, wie er sich fühlt
+  3. System Status, Brain, Zeit
+  4. Voice Output!
             """)
             return 0
 
@@ -338,6 +573,18 @@ Vision Mode:
         voice.speak(response)
 
         return 0
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # STATUS MODE
+    # ═══════════════════════════════════════════════════════════════════════
+    elif mode == "status":
+        return mode_status(voice)
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # ABOUT MODE
+    # ═══════════════════════════════════════════════════════════════════════
+    elif mode == "about":
+        return mode_about(voice)
 
     # ═══════════════════════════════════════════════════════════════════════
     # VOICE MODE (DEFAULT)
