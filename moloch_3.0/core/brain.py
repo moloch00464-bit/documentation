@@ -44,6 +44,66 @@ class Brain:
         for category in categories:
             (self.brain_dir / category).mkdir(parents=True, exist_ok=True)
 
+    def _sanitize_filename(self, filename: str) -> str:
+        """
+        Sanitize filename to prevent security issues
+
+        ROOT CAUSE: Path traversal and command injection via filenames
+        FIX: Remove/replace dangerous characters
+
+        Args:
+            filename: Raw filename
+
+        Returns:
+            Sanitized filename
+        """
+        import re
+
+        # Remove null bytes (critical security issue)
+        filename = filename.replace('\x00', '')
+
+        # Remove/replace dangerous characters
+        dangerous_chars = {
+            '\n': '_',  # Newline
+            '\r': '_',  # Carriage return
+            '\t': '_',  # Tab
+            '|': '_',   # Pipe (command chaining)
+            ';': '_',   # Semicolon (command chaining)
+            '&': '_',   # Ampersand (background execution)
+            '$': '_',   # Dollar (variable substitution)
+            '`': '_',   # Backtick (command substitution)
+            '<': '_',   # Redirect input
+            '>': '_',   # Redirect output
+            '*': '_',   # Wildcard
+            '?': '_',   # Wildcard
+            '"': '_',   # Quote
+            "'": '_',   # Quote
+            '\\': '_',  # Backslash (escape)
+        }
+
+        for char, replacement in dangerous_chars.items():
+            filename = filename.replace(char, replacement)
+
+        # Remove path traversal attempts
+        # Replace ../ and ..\ with safe characters
+        filename = filename.replace('../', '_')
+        filename = filename.replace('..\\', '_')
+        filename = filename.replace('..', '_')
+
+        # Remove leading/trailing dots (hidden files, relative paths)
+        filename = filename.strip('.')
+
+        # Remove absolute path indicators
+        if filename.startswith('/') or (len(filename) > 1 and filename[1] == ':'):
+            # Starts with / or C:\ etc
+            filename = filename.lstrip('/').replace(':', '')
+
+        # Ensure filename is not empty after sanitization
+        if not filename:
+            filename = "sanitized_file.json"
+
+        return filename
+
     def save(
         self,
         kategorie: str,
@@ -67,6 +127,9 @@ class Brain:
             brain.save("wer/freunde", {"name": "Rebecca", "sprache": "Klingonisch"}, "rebecca.json")
         """
         try:
+            # Sanitize filename (SECURITY FIX)
+            dateiname = self._sanitize_filename(dateiname)
+
             # Build full path
             category_path = self.brain_dir / kategorie
             category_path.mkdir(parents=True, exist_ok=True)
@@ -116,6 +179,9 @@ class Brain:
             data = brain.read("wer/freunde", "rebecca.json")
         """
         try:
+            # Sanitize filename (SECURITY FIX)
+            dateiname = self._sanitize_filename(dateiname)
+
             file_path = self.brain_dir / kategorie / dateiname
 
             if not file_path.exists():
