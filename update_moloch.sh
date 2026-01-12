@@ -53,6 +53,24 @@ fi
 echo "✅ Pull erfolgreich"
 echo ""
 
+# Schritt 3.5: Reload Environment Variables
+echo "🔄 Lade Environment Variables neu..."
+if [ -f "$HOME/.bashrc" ]; then
+    source "$HOME/.bashrc"
+    echo "✅ .bashrc neu geladen"
+
+    # Check if API key is set
+    if [ -n "$ANTHROPIC_API_KEY" ]; then
+        echo "✅ ANTHROPIC_API_KEY gefunden: ${ANTHROPIC_API_KEY:0:20}..."
+    else
+        echo "⚠️  ANTHROPIC_API_KEY nicht gesetzt!"
+        echo "   Setze mit: export ANTHROPIC_API_KEY='sk-ant-api03-...'"
+    fi
+else
+    echo "⚠️  ~/.bashrc nicht gefunden"
+fi
+echo ""
+
 # Schritt 4: Teste diagnose.py in moloch_3.0
 echo "🔍 Teste diagnose.py..."
 echo ""
