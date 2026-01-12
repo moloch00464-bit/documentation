@@ -1,7 +1,6 @@
 ---
 description: "M.O.L.O.C.H. 3.0 - Autonomous AI Edition for Raspberry Pi"
 template: templates/home.html
-hero_image: "/assets/images/hacs_logo.png"
 hide:
   - navigation
 ---

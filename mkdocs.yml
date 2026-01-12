@@ -151,22 +151,8 @@ nav:
   - Features:
     - Overview: docs/features/index.md
   - Configuration:
-    - Basic Setup: docs/use/configuration/basic.md
-    - Advanced Options: docs/use/configuration/options.md
+    - Basic Setup: docs/configuration/basic.md
   - Usage:
-    - Overview: docs/use/index.md
-    - Voice Mode: docs/use/download/download.md
-    - Vision Mode: docs/use/repositories/dashboard.md
-    - Memory System: docs/use/data.md
-  - Troubleshooting:
-    - Diagnostics: docs/use/troubleshooting/diagnostics.md
-    - Logs: docs/use/troubleshooting/logs.md
-  - Advanced:
-    - Migration from Termux: docs/contribute/index.md
-    - Development: docs/contribute/devcontainer.md
-  - FAQ:
-    - docs/faq/index.md
-  - Help:
-    - docs/help/index.md
-    - docs/help/issues.md
+    - Usage Guide: docs/usage/index.md
+  - FAQ: docs/moloch-faq.md
 
