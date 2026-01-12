@@ -157,6 +157,8 @@ pkg install python
 pkg install termux-api
 ```
 
+**IMPORTANT:** Install Termux and Termux:API from **F-Droid**, not Google Play or GitHub releases, for best Android 14/15 compatibility.
+
 ### API Keys (Environment Variables)
 ```bash
 export ANTHROPIC_API_KEY="sk-ant-..."
@@ -167,7 +169,23 @@ export OPENAI_API_KEY="sk-..."  # Optional (for Whisper)
 
 ## 🚀 DEPLOYMENT INSTRUCTIONS
 
-### On Termux (Redmi Note 13 Pro+ 5G)
+### Prerequisites: Install Termux Properly
+
+1. **Download from F-Droid (REQUIRED)**
+   - Go to https://f-droid.org/packages/com.termux/
+   - Install Termux app
+   - Install Termux:API app (https://f-droid.org/en/packages/com.termux.api/)
+   - ⚠️ Do NOT use Google Play version (outdated)
+
+2. **Grant Storage Permission**
+   ```bash
+   termux-setup-storage
+   ```
+   Allow when prompted
+
+---
+
+### Step 1: Basic Installation
 
 ```bash
 # 1. Install dependencies
@@ -192,6 +210,117 @@ python moloch3.py -t "Läufst du?"
 # ✅ M.O.L.O.C.H. 3.0 directories initialized at /data/data/com.termux/files/home/documentation/moloch_3.0
 # 💬 M.O.L.O.C.H. 3.0 - Text Mode
 # 🤖 Ja, läuft! [...]
+```
+
+---
+
+### 🚨 Step 2: CRITICAL - Configure HyperOS (Redmi Note 13 Pro+)
+
+**⚠️ WITHOUT THESE STEPS, TERMUX WILL BE KILLED IN BACKGROUND!**
+
+HyperOS/MIUI has **the most aggressive background process killing** in the industry. You MUST configure ALL of these settings or M.O.L.O.C.H. will not run in background.
+
+#### 1. Disable Battery Optimization
+
+```
+Long press Termux app icon
+→ App info
+→ Battery saver
+→ Select "No restrictions"
+```
+
+#### 2. Enable Autostart
+
+```
+Settings
+→ Apps
+→ Manage apps
+→ Termux
+→ Autostart
+→ Enable
+```
+
+**Alternative path:**
+```
+Settings
+→ Battery & performance
+→ Manage apps' battery usage
+→ Termux
+→ No restrictions
+```
+
+#### 3. Lock in Recent Apps
+
+```
+Open Recent Apps (square button)
+→ Find Termux
+→ Pull down on Termux card
+→ Tap lock icon
+```
+
+#### 4. Security App Settings
+
+```
+Open Security app
+→ Battery
+→ App battery saver
+→ Termux
+→ No restrictions
+```
+
+**Alternative:**
+```
+Security app
+→ Boost speed
+→ Gear icon (top right)
+→ Lock apps
+→ Enable Termux
+```
+
+#### 5. Disable MIUI Optimization (Optional but Recommended)
+
+```
+Settings
+→ Additional settings
+→ Developer options
+→ Turn off MIUI optimization
+→ Reboot device
+```
+
+#### 6. ⚠️ RE-CHECK AFTER SYSTEM UPDATES
+
+HyperOS/MIUI updates may **reset these settings**. After any system update:
+- Re-check all battery optimization settings
+- Re-lock Termux in recent apps
+- Test that M.O.L.O.C.H. can run in background
+
+**Source:** [Don't Kill My App - Xiaomi](https://dontkillmyapp.com/xiaomi)
+
+---
+
+### Step 3: Verify Termux-API Permissions
+
+```bash
+# Test microphone
+termux-microphone-record -d 1 -f test.mp3
+# Should prompt for permission on first use
+
+# Test camera
+termux-camera-photo test.jpg
+# Should prompt for permission on first use
+
+# Test TTS
+termux-tts-speak "Test"
+# Should speak
+```
+
+If permissions are denied, manually grant them:
+```
+Settings
+→ Apps
+→ Termux:API
+→ Permissions
+→ Enable: Microphone, Camera, Storage
 ```
 
 ---
@@ -237,6 +366,139 @@ python moloch3.py -t "Läufst du?"
 **Impact:** None (documented in requirements.txt)
 **Priority:** N/A
 **Workaround:** `pip install -r requirements.txt`
+
+---
+
+## 🔬 RESEARCH FINDINGS & CONTEXT
+
+### Background Research Conducted
+
+Following adversarial verification best practices, web research was conducted to validate fixes and identify potential deployment issues.
+
+### 1. Path Resolution in Termux/Python
+
+**Research Query:** Termux Python pathlib Path.home() portable paths
+
+**Key Findings:**
+- Termux HOME directory: `/data/data/com.termux/files/home`
+- `Path.home()` works but depends on `$HOME` environment variable
+- `Path(__file__).parent.parent` approach is **superior** - completely environment-independent
+- Our fix using `Path(__file__).parent.parent.resolve()` is the **most portable solution**
+
+**Sources:**
+- [Termux File System Layout](https://github.com/termux/termux-packages/wiki/Termux-file-system-layout)
+- [Python pathlib Documentation](https://docs.python.org/3/library/pathlib.html)
+- [Getting User's Home Directory - Cross-Platform Guide](https://safjan.com/python-user-home-directory/)
+
+**Validation:** ✅ Our fix is correct and follows best practices
+
+---
+
+### 2. Python Package Compatibility (ARM64/Android)
+
+**Research Query:** Termux Python anthropic requests ARM64 Android compatibility
+
+**Key Findings:**
+- Anthropic SDK requires Python 3.9+ ✅ (Termux has 3.11+)
+- ARM64 packages are cross-compiled with Android NDK
+- **CRITICAL:** Install Termux from **F-Droid**, not GitHub releases (better Android 14/15 compatibility)
+- `requests` package: Generally works on ARM64
+- `anthropic` SDK: Uses `httpx` which should work, but may require testing
+
+**Potential Issues:**
+- Some Python packages may need specific versions on ARM64
+- Not all TensorFlow/PyTorch versions work on Android (not relevant for us)
+
+**Sources:**
+- [Anthropic Python SDK](https://github.com/anthropics/anthropic-sdk-python)
+- [Termux Android 15 Compatibility Discussion](https://github.com/termux/termux-app/discussions/4693)
+- [ARM64 Android Termux Builds](https://github.com/defencedog/arm64-Android-Termux-Builds)
+
+**Validation:** ✅ Our dependencies should work, recommend F-Droid installation
+
+---
+
+### 3. 🚨 CRITICAL: HyperOS Background Process Killing
+
+**Research Query:** Redmi Note 13 Pro HyperOS Termux background kill
+
+**CRITICAL FINDING:**
+Xiaomi's HyperOS (and MIUI) has **the most aggressive background process killing** in the industry.
+
+**The Problem:**
+- Background processing **does not work by default**
+- Apps are hard-coded restricted for background activity
+- Settings get **reset after reboot or system updates**
+- This will **kill M.O.L.O.C.H.** if running in background
+
+**Required User Actions (ALL OF THESE):**
+
+1. **Disable Battery Optimization:**
+   - Long press Termux app → Battery → "Without restrictions"
+
+2. **Enable Autostart:**
+   - Settings → Battery → Gear icon → Permissions → Autostart → Enable for Termux
+
+3. **Lock in Recent Apps:**
+   - Open recent apps → Lock Termux
+
+4. **Security App Settings:**
+   - Security app → Speed boost → Gear icon → Block apps → Enable for Termux
+
+5. **Re-apply After Updates:**
+   - System updates may reset these settings
+   - Check after every HyperOS/MIUI update
+
+**Sources:**
+- [Don't Kill My App - Xiaomi](https://dontkillmyapp.com/xiaomi)
+- [HyperOS Battery Optimization Guide](https://xiaomiforall.com/hyperos-battery-drain-fix/)
+- [Prevent Background Apps Closing on Xiaomi](https://en.androidguias.com/prevent-closing-background-apps-on-xiaomi/)
+
+**Impact:** 🚨 **HIGH** - Without these settings, M.O.L.O.C.H. will be killed in background
+
+**Mitigation:** User must follow HyperOS configuration steps (added to deployment docs)
+
+---
+
+### 4. Python zoneinfo Compatibility
+
+**Research Query:** Python zoneinfo Termux Android backports.zoneinfo ARM64
+
+**Key Findings:**
+- `zoneinfo` is standard library in Python 3.9+
+- `backports.zoneinfo` is for Python <3.9 (has ARM64 build issues - but irrelevant for us)
+- Termux typically ships Python 3.11+ → uses standard `zoneinfo`
+- Module uses system timezone data or falls back to `tzdata` package
+
+**Sources:**
+- [backports.zoneinfo PyPI](https://pypi.org/project/backports.zoneinfo/)
+- [ARM64 Build Issue](https://github.com/pganssle/zoneinfo/issues/121) (resolved for Python 3.9+)
+
+**Validation:** ✅ No issue - Termux Python version is 3.11+
+
+---
+
+### 5. Termux-API Permissions (Android 14)
+
+**Research Query:** Termux-API permissions Android 14 camera microphone
+
+**Key Findings:**
+- Termux-API must be signed with **same key** as main Termux app
+- Manual permission grants required on first use
+- Camera/microphone permissions requested at runtime
+- No widespread Android 14-specific issues found
+
+**Setup Requirements:**
+1. Install Termux-API from F-Droid (matching signing key)
+2. Install `termux-api` Python package: `pip install termux-api`
+3. Grant permissions when prompted (camera, microphone, storage)
+
+**Sources:**
+- [Termux-API GitHub](https://github.com/termux/termux-api)
+- [Termux-API F-Droid](https://f-droid.org/en/packages/com.termux.api/)
+- [Android 14 USB Issue](https://github.com/termux/termux-api/issues/638) (not camera/mic related)
+
+**Validation:** ✅ Standard setup, no blockers identified
 
 ---
 
