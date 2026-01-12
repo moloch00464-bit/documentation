@@ -408,11 +408,9 @@ killall python3
 
 ## Next Steps
 
-- **[Voice Commands](/docs/usage/voice.md)** - Detailed voice interaction guide
-- **[Vision Guide](/docs/usage/vision.md)** - Master camera features
-- **[Memory Management](/docs/usage/memory.md)** - Work with memory system
+- **[Features Overview](/docs/features/index.md)** - Explore all capabilities
 - **[Configuration](/docs/configuration/basic.md)** - Customize settings
-- **[Troubleshooting](/docs/use/troubleshooting/diagnostics.md)** - Fix issues
+- **[FAQ](/docs/moloch-faq.md)** - Common questions and answers
 
 ---
 

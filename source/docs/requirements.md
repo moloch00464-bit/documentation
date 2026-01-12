@@ -282,8 +282,8 @@ vcgencmd measure_temp
 Once you've verified your system meets these requirements:
 
 1. **[Installation Guide](/docs/installation/raspberry-pi.md)** - Begin the setup process
-2. **[Hardware Setup](/docs/installation/hardware.md)** - Connect and configure peripherals
-3. **[Configuration](/docs/configuration/basic.md)** - Configure API keys and preferences
+2. **[Configuration](/docs/configuration/basic.md)** - Configure API keys and preferences
+3. **[Usage Guide](/docs/usage/index.md)** - Start using M.O.L.O.C.H.
 
 ---
 

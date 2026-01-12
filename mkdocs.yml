@@ -69,10 +69,10 @@ plugins:
       module_name: source/macros
   - search:
       lang: en
-  - social:
-      cards: true
-      cards_layout_options:
-        background_color: "#41BDF5"
+  # - social:
+  #     cards: true
+  #     cards_layout_options:
+  #       background_color: "#41BDF5"
   - tags
 hooks:
   - source/hooks/html_tag_modifier.py

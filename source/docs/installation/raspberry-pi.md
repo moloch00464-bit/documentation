@@ -295,8 +295,8 @@ vcgencmd get_camera
 
 - **[Configuration Guide](/docs/configuration/basic.md)** - Customize M.O.L.O.C.H. settings
 - **[Usage Guide](/docs/usage/index.md)** - Learn how to interact effectively
-- **[Memory Management](/docs/usage/memory.md)** - Understand the memory system
-- **[Voice Commands](/docs/usage/voice.md)** - Master voice interaction
+- **[Features Overview](/docs/features/index.md)** - Explore all capabilities
+- **[FAQ](/docs/moloch-faq.md)** - Common questions and answers
 
 ## Upgrading
 
@@ -311,4 +311,4 @@ pip install -r requirements.txt --upgrade
 
 ---
 
-**Need help?** Check the [Troubleshooting Guide](/docs/help/troubleshooting.md) or [open an issue](https://github.com/moloch00464-bit/documentation/issues).
+**Need help?** Check the [FAQ](/docs/moloch-faq.md) or [open an issue](https://github.com/moloch00464-bit/documentation/issues).

@@ -469,9 +469,9 @@ python3 -c "import cv2; print(cv2.VideoCapture(0).isOpened())"
 
 ## Next Steps
 
-- **[Advanced Options](/docs/configuration/options.md)** - Fine-tune performance
 - **[Usage Guide](/docs/usage/index.md)** - Start using M.O.L.O.C.H.
-- **[Troubleshooting](/docs/use/troubleshooting/diagnostics.md)** - Fix issues
+- **[Features Overview](/docs/features/index.md)** - Explore capabilities
+- **[FAQ](/docs/moloch-faq.md)** - Configuration questions
 
 ---
 

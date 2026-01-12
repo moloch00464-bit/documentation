@@ -65,7 +65,7 @@ M.O.L.O.C.H. maintains self-awareness of time, themes, and operational context.
 
 ## Migration from Termux
 
-If you're familiar with the Termux version, check out the [Migration Guide](/docs/migration/termux-to-pi.md) for differences and adaptation strategies.
+If you're familiar with the Termux version, M.O.L.O.C.H. 3.0 on Raspberry Pi offers better performance and 24/7 operation. Check the [System Requirements](/docs/requirements.md#comparison-raspberry-pi-vs-termux) for key differences.
 
 ## Technical Specifications
 

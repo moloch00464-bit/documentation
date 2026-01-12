@@ -354,8 +354,7 @@ Features in development for future releases:
 - **[Installation Guide](/docs/installation/raspberry-pi.md)** - Get M.O.L.O.C.H. running
 - **[Configuration](/docs/configuration/basic.md)** - Customize feature settings
 - **[Usage Guide](/docs/usage/index.md)** - Learn how to use each feature
-- **[Voice Commands](/docs/usage/voice.md)** - Master voice interaction
-- **[Vision Guide](/docs/usage/vision.md)** - Leverage visual capabilities
+- **[FAQ](/docs/moloch-faq.md)** - Common questions about features
 
 ---
 
