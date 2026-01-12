@@ -154,9 +154,35 @@ class Brain:
                     data["content"] = {**existing.get("content", {}), **inhalt}
                     data["metadata"]["created"] = existing.get("metadata", {}).get("created", data["metadata"]["created"])
 
-            # Save
-            with open(file_path, "w", encoding="utf-8") as f:
-                json.dump(data, f, ensure_ascii=False, indent=2)
+            # Save atomically (BUG #3 FIX)
+            # ROOT CAUSE: Direct write truncates file immediately, causing race conditions
+            # FIX: Write to temp file, then atomic rename
+            import os
+            import tempfile
+
+            # Write to temp file in same directory (required for atomic rename)
+            temp_fd, temp_path = tempfile.mkstemp(
+                dir=category_path,
+                prefix=".tmp_",
+                suffix=".json"
+            )
+
+            try:
+                with os.fdopen(temp_fd, 'w', encoding='utf-8') as f:
+                    json.dump(data, f, ensure_ascii=False, indent=2)
+                    f.flush()
+                    os.fsync(f.fileno())  # Ensure written to disk
+
+                # Atomic rename (POSIX guarantees atomicity)
+                os.replace(temp_path, str(file_path))
+
+            except Exception:
+                # Cleanup temp file on error
+                try:
+                    os.unlink(temp_path)
+                except:
+                    pass
+                raise
 
             return True
 
