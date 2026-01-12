@@ -165,6 +165,29 @@ The memory database grows based on your usage:
 - **Voice interactions**: ~5MB per day
 - **Vision features**: ~20MB per day (with cached images)
 
+### NVMe SSD Storage (Raspberry Pi 5)
+
+!!! success "Recommended Upgrade for Pi 5"
+    The Raspberry Pi 5 supports NVMe SSDs via the PCIe interface, offering **significant performance improvements**:
+
+    - **Boot from NVMe**: 5-10x faster than SD card
+    - **Database Performance**: Faster memory access and searches
+    - **Longevity**: SSDs more durable than SD cards
+    - **Capacity**: Easy to get 256GB-1TB at reasonable prices
+
+    **Compatible NVMe HATs**:
+    - Pimoroni NVMe Base
+    - Waveshare PCIe to M.2 HAT+
+    - Geekworm X1001 NVMe HAT
+
+    **Recommended SSD specs**:
+    - M.2 2280 form factor
+    - NVMe (not SATA)
+    - PCIe Gen 2 or Gen 3
+    - 256GB+ capacity
+
+    See [NVMe SSD Setup Guide](/docs/installation/nvme-setup.md) for installation instructions.
+
 ## Audio Hardware
 
 ### Microphone Requirements
@@ -206,6 +229,25 @@ Required only if using vision features:
 - **V2**: 8MP, good quality
 - **V3**: 12MP, excellent quality with autofocus
 - **HQ Camera**: 12MP, interchangeable lens support
+
+### Seeed Studio XIAO Vision AI Camera
+
+- **ESP32-based smart camera** with OV5647 5MP sensor
+- **Multiple connection methods**:
+  - WiFi streaming (recommended, easiest setup)
+  - USB webcam mode (requires special firmware)
+  - I2C/UART/SPI interfaces
+- **Built-in AI capabilities**: Object detection, face recognition
+- **Compact form factor**: 21mm x 17.5mm
+- **Grove Vision AI V2 compatible**
+- **Power**: 5V via USB-C or through pins
+
+!!! tip "Pi 5 + XIAO Vision AI Configuration"
+    The Seeed Studio XIAO Vision AI Camera pairs excellently with Raspberry Pi 5:
+    - Use WiFi streaming for easiest integration
+    - No CSI/USB bandwidth conflicts
+    - Can run AI inference on the camera itself to reduce Pi load
+    - Supports network-based camera access in M.O.L.O.C.H.
 
 ### USB Webcam
 
@@ -264,6 +306,56 @@ Monitor temperature with:
 vcgencmd measure_temp
 ```
 
+## Recommended Hardware Configurations
+
+### Budget Configuration (~$120)
+
+- Raspberry Pi 4 (4GB) - $55
+- 32GB SD Card (Class 10) - $8
+- Official Pi PSU - $10
+- USB Microphone - $15
+- Pi Camera Module V2 - $25
+- Basic cooling - $5
+
+**Performance**: Good for voice + vision
+
+---
+
+### Enthusiast Configuration (~$180) ⭐ **RECOMMENDED**
+
+- **Raspberry Pi 5 (4GB)** - $60
+- **64GB SD Card (UHS-I)** - $12
+- **Official Pi 5 PSU (27W)** - $12
+- **USB Microphone** - $25
+- **Seeed Studio XIAO Vision AI Camera** - $15
+- **Active cooling case** - $20
+- **Future upgrade: NVMe HAT + SSD** - $35-60 (optional)
+
+**Performance**: Excellent for all features, WiFi camera streaming, expandable storage
+
+!!! success "Why This Configuration?"
+    This setup provides:
+    - Latest Pi 5 hardware with best performance/price ratio
+    - XIAO Vision AI offers WiFi streaming (no USB bandwidth issues)
+    - 64GB SD card sufficient for extended operation
+    - Clear upgrade path to NVMe SSD when needed
+    - Compact, modern, expandable
+
+---
+
+### Premium Configuration (~$250)
+
+- Raspberry Pi 5 (8GB) - $80
+- 128GB SD Card or NVMe HAT + 256GB SSD - $60
+- Official Pi 5 PSU - $12
+- High-quality USB microphone - $40
+- Pi Camera Module V3 or XIAO Vision AI - $35
+- Premium cooling case (Argon NEO 5) - $25
+
+**Performance**: Best possible for M.O.L.O.C.H. 3.0
+
+---
+
 ## Comparison: Raspberry Pi vs. Termux
 
 | Feature | Raspberry Pi | Termux (Android) |
@@ -287,4 +379,4 @@ Once you've verified your system meets these requirements:
 
 ---
 
-**Questions?** Check the [FAQ](/docs/moloch-faq/) or [open an issue](https://github.com/moloch00464-bit/documentation/issues).
+**Questions?** Check the [FAQ](/docs/moloch-faq.md) or [open an issue](https://github.com/moloch00464-bit/documentation/issues).

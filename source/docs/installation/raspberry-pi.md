@@ -146,13 +146,94 @@ speaker-test -t wav -c 2
 
 If using vision features, test your camera:
 
-```bash
-# For Raspberry Pi Camera Module
-libcamera-hello
+### For Raspberry Pi Camera Module
 
-# For USB webcam
+```bash
+libcamera-hello --timeout 2000
+```
+
+### For USB Webcam
+
+```bash
 v4l2-ctl --list-devices
 ```
+
+### For Seeed Studio XIAO Vision AI Camera
+
+The XIAO Vision AI Camera can connect to your Raspberry Pi in multiple ways:
+
+#### Method 1: WiFi Streaming (Recommended)
+
+This is the easiest method and doesn't consume USB bandwidth:
+
+1. **Power on the XIAO Vision AI** via USB-C
+
+2. **Connect to its WiFi network**:
+   - SSID: Usually `XIAO_Vision_AI_XXXX`
+   - Default password: Check your device documentation
+
+3. **Access the camera stream**:
+   ```bash
+   # Install required Python packages
+   pip install opencv-python requests
+
+   # Test camera stream access
+   python3 << 'EOF'
+   import cv2
+   import requests
+
+   # Replace with your XIAO's IP address (usually 192.168.4.1)
+   XIAO_IP = "192.168.4.1"
+   stream_url = f"http://{XIAO_IP}:81/stream"
+
+   cap = cv2.VideoCapture(stream_url)
+   if cap.isOpened():
+       print("✅ XIAO Vision AI camera stream accessible")
+       ret, frame = cap.read()
+       if ret:
+           print(f"✅ Frame captured: {frame.shape}")
+   else:
+       print("❌ Cannot access camera stream")
+   cap.release()
+   EOF
+   ```
+
+4. **Configure M.O.L.O.C.H. to use network camera**:
+   Edit `config.json`:
+   ```json
+   {
+     "vision": {
+       "enabled": true,
+       "camera_type": "network",
+       "camera_url": "http://192.168.4.1:81/stream"
+     }
+   }
+   ```
+
+#### Method 2: USB Webcam Mode (Advanced)
+
+This requires flashing special firmware to the XIAO:
+
+1. Flash UVC (USB Video Class) firmware to XIAO
+2. Connect XIAO via USB-C to Raspberry Pi
+3. Camera will appear as standard USB webcam:
+   ```bash
+   v4l2-ctl --list-devices
+   # Should show: XIAO Vision AI Camera
+   ```
+
+!!! tip "WiFi vs USB Mode"
+    **WiFi Streaming** (Recommended):
+    - ✅ No USB bandwidth consumption
+    - ✅ Camera can be placed remotely
+    - ✅ Easier setup
+    - ⚠️ Requires WiFi network
+
+    **USB Webcam Mode**:
+    - ✅ Direct USB connection
+    - ✅ Lower latency
+    - ⚠️ Requires firmware flash
+    - ⚠️ Uses USB bandwidth
 
 ## Step 9: Run M.O.L.O.C.H. 3.0
 

@@ -475,4 +475,4 @@ python3 -c "import cv2; print(cv2.VideoCapture(0).isOpened())"
 
 ---
 
-**Questions?** Check the [FAQ](/docs/moloch-faq/) or [open an issue](https://github.com/moloch00464-bit/documentation/issues).
+**Questions?** Check the [FAQ](/docs/moloch-faq.md) or [open an issue](https://github.com/moloch00464-bit/documentation/issues).

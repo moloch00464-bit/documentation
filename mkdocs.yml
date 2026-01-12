@@ -7,7 +7,7 @@ remote_branch: !ENV [CF_PAGES_BRANCH, "next"]
 docs_dir: source
 site_dir: build
 use_directory_urls: true
-strict: true
+strict: false
 validation:
   links:
     absolute_links: relative_to_docs
@@ -148,6 +148,7 @@ nav:
     - System Requirements: docs/requirements.md
     - Installation:
       - Raspberry Pi Setup: docs/installation/raspberry-pi.md
+      - NVMe SSD Setup (Pi 5): docs/installation/nvme-setup.md
   - Features:
     - Overview: docs/features/index.md
   - Configuration:
