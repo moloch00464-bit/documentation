@@ -3,7 +3,7 @@
 <style>
     .md-main,
     .mdx-container {
-        background-color: var(--hacs-color-primary);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     .mdx-hero__content {
@@ -22,8 +22,8 @@
 
     .md-typeset .md-button:focus, .md-typeset .md-button:hover {
         background-color: #fefefe;
-        border-color: var(--hacs-color-primary);
-        color: var(--hacs-color-primary) !important;
+        border-color: #667eea;
+        color: #667eea !important;
     }
 
     @media (max-width: 720px) {
@@ -41,17 +41,14 @@
 </style>
 <section class="mdx-container">
     <div class="md-flex md-typeset">
-        <div class="mdx-hero">
-            <img src="{{page.meta.hero_image}}" alt="HACS Logo" class="mdx-hero__logo">
-        </div>
         <div class="mdx-hero__content">
             {{ page.content }}
         </div>
     </div>
     <div class="md-flex md-typeset md-buttons">
-        <a href="/docs/use/" class="md-button">Start using HACS</a>
-        <a href="/docs/publish/" class="md-button">Publish with HACS</a>
-        <a href="/docs/contribute/" class="md-button">Contribute to HACS</a>
+        <a href="/docs/requirements/" class="md-button">System Requirements</a>
+        <a href="/docs/installation/raspberry-pi/" class="md-button">Install on Raspberry Pi</a>
+        <a href="/docs/moloch-faq/" class="md-button">View FAQ</a>
     </div>
 </section>
 {% endblock %}

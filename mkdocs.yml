@@ -79,9 +79,9 @@ hooks:
   - source/hooks/shortcodes.py
 extra:
   resources:
-    - link: https://github.com/hacs/.github/blob/master/CODE_OF_CONDUCT.md
-      title: Code of Conduct
-      icon: fontawesome/solid/scale-balanced
+    - link: https://github.com/moloch00464-bit/documentation
+      title: M.O.L.O.C.H. 3.0 Repository
+      icon: fontawesome/brands/github
     - link: https://squidfunk.github.io/mkdocs-material/
       title: Made with Material for MkDocs
       icon: logo
