@@ -288,7 +288,10 @@ class Brain:
                 count = len(list((self.brain_dir / category).rglob("*.json")))
                 stats[category] = count
 
-            stats["total"] = sum(stats.values())
+            total = sum(stats.values())
+            stats["total"] = total  # For backwards compatibility (migration)
+            stats["total_entries"] = total  # For health check and new code
+            stats["categories"] = list(stats.keys())  # Category list
 
         except Exception as e:
             print(f"⚠️ Brain stats error: {e}")
