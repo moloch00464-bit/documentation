@@ -1,8 +1,8 @@
-site_name: HACS
-site_description: HACS gives you a powerful UI to handle downloads of all your custom needs
-site_url: !ENV [SITE_URL, CF_PAGES_URL, "https://hacs.xyz"]
-repo_url: https://github.com/hacs/integration
-repo_name: hacs/integration
+site_name: M.O.L.O.C.H. 3.0
+site_description: M.O.L.O.C.H. 3.0 - Multi-Operational Learning & Optimization Cognitive Holographic System for Raspberry Pi
+site_url: !ENV [SITE_URL, CF_PAGES_URL, "https://moloch00464-bit.github.io/documentation"]
+repo_url: https://github.com/moloch00464-bit/documentation
+repo_name: moloch00464-bit/documentation
 remote_branch: !ENV [CF_PAGES_BRANCH, "next"]
 docs_dir: source
 site_dir: build
@@ -144,71 +144,29 @@ not_in_nav: |
   assets/images/screenshots/README.md
 nav:
   - Home: index.md
-  - Use:
-    - docs/use/index.md
-    - Download HACS:
-      - docs/use/download/prerequisites.md
-      - docs/use/download/download.md
-    - Configure HACS:
-      - docs/use/configuration/basic.md
-      - docs/use/configuration/options.md
-    - Repositories:
-      - docs/use/repositories/dashboard.md
-      - Repository types:
-        - docs/use/repositories/type/index.md
-        - docs/use/repositories/type/appdaemon.md
-        - docs/use/repositories/type/dashboard.md
-        - docs/use/repositories/type/integration.md
-        - docs/use/repositories/type/python_script.md
-        - docs/use/repositories/type/template.md
-        - docs/use/repositories/type/theme.md
-    - Entities:
-      - docs/use/entities/update.md
-      - docs/use/entities/switch.md
-    - docs/use/data.md
-    - docs/use/my.md
-    - Troubleshooting:
-      - docs/use/troubleshooting/diagnostics.md
-      - docs/use/troubleshooting/logs.md
-      - docs/use/troubleshooting/hacs_update_broke_my_hacs.md
-      - docs/use/troubleshooting/ha_update_broke_my_hacs.md
-    - docs/use/update.md
-    - docs/use/remove.md
-  - Publish:
-    - docs/publish/index.md
-    - docs/publish/start.md
-    - docs/publish/include.md
-    - docs/publish/action.md
-    - docs/publish/appdaemon.md
-    - docs/publish/integration.md
-    - docs/publish/plugin.md
-    - docs/publish/python_script.md
-    - docs/publish/template.md
-    - docs/publish/theme.md
-    - docs/publish/update.md
-    - docs/publish/remove.md
-  - Contribute:
-    - docs/contribute/index.md
-    - docs/contribute/backend.md
-    - docs/contribute/devcontainer.md
-    - docs/contribute/documentation.md
-    - docs/contribute/frontend.md
-    - docs/contribute/translation.md
-    - docs/contribute/maintainer.md
+  - Getting Started:
+    - System Requirements: docs/requirements.md
+    - Installation:
+      - Raspberry Pi Setup: docs/installation/raspberry-pi.md
+  - Features:
+    - Overview: docs/features/index.md
+  - Configuration:
+    - Basic Setup: docs/use/configuration/basic.md
+    - Advanced Options: docs/use/configuration/options.md
+  - Usage:
+    - Overview: docs/use/index.md
+    - Voice Mode: docs/use/download/download.md
+    - Vision Mode: docs/use/repositories/dashboard.md
+    - Memory System: docs/use/data.md
+  - Troubleshooting:
+    - Diagnostics: docs/use/troubleshooting/diagnostics.md
+    - Logs: docs/use/troubleshooting/logs.md
+  - Advanced:
+    - Migration from Termux: docs/contribute/index.md
+    - Development: docs/contribute/devcontainer.md
   - FAQ:
     - docs/faq/index.md
-    - docs/faq/addons.md
-    - docs/faq/custom_repositories.md
-    - docs/faq/data_sources.md
-    - docs/faq/existing_elements.md
-    - docs/faq/github_account.md
-    - docs/faq/ha_update.md
-    - docs/faq/hassio_only.md
-    - docs/faq/highlights.md
-    - docs/faq/other_git_providers.md
-    - docs/faq/private_repositories.md
-    - docs/faq/download.md
-  - Help: 
+  - Help:
     - docs/help/index.md
     - docs/help/issues.md
 
