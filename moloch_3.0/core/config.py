@@ -22,8 +22,11 @@ CLAUDE_MODEL = "claude-sonnet-4-20250514"
 # PATHS
 # ═══════════════════════════════════════════════════════════════════════════════
 
-# Base Directory
-MOLOCH_DIR = Path.home() / "documentation/moloch_3.0"
+# Base Directory - PORTABLE (works in dev and Termux)
+# Finds moloch_3.0 directory relative to this config file
+# config.py is in: moloch_3.0/core/config.py
+# So: config.py -> parent (core/) -> parent (moloch_3.0/)
+MOLOCH_DIR = Path(__file__).parent.parent.resolve()
 
 # Data Directories
 DATA_DIR = MOLOCH_DIR / "data"

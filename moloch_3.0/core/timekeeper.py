@@ -7,6 +7,10 @@ import os
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 import json
+from pathlib import Path
+
+# Import DATA_DIR from config for portable paths
+from core.config import DATA_DIR
 
 class TimeKeeper:
     """
@@ -23,7 +27,7 @@ class TimeKeeper:
 
     def __init__(self, timezone="Europe/Berlin"):
         self.timezone = ZoneInfo(timezone)
-        self.data_dir = os.path.expanduser("~/moloch_3.0/data")
+        self.data_dir = str(DATA_DIR)  # Use portable path from config
         self.timeline_file = os.path.join(self.data_dir, "timeline.json")
 
     def get_now(self):
