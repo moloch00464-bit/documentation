@@ -5,13 +5,10 @@ Tests if the Claude model name works
 """
 
 import os
-import sys
 import requests
 
-# Add moloch_3.0 to path
-sys.path.insert(0, '/home/user/documentation/moloch_3.0')
-
-from core.config import CLAUDE_MODEL, ANTHROPIC_API_KEY
+# Current Claude Model (Sonnet 4.5)
+CLAUDE_MODEL = "claude-sonnet-4-5-20250929"
 
 print("═" * 60)
 print("M.O.L.O.C.H. 3.0 - API Model Test")
@@ -19,10 +16,11 @@ print("═" * 60)
 print()
 
 # Check API key
+ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY')
 if not ANTHROPIC_API_KEY:
     print("❌ ANTHROPIC_API_KEY not set!")
     print("   Run: export ANTHROPIC_API_KEY='your-key'")
-    sys.exit(1)
+    exit(1)
 
 print(f"✅ API Key found: {ANTHROPIC_API_KEY[:20]}...")
 print(f"📡 Testing model: {CLAUDE_MODEL}")
