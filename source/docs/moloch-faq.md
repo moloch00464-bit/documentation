@@ -380,7 +380,7 @@ Values range from 0.0 to 1.0. See Configuration guide for details.
 
 ### Can I add custom tools?
 
-Custom tool integration is possible but requires Python programming. Check the [Development guide](/docs/contribute/devcontainer.md) for details.
+Custom tool integration is possible but requires Python programming. Check the [Development guide](/docs/moloch-faq/) for details.
 
 ### Does it support other languages?
 
@@ -411,7 +411,7 @@ pip install -r requirements.txt --upgrade
 
 - **Documentation**: You're reading it! Check other sections
 - **GitHub Issues**: [Report bugs/ask questions](https://github.com/moloch00464-bit/documentation/issues)
-- **Troubleshooting Guide**: [/docs/use/troubleshooting/diagnostics.md](/docs/use/troubleshooting/diagnostics.md)
+- **Troubleshooting Guide**: [/docs/moloch-faq/](/docs/moloch-faq/)
 
 ### How do I report a bug?
 
@@ -432,7 +432,7 @@ Yes! Contributions welcome:
 - New features
 - Testing on different hardware
 
-See [Contributing guide](/docs/contribute/index.md).
+See [Contributing guide](/docs/moloch-faq/).
 
 ---
 

@@ -287,4 +287,4 @@ Once you've verified your system meets these requirements:
 
 ---
 
-**Questions?** Check the [FAQ](/docs/faq/index.md) or [open an issue](https://github.com/moloch00464-bit/documentation/issues).
+**Questions?** Check the [FAQ](/docs/moloch-faq/) or [open an issue](https://github.com/moloch00464-bit/documentation/issues).
