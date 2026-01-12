@@ -49,9 +49,10 @@ pip install requests
 # In ~/.bashrc eintragen:
 nano ~/.bashrc
 
-# Diese Zeilen hinzufügen:
+# Diese Zeile hinzufügen:
 export ANTHROPIC_API_KEY="dein-anthropic-key-hier"
-export OPENAI_API_KEY="dein-openai-key-hier"
+
+# NOTE: OPENAI_API_KEY no longer required - using native Termux STT
 
 # Speichern: CTRL+X, dann Y, dann Enter
 
@@ -79,8 +80,8 @@ python ~/moloch_fixed.py
 
 **Erwartung:**
 - ✅ M.O.L.O.C.H. sagt "Ja?"
-- ✅ Mikro nimmt 20 Sek auf
-- ✅ Whisper transkribiert
+- ✅ Mikro hört zu (termux-speech-to-text)
+- ✅ Native Android STT transkribiert
 - ✅ Claude antwortet
 
 ### Test 3: Vision (Augen testen)
@@ -182,7 +183,7 @@ Wenn's immer noch nicht geht:
 
 - ✅ **Crash-Safe** - Stürzt nicht ab!
 - ✅ **Error Messages** - Sagt was fehlt!
-- ✅ **Voice Input** - Whisper STT
+- ✅ **Voice Input** - Native Termux STT
 - ✅ **Voice Output** - TTS
 - ✅ **Vision** - Foto beschreiben
 - ✅ **Memory** - Langzeitgedächtnis

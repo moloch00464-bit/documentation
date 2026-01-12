@@ -39,17 +39,10 @@ if [ -z "$ANTHROPIC_API_KEY" ]; then
     MISSING_KEYS=1
 fi
 
-if [ -z "$OPENAI_API_KEY" ]; then
-    echo "⚠️ OPENAI_API_KEY not set!"
-    echo ""
-    echo "   Set in ~/.bashrc:"
-    echo '   export OPENAI_API_KEY="your-openai-key"'
-    echo ""
-    MISSING_KEYS=1
-fi
+# NOTE: OPENAI_API_KEY no longer required - using native Termux STT
 
 if [ -z "$MISSING_KEYS" ]; then
-    echo "✅ API Keys found"
+    echo "✅ API Key found"
 fi
 
 echo ""

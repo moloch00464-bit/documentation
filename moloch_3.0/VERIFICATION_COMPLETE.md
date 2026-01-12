@@ -144,7 +144,7 @@ self.data_dir = str(DATA_DIR)
 ```
 anthropic>=0.18.0    # Claude API
 requests>=2.31.0     # HTTP requests
-openai>=1.0.0        # Whisper STT (future use)
+# NOTE: OpenAI NO LONGER REQUIRED - using native Termux STT
 ```
 
 ### Python Version
@@ -162,7 +162,7 @@ pkg install termux-api
 ### API Keys (Environment Variables)
 ```bash
 export ANTHROPIC_API_KEY="sk-ant-..."
-export OPENAI_API_KEY="sk-..."  # Optional (for Whisper)
+# NOTE: OPENAI_API_KEY no longer required - using native Termux STT
 ```
 
 ---
@@ -194,7 +194,7 @@ pip install -r requirements.txt
 
 # 2. Set API keys
 echo 'export ANTHROPIC_API_KEY="sk-ant-..."' >> ~/.bashrc
-echo 'export OPENAI_API_KEY="sk-..."' >> ~/.bashrc
+# NOTE: OPENAI_API_KEY no longer required - using native Termux STT
 source ~/.bashrc
 
 # 3. Clone repository

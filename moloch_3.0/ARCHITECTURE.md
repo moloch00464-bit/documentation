@@ -92,7 +92,7 @@
 
 ```python
 class MolochAPI:
-    def __init__(self, api_key, model="claude-sonnet-4-20250514"):
+    def __init__(self, api_key, model="claude-sonnet-4-5-20250929"):
         self.client = anthropic.Anthropic(api_key=api_key)
         self.model = model
 

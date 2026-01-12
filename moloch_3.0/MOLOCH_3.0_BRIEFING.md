@@ -27,7 +27,7 @@ M.O.L.O.C.H. GENESIS (seit 02.12.2025) upgraden zu **M.O.L.O.C.H. 3.0 - AUTONOMO
 
 ### Model
 ```
-claude-sonnet-4-20250514
+claude-sonnet-4-5-20250929
 ```
 
 ---
@@ -399,7 +399,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY', 'YOUR-ANTHROPIC-KEY')
-MODEL = 'claude-sonnet-4-20250514'
+MODEL = 'claude-sonnet-4-5-20250929'
 ```
 
 ### Web Interface Beispiel

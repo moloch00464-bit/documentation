@@ -7,5 +7,4 @@ anthropic>=0.18.0
 # HTTP Requests
 requests>=2.31.0
 
-# OpenAI (for Whisper STT)
-openai>=1.0.0
+# NOTE: OpenAI NO LONGER REQUIRED - using native Termux STT (termux-speech-to-text)

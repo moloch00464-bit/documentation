@@ -2,7 +2,7 @@
 """
 M.O.L.O.C.H. 3.0 - Simple Voice Test
 =====================================
-Test simple 20s recording - NO SMART PAUSE DETECTION!
+Test native Termux Speech-to-Text (NO Whisper!)
 """
 
 import sys
@@ -13,7 +13,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from moloch_io.voice import VoiceIO
-from core.config import OPENAI_API_KEY, RECORDING_DURATION
 
 def main():
     """Test simple voice recording"""
@@ -26,39 +25,34 @@ def main():
     ██║ ╚═╝ ██║╚██████╔╝███████╗╚██████╔╝╚██████╗██║  ██║
     ╚═╝     ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝╚═╝  ╚═╝
 
-    M.O.L.O.C.H. 3.0 - SIMPLE VOICE TEST
+    M.O.L.O.C.H. 3.0 - NATIVE VOICE TEST
     """)
 
-    # Check API key
-    if not OPENAI_API_KEY or len(OPENAI_API_KEY) < 20:
-        print("❌ OPENAI_API_KEY nicht gesetzt!")
-        return 1
-
     print(f"\n{'='*60}")
-    print(f"🎤 SIMPLE RECORDING TEST")
+    print(f"🎤 NATIVE TERMUX STT TEST")
     print(f"{'='*60}")
-    print(f"\n💡 Strategie: {RECORDING_DURATION} Sekunden FIXE Aufnahme")
-    print(f"   ✅ KEINE Pause-Detection")
-    print(f"   ✅ KEINE Lautstärke-Messung")
-    print(f"   ✅ Einfach {RECORDING_DURATION}s aufnehmen und fertig!")
+    print(f"\n💡 Strategie: Native termux-speech-to-text")
+    print(f"   ✅ KEINE OpenAI Whisper API")
+    print(f"   ✅ KEINE Kosten")
+    print(f"   ✅ Stoppt automatisch bei Stille")
     print(f"\n{'='*60}")
 
     # Create voice
     voice = VoiceIO()
 
     # Greet
-    voice.speak(f"Test läuft! Sprich {RECORDING_DURATION} Sekunden lang!")
+    voice.speak("Test läuft! Sprich jetzt!")
 
-    # Listen with SIMPLE mode (no smart detection!)
-    print(f"\n🎤 Recording startet...")
-    user_text = voice.listen(duration=RECORDING_DURATION, smart=False)
+    # Listen with native Termux STT
+    print(f"\n🎤 Mikrofon startet...")
+    user_text = voice.listen()
 
     # Check result
     if not user_text:
         print("\n❌ Keine Transkription erhalten!")
         print("   Mögliche Gründe:")
         print("   - Mikrofon funktioniert nicht")
-        print("   - Whisper API Error")
+        print("   - termux-speech-to-text fehlt")
         print("   - Aufnahme zu leise")
         return 1
 
@@ -70,7 +64,7 @@ def main():
     print(f"   '{user_text}'")
     print(f"\n{'='*60}")
 
-    voice.speak("Test erfolgreich! Simple Mode funktioniert!")
+    voice.speak("Test erfolgreich! Native STT funktioniert!")
 
     return 0
 

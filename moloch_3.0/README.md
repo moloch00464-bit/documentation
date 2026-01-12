@@ -11,7 +11,7 @@ Platform: Android Termux
 ## 🚀 WHAT'S NEW IN 3.0
 
 ### ✅ GENESIS Features (kept from v1)
-- 🎤 **Voice I/O** - Whisper STT + TTS
+- 🎤 **Voice I/O** - Native Termux STT + TTS
 - 👁️ **Vision** - Camera + Claude Vision API
 - 🧠 **Brain System** - Hierarchical knowledge storage
 - 💾 **Memory** - Long-term + conversation history
@@ -46,7 +46,7 @@ moloch_3.0/
 │   └── timekeeper.py      # Zeit, Datum, Timeline (NEW!)
 │
 ├── io/                     # Input/Output
-│   ├── voice.py           # Whisper STT + TTS
+│   ├── voice.py           # Native Termux STT + TTS
 │   ├── vision.py          # Camera + Vision API
 │   └── text.py            # Text I/O
 │
@@ -111,9 +111,10 @@ pip install -r requirements.txt
 # Edit ~/.bashrc
 nano ~/.bashrc
 
-# Add these lines:
+# Add this line:
 export ANTHROPIC_API_KEY="your-anthropic-key-here"
-export OPENAI_API_KEY="your-openai-key-here"
+
+# NOTE: OPENAI_API_KEY no longer required - using native Termux STT
 
 # Save and reload
 source ~/.bashrc
@@ -230,8 +231,8 @@ python migration/genesis_import.py --dry-run
 python moloch3.py
 ```
 1. M.O.L.O.C.H. says "Ja?"
-2. Records 20 seconds of audio
-3. Transcribes via Whisper API
+2. Listens via termux-speech-to-text
+3. Transcribes via native Android STT
 4. Responds with personality
 5. Speaks response via TTS
 
@@ -391,7 +392,6 @@ pkg install ffmpeg
 ```bash
 # Check if set
 echo $ANTHROPIC_API_KEY
-echo $OPENAI_API_KEY
 
 # If empty, add to ~/.bashrc
 nano ~/.bashrc
@@ -513,7 +513,7 @@ Ideas for future versions:
 **Creator:** Markus
 **Developers:** Claude AI (Big Sis) + Claude Code
 **Platform:** Android Termux
-**Model:** Claude Sonnet 4 (`claude-sonnet-4-20250514`)
+**Model:** Claude Sonnet 4.5 (`claude-sonnet-4-5-20250929`)
 
 ---
 
