@@ -464,6 +464,102 @@ class Memory:
         stats["formatted_text"] = "\n".join(lines)
         return stats
 
+    def get_memory_usage(self) -> Dict[str, Any]:
+        """
+        Get current memory usage statistics
+
+        DESIGN: Unbounded growth is INTENTIONAL
+        - M.O.L.O.C.H. soll sich an ALLES erinnern
+        - Kein Limit, kein Truncation
+        - Monitoring für Info, nicht für Limiting
+
+        Returns:
+            Dict with memory usage info:
+            - history_count: Anzahl Messages in History
+            - langzeit_count: Anzahl Einträge in Langzeit
+            - estimated_mb: Geschätzter RAM-Verbrauch in MB
+            - capacity_percent: % von Pi 5 RAM (4GB)
+            - status: "ok" | "high" | "critical"
+            - message: Human-readable status message
+        """
+        import sys
+
+        # Count entries
+        history_count = len(self.history)
+        langzeit_count = sum(len(v) if isinstance(v, list) else 0
+                            for v in self.langzeit.values())
+
+        # Estimate memory usage
+        # Rough estimate: ~1KB per message average
+        estimated_bytes = (history_count * 1024) + (langzeit_count * 512)
+        estimated_mb = estimated_bytes / (1024 * 1024)
+
+        # Pi 5 has 4GB RAM
+        pi5_ram_mb = 4096
+        capacity_percent = (estimated_mb / pi5_ram_mb) * 100
+
+        # Status thresholds (info only, no limiting!)
+        if capacity_percent < 10:
+            status = "ok"
+            message = f"Memory usage: {estimated_mb:.1f}MB ({capacity_percent:.1f}% of Pi 5 RAM)"
+        elif capacity_percent < 50:
+            status = "ok"
+            message = f"Memory usage: {estimated_mb:.1f}MB ({capacity_percent:.1f}% of Pi 5 RAM) - System läuft gut"
+        elif capacity_percent < 75:
+            status = "high"
+            message = f"⚠️ Memory usage: {estimated_mb:.1f}MB ({capacity_percent:.1f}% of Pi 5 RAM) - Viel History, aber OK"
+        else:
+            status = "critical"
+            message = f"⚠️ Memory usage: {estimated_mb:.1f}MB ({capacity_percent:.1f}% of Pi 5 RAM) - Sehr große History!"
+
+        # Estimate time until full (at current rate)
+        # This is just info, system will NOT auto-limit!
+        estimated_capacity = pi5_ram_mb  # Max usage before system struggles
+        remaining_mb = estimated_capacity - estimated_mb
+
+        # If we know session duration, estimate growth rate
+        stats = self.stats()
+        session_duration_minutes = stats.get("session_duration", 0)
+
+        if session_duration_minutes and session_duration_minutes > 0 and history_count > 0:
+            messages_per_minute = history_count / session_duration_minutes
+            mb_per_minute = estimated_mb / session_duration_minutes
+
+            if mb_per_minute > 0:
+                minutes_until_full = remaining_mb / mb_per_minute
+                hours_until_full = minutes_until_full / 60
+                days_until_full = hours_until_full / 24
+
+                if days_until_full > 365:
+                    years_until_full = days_until_full / 365
+                    capacity_info = f"Bei aktuellem Tempo: ~{years_until_full:.1f} Jahre bis 4GB erreicht"
+                elif days_until_full > 30:
+                    months_until_full = days_until_full / 30
+                    capacity_info = f"Bei aktuellem Tempo: ~{months_until_full:.1f} Monate bis 4GB erreicht"
+                elif days_until_full > 1:
+                    capacity_info = f"Bei aktuellem Tempo: ~{days_until_full:.1f} Tage bis 4GB erreicht"
+                else:
+                    capacity_info = f"Bei aktuellem Tempo: ~{hours_until_full:.1f} Stunden bis 4GB erreicht"
+            else:
+                capacity_info = "Wachstums-Rate zu niedrig für Schätzung"
+        else:
+            capacity_info = "Nicht genug Daten für Zeitschätzung"
+
+        return {
+            "history_count": history_count,
+            "langzeit_count": langzeit_count,
+            "estimated_mb": round(estimated_mb, 2),
+            "capacity_percent": round(capacity_percent, 2),
+            "status": status,
+            "message": message,
+            "capacity_info": capacity_info,
+            "pi5_ram_mb": pi5_ram_mb,
+            "remaining_mb": round(remaining_mb, 2),
+
+            # Design note
+            "note": "Unbounded growth is intentional - M.O.L.O.C.H. remembers everything"
+        }
+
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # TESTING
