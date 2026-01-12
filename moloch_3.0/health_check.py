@@ -518,9 +518,9 @@ class HealthCheck:
                 api = MolochAPI()
 
                 # Simple test message
-                test_result = api.call(
+                test_result, _ = api.chat(
                     messages=[{"role": "user", "content": "Say 'OK' if you can hear me."}],
-                    system="You are a test assistant. Reply with exactly 'OK'.",
+                    system_prompt="You are a test assistant. Reply with exactly 'OK'.",
                     max_tokens=10
                 )
 
