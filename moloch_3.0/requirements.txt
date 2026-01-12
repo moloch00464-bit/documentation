@@ -7,4 +7,9 @@ anthropic>=0.18.0
 # HTTP Requests
 requests>=2.31.0
 
-# NOTE: OpenAI NO LONGER REQUIRED - using native Termux STT (termux-speech-to-text)
+# Voice Recognition - Vosk (Offline German STT)
+# OPTIONAL but RECOMMENDED for best German STT quality!
+# Install with: bash install_vosk_german.sh
+vosk>=0.3.45
+
+# NOTE: OpenAI NO LONGER REQUIRED - using Vosk + Termux STT (no API costs!)
