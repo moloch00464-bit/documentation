@@ -3,10 +3,24 @@
 # M.O.L.O.C.H. 3.0 - Update Script
 # Holt die neueste Version und testet diagnose.py
 #
+# Usage:
+#   cd ~/documentation
+#   bash update_moloch.sh
+#
 
 echo "╔═══════════════════════════════════════════════════════════════╗"
 echo "║  M.O.L.O.C.H. 3.0 - UPDATE SCRIPT                             ║"
 echo "╚═══════════════════════════════════════════════════════════════╝"
+echo ""
+
+# Schritt 0: Prüfe ob wir im documentation Verzeichnis sind
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ ! -d "$SCRIPT_DIR/moloch_3.0" ]; then
+    echo "❌ FEHLER: Script muss aus dem documentation/ Verzeichnis ausgeführt werden!"
+    echo "   Führe aus: cd ~/documentation && bash update_moloch.sh"
+    exit 1
+fi
+echo "✅ Im richtigen Verzeichnis: $SCRIPT_DIR"
 echo ""
 
 # Schritt 1: Fetch
@@ -39,22 +53,26 @@ fi
 echo "✅ Pull erfolgreich"
 echo ""
 
-# Schritt 4: Gehe zu moloch_3.0
-echo "📂 Wechsle zu moloch_3.0..."
+# Schritt 4: Teste diagnose.py in moloch_3.0
+echo "🔍 Teste diagnose.py..."
+echo ""
 cd moloch_3.0
 if [ $? -ne 0 ]; then
     echo "❌ FEHLER: Verzeichnis moloch_3.0 nicht gefunden!"
     exit 1
 fi
-echo "✅ In moloch_3.0"
-echo ""
 
-# Schritt 5: Teste diagnose.py
-echo "🔍 Teste diagnose.py..."
-echo ""
 python diagnose.py --json
+DIAGNOSE_EXIT=$?
+
+# Gehe zurück ins documentation Verzeichnis
+cd ..
 
 echo ""
 echo "╔═══════════════════════════════════════════════════════════════╗"
 echo "║  ✅ UPDATE ABGESCHLOSSEN!                                     ║"
 echo "╚═══════════════════════════════════════════════════════════════╝"
+echo ""
+echo "📂 Du bist jetzt in: $(pwd)"
+
+exit $DIAGNOSE_EXIT
