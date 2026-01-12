@@ -67,7 +67,8 @@ def main():
 
     commands = {
         "termux-tts-speak": "Text-to-Speech (Stimme)",
-        "termux-microphone-record": "Audio aufnehmen (Ohren)",
+        "termux-speech-to-text": "Speech-to-Text (Ohren)",
+        "termux-microphone-record": "Audio aufnehmen (optional)",
         "termux-camera-photo": "Foto machen (Augen)",
         "termux-screenshot": "Screenshot (optional)",
         "ffmpeg": "Audio konvertieren"
@@ -84,7 +85,10 @@ def main():
 
         results.append((cmd, status))
 
-        if not status and cmd != "termux-screenshot":  # screenshot is optional
+        # Optional: screenshot, microphone-record
+        optional_cmds = ["termux-screenshot", "termux-microphone-record"]
+
+        if not status and cmd not in optional_cmds:
             if cmd == "ffmpeg":
                 problems.append({
                     "id": f"missing_{cmd}",
@@ -150,8 +154,7 @@ def main():
         print("-" * 50)
 
     api_keys = {
-        "ANTHROPIC_API_KEY": "Claude API (KRITISCH!)",
-        "OPENAI_API_KEY": "Whisper API (für Ohren)"
+        "ANTHROPIC_API_KEY": "Claude API (KRITISCH!)"
     }
 
     api_results = {}
@@ -253,12 +256,8 @@ def main():
 
         # API Keys fehlen?
         if not check_env_var("ANTHROPIC_API_KEY")[0]:
-            print("\n🔑 Setze API Keys in ~/.bashrc:")
+            print("\n🔑 Setze ANTHROPIC_API_KEY in ~/.bashrc:")
             print('   echo "export ANTHROPIC_API_KEY=your-key" >> ~/.bashrc')
-            print("   source ~/.bashrc")
-
-        if not check_env_var("OPENAI_API_KEY")[0]:
-            print('   echo "export OPENAI_API_KEY=your-key" >> ~/.bashrc')
             print("   source ~/.bashrc")
 
     else:
