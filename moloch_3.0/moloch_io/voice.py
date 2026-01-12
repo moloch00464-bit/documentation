@@ -76,28 +76,30 @@ class VoiceIO:
     # SPEECH-TO-TEXT (Input) - NATIVE TERMUX STT (NO WHISPER!)
     # ═══════════════════════════════════════════════════════════════════════════
 
-    def listen(self, language: str = "de-DE") -> Optional[str]:
+    def listen(self) -> Optional[str]:
         """
         Listen and transcribe via native Termux Speech-to-Text
 
         Uses Android's native speech recognition (no API costs!)
+        - Uses system-wide language settings (Settings → Google Voice Typing)
         - Supports offline recognition (device-dependent)
         - Uses Google Speech Services by default
         - No audio file creation needed
         - Instant transcription
 
-        Args:
-            language: Speech recognition language (default: de-DE for German)
+        IMPORTANT: Language is set in Android settings, NOT via command-line!
+        To use German: Settings → Language & Input → Google Voice Typing → Languages → Deutsch
 
         Returns:
             Transcribed text or None
         """
-        print(f"🎤 SPRICH JETZT! (Sprache: {language})")
+        print(f"🎤 SPRICH JETZT!")
         print("   (Beende mit Stille oder Android Stop-Button)")
+        print("   ⚙️  Sprache: Android System-Einstellung")
 
         try:
             result = subprocess.run(
-                ["termux-speech-to-text", "-l", language],
+                ["termux-speech-to-text"],
                 capture_output=True,
                 timeout=60,
                 text=True
