@@ -27,12 +27,35 @@ This repository hosts the comprehensive documentation for M.O.L.O.C.H.
 ### System Documentation
 
 - **[Constitution](documentation/system/constitution.md)** - Core principles, autonomy rules, and boundary definitions
-- Configuration guides (coming soon)
-- Development guidelines (coming soon)
+- **[Code Review Guide](documentation/system/code-review-guide.md)** - How to present M.O.L.O.C.H. code to external AIs for review
+- **[Module Alignment Guide](documentation/system/module-alignment.md)** - Developer guide for building constitution-compliant modules
+
+### v3.5 Multi-Speaker Design (NEW!)
+
+**Status:** Design Complete - Ready for Implementation
+
+M.O.L.O.C.H. v3.5 transforms the system from single-user assistant to multi-speaker coordination platform running on Raspberry Pi 5 with Hailo-10H NPU.
+
+**Core Documents:**
+- **[Design Session Briefing](documentation/design/DESIGN_SESSION_BRIEFING.md)** - Complete session overview and outcomes
+- **[Multi-Speaker Architecture](documentation/design/MULTI_SPEAKER_ARCHITECTURE.md)** - Technical architecture and pipeline design
+- **[Mode Constitution](documentation/design/MODE_CONSTITUTION.md)** - Six behavioral modes with governance rules
+- **[ChatGPT Insights](documentation/design/CHATGPT_INSIGHTS.md)** - Advanced design patterns (hesitation, negative capability, decision tracking)
+- **[mode_constitution.yaml](documentation/design/mode_constitution.yaml)** - Machine-readable configuration
+
+**Key Innovations:**
+- 6 behavioral modes (Listening, Facilitator, Integrator, Devil's Advocate, Commander, Silent Scribe)
+- NPU-accelerated perception (Hailo-10H, 40 TOPS)
+- 90% on-device processing, 10% Claude API
+- Explicit governance: mode decay, intervention budgets, human override
+- Advanced social dynamics awareness
+
+**Philosophy:** Proto-Collective Intelligence, not AGI. Human-AI-Human feedback loops.
 
 ### Quick Links
 
 - [System Constitution](documentation/system/constitution.md) - Read the complete autonomy and boundary framework
+- [v3.5 Design Briefing](documentation/design/DESIGN_SESSION_BRIEFING.md) - Multi-speaker system design
 - Contributing Guidelines (coming soon)
 
 ## Philosophy
@@ -66,5 +89,9 @@ See [LICENSE](LICENSE) file for details.
 
 ---
 
-**Version:** 0.1-alpha
+## Version History
+
+- **v0.2-alpha** (2026-01-15) - v3.5 Multi-Speaker Design Complete
+- **v0.1-alpha** (2026-01-15) - Initial Constitution and System Documentation
+
 **Last Updated:** 2026-01-15
