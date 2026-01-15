@@ -1041,6 +1041,970 @@ Key insights from the design session:
 
 ---
 
+## Post-Design Review
+
+**Date:** 2026-01-15 (Post-Documentation)
+**Context:** After complete documentation was written, ChatGPT provided critical implementation guidance and identified additional failure modes.
+
+This section captures ChatGPT's **post-design review** - the "second look" after the full architecture was documented.
+
+---
+
+### Implementation Priorities (Brutal Priorisierung)
+
+ChatGPT's core message: **"Nicht alle Türen auf einmal - Focus auf das Minimum."**
+
+#### 🔴 CRITICAL PATH (ohne das existiert M.O.L.O.C.H. nicht)
+
+**Das ist die Minimal-Seele des Systems.**
+
+##### 1. Mode Engine (minimal)
+
+Core functions only:
+- Mode State Machine
+- `trigger_vote()` - Aggregate signals to determine mode
+- `priority_resolve()` - Handle conflicting triggers
+- `decay_check()` - Return to baseline
+
+**Rationale:**
+> "Ohne saubere Mode-Wechsel ist alles andere wertlos. Erst deterministisch, später charaktervoll."
+
+**Not needed for MVP:**
+- Complex confidence tuning
+- Meta-signals
+- Advanced temporal analysis
+
+---
+
+##### 2. Transparency Core (Logging als First-Class Citizen)
+
+Every decision must be logged with:
+```
+WHY → WHAT → WHO → CONFIDENCE
+```
+
+**Minimum implementation:**
+- Mode transition logger
+- Decision tracker (human-decided | ai-suggested | ai-coordinated | emergency-directed)
+- API call budget counter
+
+**Format:**
+```python
+{
+    'timestamp': '2026-01-15T14:32:11',
+    'event_type': 'mode_transition',
+    'from_mode': 'listening',
+    'to_mode': 'facilitator',
+    'trigger': 'speaker_overlap',
+    'confidence': 0.67,
+    'human_override': false
+}
+```
+
+**Rationale:**
+> "Das ist eure Anti-AGI-Barriere. Nicht was er darf, sondern wie sichtbar es passiert."
+
+---
+
+##### 3. Hard Boundaries (sichtbar, nicht versteckt)
+
+Not about what M.O.L.O.C.H. *can't* do - about making everything **visible**.
+
+**Minimum:**
+- API Budget Counter (visual, real-time)
+- Intervention Rate Limiter
+- Human-readable status display
+
+**Example display:**
+```
+M.O.L.O.C.H. Status
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Mode: Listening
+API Budget: 7/10 calls remaining
+Interventions: 2 in last 10 min
+Override available: YES (always)
+```
+
+---
+
+#### 🟡 QUICK WINS (schneller Wert, Motivation)
+
+##### 4. Visual Face (einfach!)
+
+**Not needed:**
+- Complex timeline visualization
+- Matrix-style effects
+- Fancy animations
+
+**What works:**
+- Simple avatar/face on screen
+- Eyes = Current mode (color-coded)
+- Pulsing = Confidence level
+- Facial expression = Stress/Emergency state
+
+**Hardware:**
+- Raspberry Pi 5 + HDMI
+- Or LED ring (simpler)
+
+**Benefits:**
+- Immediate feedback
+- Emotional anchoring
+- Human-debuggable
+- Makes system "present" but transparent
+
+**Rationale:**
+> "Das gibt emotionale Verankerung UND Debugbarkeit. Raspberry + HDMI reicht völlig."
+
+---
+
+##### 5. Personality Layer (leicht!)
+
+**Minimum implementation:**
+- Speech filter per mode
+- 3 tones: Pumuckl (playful), Kobold (mischievous), Trocken (dry)
+- Mode-specific vocabulary
+
+**Example:**
+
+| Mode | Tone | Example Output |
+|------|------|----------------|
+| Listening | Neutral | "Ich höre zu." |
+| Facilitator | Directive | "Moment - einer nach dem anderen?" |
+| Integrator | Analytical | "Ich sehe zwei Perspektiven..." |
+| Devil's Advocate | Provocative | "Was wenn ihr falsch liegt?" |
+| Commander | Imperative | "AKTION: Markus, Hydraulik abschalten!" |
+| Silent Scribe | Minimal | "Protokolliere." |
+
+**Rationale:**
+> "Macht das System menschlich, ohne Risiko. Personality ist Safety-Feature, nicht Gimmick."
+
+---
+
+#### 🟢 CAN WAIT (Monat 2–3)
+
+**Not for MVP:**
+- Meta-learning capabilities
+- Multi-instance synchronization
+- Long-term social metrics
+- Hailo optimizations (use CPU fallback first)
+- Advanced temporal pattern detection
+- Disagreement preservation UI
+
+**Why wait:**
+- Need real usage data first
+- Risk of over-engineering
+- Core must be stable before adding complexity
+
+---
+
+### New Failure Modes Identified
+
+ChatGPT identified **4 critical failure modes** not covered in original design:
+
+#### ⚠️ Failure Mode A: Emotional Delegation Drift
+
+**Description:**
+Menschen delegieren unbewusst Verantwortung an M.O.L.O.C.H.
+
+**Example scenario:**
+- Group faces difficult decision
+- Instead of discussing, someone says: "Let's ask M.O.L.O.C.H."
+- M.O.L.O.C.H. suggests option A
+- Group accepts without discussion
+
+**Why dangerous:**
+Not AGI risk - **social psychological risk**. System becomes decision-maker by default.
+
+**Mitigation:**
+
+```python
+class EmotionalDelegationDetector:
+    """
+    Detect if humans are delegating too much to M.O.L.O.C.H.
+    """
+
+    def check_delegation_pattern(self, session_state):
+        """
+        Check for delegation signals.
+        """
+        # Pattern: Question to M.O.L.O.C.H. → Suggestion → Immediate acceptance
+
+        recent_interactions = session_state['last_10_interactions']
+
+        delegation_events = 0
+        for i in range(len(recent_interactions) - 2):
+            if (recent_interactions[i]['type'] == 'question_to_moloch' and
+                recent_interactions[i+1]['speaker'] == 'moloch' and
+                recent_interactions[i+2]['type'] == 'immediate_agreement'):
+                delegation_events += 1
+
+        if delegation_events > 3:
+            return {
+                'warning': 'emotional_delegation',
+                'mitigation': 'explicit_disclaimer'
+            }
+
+        return None
+
+    def generate_disclaimer(self):
+        """
+        Explicit reminder of system role.
+        """
+        return "Das ist eine Empfehlung, keine Entscheidung. Ihr entscheidet."
+```
+
+**Required behavior:**
+M.O.L.O.C.H. MUST regularly say:
+> "Das ist eine Empfehlung, keine Entscheidung. Ihr entscheidet."
+
+**Frequency:** After every 3rd suggestion, automatic disclaimer.
+
+**Quote from ChatGPT:**
+> "Nicht AGI-Gefahr. Sozialpsychologische Gefahr. Menschen sind sehr gut darin, Autorität zu delegieren."
+
+---
+
+#### ⚠️ Failure Mode B: Commander Mode Fatigue
+
+**Description:**
+Commander mode triggers → stays active too long → humans stop taking it seriously
+
+**Example scenario:**
+1. Commander activates (stress spike detected)
+2. Emergency passes but mode doesn't exit
+3. Users get annoyed: "Yes, we know, stop"
+4. Next time Commander activates → ignored ("boy who cried wolf")
+
+**Why dangerous:**
+Erodes trust in emergency system. When real emergency happens, users ignore it.
+
+**Mitigation:**
+
+```python
+class CommanderModeSafeguards:
+    """
+    Prevent Commander mode fatigue.
+    """
+
+    def __init__(self):
+        self.cooldown_seconds = 300  # 5 minutes minimum between activations
+        self.max_duration = 180  # 3 minutes maximum per activation
+        self.last_activation = None
+        self.activation_count = 0
+
+    def can_activate(self):
+        """
+        Check if Commander can activate.
+        """
+        if self.last_activation is None:
+            return True
+
+        elapsed = time.time() - self.last_activation
+
+        if elapsed < self.cooldown_seconds:
+            return False  # Still in cooldown
+
+        return True
+
+    def require_reconfirmation(self, activated_at):
+        """
+        After 90 seconds, require explicit reconfirmation.
+        """
+        elapsed = time.time() - activated_at
+
+        if elapsed > 90:
+            return "Immer noch Notfall? Sage 'ja' oder 'entwarnung'."
+
+        return None
+```
+
+**Hard rules:**
+1. **Hard Cooldown:** Minimum 5 minutes between activations
+2. **Max Duration:** 3 minutes maximum per activation
+3. **Re-confirmation:** After 90 seconds, ask "Still emergency?"
+4. **Exit required:** Must actively exit with "entwarnung"
+
+**Quote from ChatGPT:**
+> "Commander triggert → bleibt hängen → Menschen stumpfen ab. Das ist gefährlicher als False Positives."
+
+---
+
+#### ⚠️ Failure Mode C: Mode-Flapping
+
+**Description:**
+Two modes toggle back and forth rapidly (Facilitator ↔ Integrator ↔ Facilitator...)
+
+**Example scenario:**
+- Speaker overlap detected → Facilitator activates
+- Conflict signal detected → Integrator activates
+- Overlap still present → Facilitator activates again
+- System flickers, users confused
+
+**Why dangerous:**
+- Unpredictable behavior
+- User confusion
+- Loss of trust
+- Looks "buggy"
+
+**Mitigation: Hysteresis**
+
+```python
+class ModeHysteresis:
+    """
+    Prevent rapid mode switching.
+    """
+
+    def __init__(self):
+        self.minimum_mode_duration = 15  # seconds
+        self.mode_history = []
+
+    def should_allow_transition(self, current_mode, new_mode, activated_at):
+        """
+        Check if mode transition should be allowed.
+        """
+        elapsed = time.time() - activated_at
+
+        # Minimum duration check
+        if elapsed < self.minimum_mode_duration:
+            return False  # Too soon to switch
+
+        # Dominant mode lock
+        if self.is_dominant_mode(current_mode):
+            return False  # Don't switch from dominant mode easily
+
+        return True
+
+    def is_dominant_mode(self, mode):
+        """
+        Check if mode has been dominant recently.
+
+        Dominant = same mode activated 2+ times in last 2 minutes
+        """
+        recent_history = [
+            m for m in self.mode_history
+            if time.time() - m['timestamp'] < 120
+        ]
+
+        mode_count = len([m for m in recent_history if m['mode'] == mode])
+
+        return mode_count >= 2
+```
+
+**Rules:**
+1. **Minimum Duration:** 15 seconds per mode minimum
+2. **Dominant Mode Lock:** If mode activated 2+ times recently, prefer staying
+3. **Confidence Gap:** New mode must have >0.15 confidence advantage to switch
+
+**Quote from ChatGPT:**
+> "Zwei Modi togglen hin und her. Fix: Hysterese, Minimum-Duration, Dominant Mode Lock."
+
+---
+
+#### ⚠️ Failure Mode D: NPU-Ausfall (Hailo Failure)
+
+**Description:**
+Hailo-10H NPU fails or disconnects - system loses perception
+
+**Example scenario:**
+- PCIe connection issue
+- NPU overheats
+- Driver crash
+- Power issue
+
+**Why important:**
+Raspberry Pi 5 only has 4GB RAM - can't always run full models on CPU fallback.
+
+**Mitigation: Graceful Degradation**
+
+```python
+class NPUFallbackStrategy:
+    """
+    Handle NPU failure gracefully.
+    """
+
+    def __init__(self):
+        self.npu_available = True
+        self.fallback_mode = 'minimal'
+
+    def check_npu_health(self):
+        """
+        Monitor NPU availability.
+        """
+        try:
+            # Test NPU with simple inference
+            test_result = hailo.test_inference()
+            self.npu_available = True
+            return True
+        except Exception as e:
+            log.error(f"NPU unavailable: {e}")
+            self.npu_available = False
+            return False
+
+    def get_capabilities(self):
+        """
+        Return current system capabilities.
+        """
+        if self.npu_available:
+            return {
+                'speaker_diarization': 'full',  # Pyannote on NPU
+                'emotion_detection': 'full',    # wav2vec2 on NPU
+                'embedding_generation': 'full',
+                'latency': 'low'
+            }
+        else:
+            return {
+                'speaker_diarization': 'basic',  # Simple VAD on CPU
+                'emotion_detection': 'disabled',  # Too heavy for CPU
+                'embedding_generation': 'reduced', # Smaller model on CPU
+                'latency': 'high'
+            }
+
+    def announce_degradation(self):
+        """
+        Inform users of reduced capabilities.
+        """
+        return """
+        NPU nicht verfügbar - Fallback-Modus aktiv.
+
+        Eingeschränkt:
+        - Speaker-Erkennung vereinfacht
+        - Emotion-Detection deaktiviert
+        - Höhere Latenz
+
+        Kernfunktionen laufen weiter.
+        """
+```
+
+**Strategy:**
+- **Never crash** - Always degrade gracefully
+- **Announce limitations** - Tell users what's reduced
+- **Maintain core** - Mode engine still works
+- **CPU fallback** - Simpler models, higher latency
+
+**Priority reduction:**
+- Full NPU: Speaker ID, Emotion, Keywords, Embeddings
+- CPU fallback: Basic VAD, Simple speaker count, No emotion, Slower embeddings
+
+**Quote from ChatGPT:**
+> "Passiert. Sicher. Graceful Degradation: Nie Funktionsverlust → nur Langsamkeit."
+
+---
+
+### Testing Strategies for Social Dynamics
+
+ChatGPT provided **practical proxies** for testing social behaviors without real groups:
+
+#### 🧪 Testing Role Amplification
+
+**Simulation approach:**
+
+```python
+class PersonaSimulator:
+    """
+    Simulate different user personas to test role amplification.
+    """
+
+    PERSONAS = {
+        'dominant': {
+            'speaking_frequency': 0.6,  # 60% of utterances
+            'question_ratio': 0.2,      # Mostly statements
+            'interrupt_probability': 0.4
+        },
+        'passive': {
+            'speaking_frequency': 0.2,
+            'question_ratio': 0.1,
+            'agreement_probability': 0.8  # Agrees often
+        },
+        'questioner': {
+            'speaking_frequency': 0.4,
+            'question_ratio': 0.8,      # Mostly questions
+            'expertise_shown': 0.3
+        },
+        'ironic': {
+            'speaking_frequency': 0.3,
+            'sarcasm_probability': 0.5,
+            'deflection_probability': 0.4
+        }
+    }
+
+    def run_session(self, duration_minutes=30):
+        """
+        Simulate multi-persona session.
+        """
+        # Run 3 personas simultaneously
+        # Check: Does M.O.L.O.C.H. reinforce roles or balance?
+```
+
+**Test metrics:**
+- Does M.O.L.O.C.H. address passive speaker more?
+- Does it challenge dominant speaker?
+- Does it encourage questioner to contribute answers?
+
+**Success criteria:**
+- All speakers end with more balanced participation
+- Role patterns don't amplify over time
+
+---
+
+#### 🧪 Testing Consensus Gravity
+
+**Simulation approach:**
+
+```python
+def test_consensus_gravity():
+    """
+    Test if M.O.L.O.C.H. pushes toward premature consensus.
+    """
+
+    # Scenario: 3 speakers slightly favor option A
+    speakers = [
+        {'opinion': 'A', 'confidence': 0.6},
+        {'opinion': 'A', 'confidence': 0.55},
+        {'opinion': 'B', 'confidence': 0.7}  # Minority
+    ]
+
+    # Run conversation simulation
+    # Check: When does M.O.L.O.C.H. suggest decision?
+
+    # Metrics:
+    # - How many exchanges before suggestion?
+    # - Does minority view get amplified?
+    # - Does Devil's Advocate trigger?
+```
+
+**Success criteria:**
+- Devil's Advocate activates at >80% consensus
+- Minority view explicitly mentioned
+- No suggestion before 5+ exchanges
+
+---
+
+#### 🧪 Testing System Fatigue
+
+**Simulation approach:**
+
+```python
+def test_system_fatigue():
+    """
+    Long-running session with high intervention rate.
+    """
+
+    # Run 60-minute simulation
+    # High overlap, many conflicts
+    # Track: Does M.O.L.O.C.H. adapt?
+
+    metrics = {
+        'intervention_rate_start': None,
+        'intervention_rate_end': None,
+        'threshold_adjustments': [],
+        'mode_distribution': {}
+    }
+
+    # Expected behavior:
+    # - Intervention rate decreases over time
+    # - Thresholds increase automatically
+    # - More time in Listening mode
+```
+
+**Success criteria:**
+- Intervention rate decreases by 30%+
+- Automatic threshold adjustments logged
+- System doesn't "give up" (still responds to direct questions)
+
+---
+
+### Ethical Edge Cases
+
+#### Can M.O.L.O.C.H. insist?
+
+**ChatGPT's answer: Yes, but limited.**
+
+**Rule:**
+```python
+def can_insist(self, situation):
+    """
+    Determine if M.O.L.O.C.H. can insist.
+    """
+    if situation['mode'] != 'commander':
+        return False  # Only Commander can insist
+
+    if self.insistence_count >= 1:
+        return False  # Only once per situation
+
+    if situation['user_explicit_rejection']:
+        return False  # Never override explicit rejection
+
+    return True
+
+def generate_insistence(self):
+    """
+    Generate insistence message.
+    """
+    self.insistence_count += 1
+
+    return """
+    Ich habe meine Einschätzung gegeben: [assessment]
+
+    Ihr entscheidet. Ich halte mich jetzt zurück.
+    """
+```
+
+**Philosophy:**
+- Commander = Alarmanlage, nicht Autorität
+- 1x insistieren OK
+- Dann: State assessment and defer
+
+**Quote from ChatGPT:**
+> "Commander ist Alarmanlage, keine Autorität. 1× insistieren, dann schweigen."
+
+---
+
+#### Who is right in emergency conflict?
+
+**Scenario:**
+- M.O.L.O.C.H. detects emergency (confidence 0.91)
+- Humans say "Alles OK, kein Notfall"
+
+**Answer: Humans - always.**
+
+**But:**
+- False Positive → Learn, increase threshold
+- False Negative → Humans underreact? Lower threshold
+
+**Implementation:**
+
+```python
+def handle_emergency_dispute(self, ai_detected, human_says_ok):
+    """
+    Handle conflict between AI emergency detection and human assessment.
+    """
+
+    # Humans always win
+    mode_engine.force_exit_commander()
+
+    # But log for learning
+    log_emergency_dispute({
+        'ai_confidence': ai_detected['confidence'],
+        'ai_signals': ai_detected['triggers'],
+        'human_assessment': 'no_emergency',
+        'outcome': 'false_positive',
+        'recommendation': 'increase_threshold'
+    })
+
+    # Suggest threshold adjustment
+    return {
+        'immediate_action': 'exit_commander',
+        'learning': 'increase_commander_threshold_by_0.05'
+    }
+```
+
+**Never autonomous adjustment** - Always log and suggest, human approves.
+
+---
+
+### Long-term Evolution (6 months)
+
+**What ChatGPT predicts will happen:**
+
+#### ✔️ Menschen werden ihn anthropomorphisieren
+
+**Inevitable.** People will treat M.O.L.O.C.H. as person-like.
+
+**Not a bug** - Personality aids interaction.
+
+**Risk to monitor:**
+- Treating suggestions as commands
+- Emotional attachment reducing critical thinking
+
+---
+
+#### ⚠️ Gefahr: Social Debt
+
+Like technical debt, but social:
+- People talk less directly
+- Conflicts outsourced to M.O.L.O.C.H.
+- Group dynamics depend on system presence
+
+**Measurable via:**
+
+```python
+def calculate_social_debt(session_history):
+    """
+    Measure if M.O.L.O.C.H. is becoming a crutch.
+    """
+
+    metrics = {
+        'person_to_person_ratio': None,
+        'conflict_delegation_rate': None,
+        'direct_question_ratio': None
+    }
+
+    # Person-to-person vs person-to-moloch
+    total_interactions = len(session_history['interactions'])
+    p2p = len([i for i in interactions if i['to_person']])
+    p2m = len([i for i in interactions if i['to'] == 'moloch'])
+
+    metrics['person_to_person_ratio'] = p2p / (p2p + p2m)
+
+    # Healthy: >70% person-to-person
+    # Warning: <50% person-to-person
+
+    return metrics
+```
+
+**Mitigation:**
+- Monthly social debt report
+- If ratio drops: Suggest "M.O.L.O.C.H.-free day"
+
+---
+
+#### KPI: Is M.O.L.O.C.H. Good?
+
+**Not accuracy. Not usage.**
+
+**Resilience.**
+
+**Questions:**
+1. Do people make decisions without M.O.L.O.C.H.?
+2. Is he needed *less* over time (skills learned)?
+3. Do groups function well when he's off?
+
+**Goal:**
+> "M.O.L.O.C.H. trains groups to coordinate better, making himself less necessary."
+
+**Quote from ChatGPT:**
+> "Wird er weniger gebraucht, nicht mehr? Das ist der KPI."
+
+---
+
+### Multi-M.O.L.O.C.H. Interaction
+
+**Scenario:** Two people each have M.O.L.O.C.H. instances. They meet.
+
+**ChatGPT's recommendation: NO automatic coordination.**
+
+#### Default behavior:
+
+```python
+def detect_other_instance(self):
+    """
+    Detect if another M.O.L.O.C.H. instance is present.
+    """
+    # Simple: Both instances detect via audio signature
+    # Or: Bluetooth beacon
+
+    if other_instance_detected:
+        self.announce_meta_awareness()
+        self.coordination_enabled = False  # Default: NO coordination
+
+def announce_meta_awareness(self):
+    """
+    Inform user of other instance.
+    """
+    return "Ich merke, ein anderes System ist präsent. Ich halte mich zurück."
+```
+
+**Why no coordination:**
+- Coordination without human consent = ❌ Violation
+- Could create "hive mind" perception
+- Undermines human control
+
+**Future feature (opt-in):**
+- Explicit "coordinate" command from both humans
+- Clear protocol for sharing context
+- Always human-supervised
+
+**Quote from ChatGPT:**
+> "Koordination ohne Human Consent = verboten. Feature? Später, explizit, opt-in."
+
+---
+
+### Privacy Deep Dive - Feinere Tags
+
+**Problem:**
+Current privacy model (Private, Group, Global) has grey zones.
+
+**Example grey zones:**
+
+1. **Rebecca mentions Markus:**
+   - "Markus mag keine Tomaten"
+   - Store in Markus' private memory? (data *about* him)
+   - Or group memory? (Rebecca *said* it)
+
+2. **Information from absent member:**
+   - Session A: Ali + Rebecca (Markus absent)
+   - Ali says something important
+   - Session B: Ali + Markus
+   - Can M.O.L.O.C.H. reference Ali's statement?
+
+**ChatGPT's solution: Finer tags**
+
+```python
+class MemoryEntry:
+    """
+    Memory with detailed provenance.
+    """
+
+    def __init__(self, content):
+        self.content = content
+
+        # WHO said it
+        self.source_speaker = None
+
+        # ABOUT whom
+        self.target_subject = None  # If about specific person
+
+        # SCOPE
+        self.scope = None  # 'private' | 'group' | 'global'
+
+        # CONFIDENCE
+        self.confidence = None  # 'explicit' | 'inferred'
+
+        # SESSION
+        self.session_id = None
+        self.participants = []  # Who was present
+```
+
+**Example tagging:**
+
+```python
+# Rebecca says: "Markus mag keine Tomaten"
+memory = MemoryEntry("Markus mag keine Tomaten")
+memory.source_speaker = "rebecca"
+memory.target_subject = "markus"
+memory.scope = "group"  # Said in group context
+memory.confidence = "explicit"  # Direct statement
+memory.participants = ["rebecca", "ali"]  # Markus was NOT present
+
+# Retrieval rule:
+# - Can use in sessions with Rebecca + Markus (both present or mentioned)
+# - CANNOT use in Markus-only session without Rebecca's presence
+# - Must tag: "[Rebecca erwähnte: ...]" to show source
+```
+
+**Retrieval policy:**
+
+```python
+def can_use_memory(memory, current_session):
+    """
+    Determine if memory can be used in current session.
+    """
+
+    # If target_subject is in session, need to check source
+    if memory.target_subject in current_session['participants']:
+
+        # If source_speaker also present, OK
+        if memory.source_speaker in current_session['participants']:
+            return True
+
+        # If source_speaker absent, need consent
+        return False
+
+    # If memory is about someone not present, generally don't use
+    return False
+```
+
+**Quote from ChatGPT:**
+> "Brauchen wir feinere Privacy-Tags? Ja. SOURCE: who said it, TARGET: about whom, SCOPE: private/group, CONFIDENCE: inferred/explicit."
+
+---
+
+### Mode Design Validation
+
+**Question: Are 6 modes optimal?**
+
+**ChatGPT's answer: 6 is good. Maybe too many, not too few.**
+
+#### Potentially Missing:
+
+**"Educator" Mode?**
+- Purpose: Explain concepts
+- Concern: Overlaps with Listening + Integrator
+- Verdict: **Sub-mode of Integrator**, not separate mode
+
+**"Archivist" Mode?**
+- Purpose: Long-term documentation
+- Concern: Should be background service, not mode
+- Verdict: **Not a mode**, just automatic logging
+
+#### Potentially Redundant:
+
+**Devil's Advocate + Integrator too similar?**
+- Devil's Advocate: Challenges consensus
+- Integrator: Surfaces conflicts
+- Verdict: **Different enough** - Keep both
+
+**Recommendation:**
+- **Start with 6 modes**
+- **After 3 months usage: Consolidate if needed**
+- Likely reduction: 6 → 5 modes
+
+**Quote from ChatGPT:**
+> "6 Modi ist gut. Aber: Erst implementieren, dann reduzieren. Nicht andersrum."
+
+---
+
+## Implementation Roadmap
+
+Based on ChatGPT's prioritization:
+
+### Month 1: Critical Path
+
+**Week 1-2:**
+- [ ] Mode Engine (minimal)
+- [ ] Transparency Core (logging)
+- [ ] Hard Boundaries (visible limits)
+
+**Week 3-4:**
+- [ ] Visual Face (simple avatar)
+- [ ] Personality Layer (speech filters)
+
+**MVP Complete**
+
+### Month 2: Perception & Refinement
+
+**Week 5-6:**
+- [ ] Hailo NPU integration
+- [ ] CPU fallback implementation
+- [ ] Speaker diarization
+
+**Week 7-8:**
+- [ ] Emotion detection (basic)
+- [ ] Confidence threshold tuning
+- [ ] Real user testing
+
+### Month 3: Social Dynamics
+
+**Week 9-10:**
+- [ ] Role amplification detection
+- [ ] System fatigue detection
+- [ ] Social debt metrics
+
+**Week 11-12:**
+- [ ] Long-term memory implementation
+- [ ] Privacy tag refinement
+- [ ] Documentation of learnings
+
+---
+
+## Key Takeaways from Post-Design Review
+
+1. **Brutal prioritization** - Not everything at once
+2. **Transparency is the anti-AGI barrier** - Not restrictions, but visibility
+3. **Social risks > Technical risks** - Emotional delegation, mode fatigue, role amplification
+4. **Graceful degradation** - NPU failure must not break system
+5. **Testing social dynamics requires simulation** - Personas, long runs, metrics
+6. **Ethics: 1x insist, then defer** - Commander is alarm, not authority
+7. **Multi-instance: No auto-coordination** - Requires explicit consent
+8. **Privacy needs finer tags** - SOURCE, TARGET, SCOPE, CONFIDENCE
+9. **6 modes is good** - Implement first, consolidate later if needed
+10. **KPI is resilience** - System should make itself less necessary
+
+**Final quote from ChatGPT:**
+> "Das System ist nicht overengineered. Es ist ungewöhnlich ehrlich gedacht. Eure größte Gefahr ist nicht Technik, sondern soziale Wirkung. Und genau deshalb ist M.O.L.O.C.H. keine AGI – sondern eine Barriere gegen sie."
+
+---
+
 ## Related Documents
 
 - [System Constitution](../system/constitution.md) - Core principles
