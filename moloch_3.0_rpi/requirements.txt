@@ -1,0 +1,34 @@
+# M.O.L.O.C.H. 3.0 - Raspberry Pi 5 Requirements
+
+# Core AI
+anthropic>=0.40.0
+requests>=2.31.0
+
+# Voice Input - Vosk (Offline Speech Recognition)
+vosk>=0.3.45
+pyaudio>=0.2.14
+sounddevice>=0.4.6
+
+# Voice Output - Piper TTS (High Quality)
+piper-tts>=1.2.0
+
+# Alternative: espeak (fallback, wenn Piper zu langsam)
+# pip install py-espeak-ng
+
+# Camera
+picamera2>=0.3.12  # For Pi Camera Module
+opencv-python>=4.8.0  # For USB Webcam
+Pillow>=10.0.0
+
+# Audio Libraries
+numpy>=1.24.0
+scipy>=1.11.0
+
+# System
+psutil>=5.9.0
+
+# Optional: Whisper (beste Qualität, aber langsam)
+# openai-whisper>=20231117
+
+# Development
+python-dateutil>=2.8.0

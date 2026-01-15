@@ -1,0 +1,181 @@
+#!/bin/bash
+# ═══════════════════════════════════════════════════════════════════════════════
+# M.O.L.O.C.H. 3.1 UNIFIED - FINAL DEPLOYMENT SCRIPT
+# ═══════════════════════════════════════════════════════════════════════════════
+# Installiert M.O.L.O.C.H. 3.1 UNIFIED komplett neu
+# NUR ANTHROPIC API KEY - KEIN OPENAI!
+# VOICE: MP3 Format
+# ═══════════════════════════════════════════════════════════════════════════════
+
+set -e
+
+echo ""
+echo "╔═══════════════════════════════════════════════════════════════╗"
+echo "║     M.O.L.O.C.H. 3.1 UNIFIED - FINAL DEPLOYMENT               ║"
+echo "╚═══════════════════════════════════════════════════════════════╝"
+echo ""
+
+TARGET_DIR="$HOME/moloch_3.1_final"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SCHRITT 1: API Key Backup (WICHTIG!)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+OLD_API_KEY=""
+if [ -f "$TARGET_DIR/core/config.py" ]; then
+    echo "💾 Sichere alten API Key..."
+    OLD_API_KEY=$(grep "ANTHROPIC_API_KEY = " "$TARGET_DIR/core/config.py" | sed 's/.*"\(.*\)".*/\1/')
+    if [ -n "$OLD_API_KEY" ] && [ "$OLD_API_KEY" != "DEIN_ANTHROPIC_KEY_HIER" ]; then
+        echo "✅ API Key gesichert!"
+    else
+        OLD_API_KEY=""
+    fi
+fi
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SCHRITT 2: Cleanup
+# ═══════════════════════════════════════════════════════════════════════════════
+
+echo "🗑️  CLEANUP alte Installationen..."
+rm -rf "$TARGET_DIR" 2>/dev/null || true
+echo "✅ Cleanup done"
+echo ""
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SCHRITT 3: GitHub Code holen
+# ═══════════════════════════════════════════════════════════════════════════════
+
+echo "🌐 GitHub Code holen..."
+
+# Repo clonen falls nicht vorhanden
+if [ ! -d "$HOME/documentation" ]; then
+    cd ~
+    git clone https://github.com/moloch00464-bit/documentation.git
+    cd documentation
+else
+    cd ~/documentation
+    git fetch origin
+fi
+
+# Branch mit allen Fixes
+git checkout claude/fix-moloch-imports-5zWsV
+git pull origin claude/fix-moloch-imports-5zWsV
+
+echo "✅ Code von GitHub geholt"
+echo ""
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SCHRITT 4: Deploy
+# ═══════════════════════════════════════════════════════════════════════════════
+
+echo "🚀 Deploy nach $TARGET_DIR..."
+cp -r ~/documentation/moloch_3.0 "$TARGET_DIR"
+echo "✅ Code deployed"
+echo ""
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SCHRITT 5: Verify Module
+# ═══════════════════════════════════════════════════════════════════════════════
+
+echo "🔍 Verify Module..."
+CORE_COUNT=$(ls "$TARGET_DIR/core"/*.py 2>/dev/null | wc -l)
+IO_COUNT=$(ls "$TARGET_DIR/moloch_io"/*.py 2>/dev/null | wc -l)
+
+echo "   Core modules: $CORE_COUNT (sollte 14 sein)"
+echo "   moloch_io modules: $IO_COUNT (sollte 3 sein)"
+
+if [ "$CORE_COUNT" -lt 10 ] || [ "$IO_COUNT" -lt 2 ]; then
+    echo "❌ FEHLER: Module fehlen!"
+    exit 1
+fi
+
+echo "✅ Alle Module vorhanden"
+echo ""
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SCHRITT 6: API Key Setup (mit Auto-Restore!)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+echo "🔑 API Key Setup..."
+echo ""
+
+# Restore alter API Key falls vorhanden
+if [ -n "$OLD_API_KEY" ]; then
+    echo "♻️  Alter API Key gefunden - wird wiederhergestellt!"
+    sed -i "s/DEIN_ANTHROPIC_KEY_HIER/$OLD_API_KEY/g" "$TARGET_DIR/core/config.py"
+    echo "✅ API Key wiederhergestellt!"
+else
+    echo "WICHTIG: Du brauchst NUR deinen ANTHROPIC API Key!"
+    echo "         KEIN OpenAI Key nötig!"
+    echo ""
+    read -p "Anthropic API Key eingeben (oder Enter für später): " API_KEY
+
+    if [ -n "$API_KEY" ]; then
+        sed -i "s/DEIN_ANTHROPIC_KEY_HIER/$API_KEY/g" "$TARGET_DIR/core/config.py"
+        echo "✅ API Key gesetzt"
+    else
+        echo "⚠️  Kein API Key - setze später mit:"
+        echo "   nano $TARGET_DIR/core/config.py"
+    fi
+fi
+
+echo ""
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SCHRITT 7: Widgets installieren
+# ═══════════════════════════════════════════════════════════════════════════════
+
+echo "🎛️  Widgets installieren..."
+mkdir -p ~/.shortcuts
+cp "$TARGET_DIR/widgets/moloch_voice.sh" ~/.shortcuts/ 2>/dev/null || echo "⚠️  Voice Widget nicht gefunden"
+cp "$TARGET_DIR/widgets/moloch_vision.sh" ~/.shortcuts/ 2>/dev/null || echo "⚠️  Vision Widget nicht gefunden"
+chmod +x ~/.shortcuts/*.sh 2>/dev/null || true
+
+WIDGET_COUNT=$(ls ~/.shortcuts/moloch_*.sh 2>/dev/null | wc -l)
+if [ "$WIDGET_COUNT" -eq 2 ]; then
+    echo "✅ Widgets installiert ($WIDGET_COUNT)"
+else
+    echo "⚠️  Nur $WIDGET_COUNT Widgets gefunden"
+fi
+echo ""
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SCHRITT 8: Permissions
+# ═══════════════════════════════════════════════════════════════════════════════
+
+echo "🔧 Permissions setzen..."
+chmod +x "$TARGET_DIR/moloch3_unified.py"
+echo "✅ Permissions OK"
+echo ""
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# FERTIG!
+# ═══════════════════════════════════════════════════════════════════════════════
+
+echo "╔═══════════════════════════════════════════════════════════════╗"
+echo "║  ✅ M.O.L.O.C.H. 3.1 UNIFIED INSTALLATION COMPLETE!           ║"
+echo "╚═══════════════════════════════════════════════════════════════╝"
+echo ""
+echo "📍 Location: $TARGET_DIR"
+echo ""
+echo "🚀 STARTEN:"
+echo "   cd $TARGET_DIR"
+echo "   python moloch3_unified.py          # Voice Mode"
+echo "   python moloch3_unified.py -v       # Vision Mode"
+echo ""
+echo "🎤 VOICE:"
+echo "   ✅ MP3 Format"
+echo "   ✅ termux-microphone-record"
+echo "   ✅ Google Speech API (kostenlos!)"
+echo ""
+echo "🔑 API:"
+echo "   ✅ NUR Anthropic Claude API"
+echo "   ❌ KEIN OpenAI nötig!"
+echo ""
+echo "🎛️  WIDGETS:"
+echo "   ✅ Voice Widget in ~/.shortcuts/"
+echo "   ✅ Vision Widget in ~/.shortcuts/"
+echo "   📱 Termux:Widget App nutzen!"
+echo ""
+echo "🖤 VIEL ERFOLG!"
+echo ""
