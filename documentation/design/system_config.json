@@ -31,7 +31,7 @@
         "no self-initiated external API calls",
         "no silent background learning",
         "no self-replication",
-        "no redefinition of goals",
+        "no redefinition of system goals",
         "no unapproved internet exploration"
       ],
       "persona_rules": {
@@ -51,21 +51,24 @@
       "name": "Listening",
       "trigger": ["system_start", "mode_decay"],
       "led": "blue_pulse",
-      "decay_s": 90
+      "decay_s": 90,
+      "comment": "Default Mode, always safe, no output unless triggered"
     },
     {
       "id": 2,
       "name": "Facilitator",
       "trigger": [">=2 speakers <5s"],
       "led": "green_pulse",
-      "decay_s": 90
+      "decay_s": 90,
+      "comment": "Auto-triggers when multi-speaker detected; integrates humans' inputs"
     },
     {
       "id": 3,
       "name": "Integrator",
       "trigger": ["conflicting_statements"],
       "led": "yellow_pulse",
-      "decay_s": 90
+      "decay_s": 90,
+      "comment": "Analyzes and reconciles conflicting inputs"
     },
     {
       "id": 4,
@@ -73,7 +76,8 @@
       "trigger": ["consensus > 80%"],
       "led": "red_pulse",
       "max_cycles": 2,
-      "decay_s": 90
+      "decay_s": 90,
+      "comment": "Challenges groupthink; limited cycles to avoid loops"
     },
     {
       "id": 5,
@@ -81,7 +85,8 @@
       "trigger": ["emergency_detected"],
       "led": "orange_pulse",
       "hard_override": true,
-      "decay_s": 90
+      "decay_s": 90,
+      "comment": "Highest priority mode; can override others if emergency confidence >= 0.9"
     },
     {
       "id": 6,
@@ -89,7 +94,8 @@
       "trigger": ["log_request", "meeting_mode"],
       "led": "dark_blue",
       "behavior": ["listen_only", "structure_only", "no_output_unless_requested"],
-      "decay_s": 90
+      "decay_s": 90,
+      "comment": "Logs and structures sessions; no spontaneous output"
     }
   ],
   "feedback_loop": {
@@ -100,7 +106,8 @@
       "adjust_meta": true,
       "adjust_style": true
     },
-    "logging": true
+    "logging": true,
+    "comment": "Allows Markus to react to responses: good, bad, funny; adapts style accordingly"
   },
   "api_budget": {
     "tokens": 5,
@@ -112,7 +119,8 @@
     "music_emotion": true,
     "pattern_extraction": true,
     "transparent_logging": true,
-    "reviewable": true
+    "reviewable": true,
+    "comment": "All learned data must be human-auditable"
   },
   "integration": {
     "home_assistant": {
@@ -122,17 +130,26 @@
     },
     "multi_moloch_sync": {
       "smartphone": true,
-      "raspberry": true
+      "raspberry": true,
+      "comment": "Syncs context with mobile instance for continuity"
     }
   },
   "testing_strategy": {
     "technical": ["intent_parsing", "mode_transitions", "npu_pipeline", "logging"],
     "social": ["role_amplification", "consensus_gravity", "humor_scores", "style_consistency"],
-    "proxies": ["multi_speaker_simulation", "fake_user_inputs", "feedback_loops"]
+    "proxies": ["multi_speaker_simulation", "fake_user_inputs", "feedback_loops"],
+    "comment": "Includes both technical & social dynamics tests"
   },
   "implementation_priorities": {
     "critical_path": ["Mode Engine", "Boundary Enforcement", "Feedback Loops", "Hailo Integration"],
     "quick_wins": ["voice selection", "OLED/LED eyes", "basic feedback logging"],
-    "can_wait": ["full Home Assistant integration", "multi-room audio", "advanced music/emotion analysis"]
+    "can_wait": ["full Home Assistant integration", "multi-room audio", "advanced music/emotion analysis"],
+    "comment": "Prioritized for 3-month MVP timeline"
+  },
+  "meta_notes": {
+    "evolution": "System is designed for transparent evolution; modules must be human-approved",
+    "character": "M.O.L.O.C.H. can develop humor/style/voice/eyes personality within constitutional boundaries",
+    "privacy": "All memory tagged; private vs group sessions enforced; no secret learning",
+    "resilience": "Fallback if Hailo-10H unavailable; Pi-only mode possible"
   }
 }
