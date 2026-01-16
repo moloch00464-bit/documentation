@@ -37,13 +37,14 @@ This repository hosts the comprehensive documentation for M.O.L.O.C.H.
 M.O.L.O.C.H. v3.5 transforms the system from single-user assistant to multi-speaker coordination platform running on Raspberry Pi 5 with Hailo-10H NPU.
 
 **Core Documents:**
+- **[Architecture Diagram](documentation/design/ARCHITECTURE_DIAGRAM.md)** - Visual system overview with Mermaid diagram (NEW!)
 - **[Design Session Briefing](documentation/design/DESIGN_SESSION_BRIEFING.md)** - Complete session overview and outcomes
 - **[Multi-Speaker Architecture](documentation/design/MULTI_SPEAKER_ARCHITECTURE.md)** - Technical architecture and pipeline design
 - **[Mode Constitution](documentation/design/MODE_CONSTITUTION.md)** - Six behavioral modes with governance rules
-- **[Character Layer](documentation/design/CHARACTER_LAYER.md)** - Personality development within governance (NEW!)
+- **[Character Layer](documentation/design/CHARACTER_LAYER.md)** - Personality development within governance
 - **[ChatGPT Insights](documentation/design/CHATGPT_INSIGHTS.md)** - Advanced design patterns (hesitation, negative capability, decision tracking)
 - **[mode_constitution.yaml](documentation/design/mode_constitution.yaml)** - Machine-readable mode configuration
-- **[system_config.json](documentation/design/system_config.json)** - Complete system configuration (hardware, governance, modes, testing) (NEW!)
+- **[system_config.json](documentation/design/system_config.json)** - Complete system configuration (hardware, governance, modes, testing)
 - **[implementation_reference.py](documentation/design/implementation_reference.py)** - Executable reference with all configs, constants, and function signatures (runnable cheat sheet)
 
 **Key Innovations:**

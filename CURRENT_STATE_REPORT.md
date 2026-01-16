@@ -13,7 +13,7 @@ M.O.L.O.C.H. (Modular Orchestration Layer for Organized Control & Human-aligned)
 
 **Character:** Hauskobold - lebendig, eigenständig, aber human-aligned. Personality development within constitutional boundaries.
 
-**Current Stage:** Complete design documentation (7,568 lines including Character Layer + system_config.json), ready for implementation.
+**Current Stage:** Complete design documentation (7,768 lines including Character Layer + system_config.json + Architecture Diagram), ready for implementation.
 
 ---
 
@@ -421,6 +421,13 @@ documentation/
 │       Developer guide for constitution-compliant modules
 │
 └── design/
+    ├── ARCHITECTURE_DIAGRAM.md      (~200 lines) **NEW**
+    │   Visual system overview with Mermaid diagram
+    │   - Complete component hierarchy
+    │   - Data flow visualization
+    │   - Implementation phases
+    │   - Testing strategy overview
+    │
     ├── DESIGN_SESSION_BRIEFING.md   (~400 lines)
     │   Complete session overview (Markus + Claude + ChatGPT)
     │
@@ -430,7 +437,7 @@ documentation/
     ├── MODE_CONSTITUTION.md         (~1,400 lines)
     │   Six modes with governance rules, triggers, decay
     │
-    ├── CHARACTER_LAYER.md           (~1,200 lines) **NEW**
+    ├── CHARACTER_LAYER.md           (~1,200 lines)
     │   Personality development within governance
     │   - Voice, OLED Eyes, SoundAnalyzer, Storage
     │   - InteractionFeedback system (explicit learning)
@@ -448,7 +455,7 @@ documentation/
     ├── mode_constitution.yaml        (~500 lines)
     │   Machine-readable mode configuration
     │
-    ├── system_config.json            (~150 lines) **NEW**
+    ├── system_config.json            (~150 lines)
     │   Complete system configuration (JSON)
     │   - Hardware specs (Pi5, Hailo, Storage, Audio, Visual)
     │   - Governance (Constitution, Hard Boundaries, Learning)
@@ -463,7 +470,7 @@ documentation/
         Runnable: python implementation_reference.py
 ```
 
-**Total:** ~7,568 lines of documentation (+150 lines system_config.json)
+**Total:** ~7,768 lines of documentation (+200 lines ARCHITECTURE_DIAGRAM.md)
 
 ---
 
@@ -638,11 +645,12 @@ WHY → WHAT → WHO → CONFIDENCE
 
 | Aspect | Status | Notes |
 |--------|--------|-------|
-| **Design** | ✅ Complete | 7,568 lines documentation |
-| **Architecture** | ✅ Defined | Hardware + software stack clear |
+| **Design** | ✅ Complete | 7,768 lines documentation |
+| **Architecture** | ✅ Defined | Hardware + software stack + visual diagram |
 | **Modes** | ✅ Specified | 6 modes with governance |
 | **Character Layer** | ✅ Documented | Personality within governance |
-| **System Config** | ✅ Created | Machine-readable JSON config |
+| **System Config** | ✅ Created | Machine-readable JSON + YAML |
+| **Visual Documentation** | ✅ Created | Mermaid architecture diagram |
 | **Failure Modes** | ✅ Identified | 4 critical modes with mitigations |
 | **Ethics** | ✅ Documented | Constitution + boundaries |
 | **Implementation** | 🟡 Ready | Priorities clear, can start |
