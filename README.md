@@ -40,14 +40,18 @@ M.O.L.O.C.H. v3.5 transforms the system from single-user assistant to multi-spea
 - **[Design Session Briefing](documentation/design/DESIGN_SESSION_BRIEFING.md)** - Complete session overview and outcomes
 - **[Multi-Speaker Architecture](documentation/design/MULTI_SPEAKER_ARCHITECTURE.md)** - Technical architecture and pipeline design
 - **[Mode Constitution](documentation/design/MODE_CONSTITUTION.md)** - Six behavioral modes with governance rules
+- **[Character Layer](documentation/design/CHARACTER_LAYER.md)** - Personality development within governance (NEW!)
 - **[ChatGPT Insights](documentation/design/CHATGPT_INSIGHTS.md)** - Advanced design patterns (hesitation, negative capability, decision tracking)
 - **[mode_constitution.yaml](documentation/design/mode_constitution.yaml)** - Machine-readable configuration
 - **[implementation_reference.py](documentation/design/implementation_reference.py)** - Executable reference with all configs, constants, and function signatures (runnable cheat sheet)
 
 **Key Innovations:**
 - 6 behavioral modes (Listening, Facilitator, Integrator, Devil's Advocate, Commander, Silent Scribe)
+- **Character Layer:** Living Hauskobold personality within constitutional governance
+- **InteractionFeedback:** Explicit human-in-the-loop learning (not silent optimization)
 - NPU-accelerated perception (Hailo-10H, 40 TOPS)
-- 90% on-device processing, 10% Claude API
+- New hardware: Voice selection (10 voices), OLED Eyes, SoundAnalyzer, 2x 500GB SSD
+- 90% on-device processing, 10% Claude API (5 token/day budget)
 - Explicit governance: mode decay, intervention budgets, human override
 - Advanced social dynamics awareness
 
@@ -92,7 +96,8 @@ See [LICENSE](LICENSE) file for details.
 
 ## Version History
 
+- **v0.3-alpha** (2026-01-16) - Character Layer: Personality Development within Governance
 - **v0.2-alpha** (2026-01-15) - v3.5 Multi-Speaker Design Complete
 - **v0.1-alpha** (2026-01-15) - Initial Constitution and System Documentation
 
-**Last Updated:** 2026-01-15
+**Last Updated:** 2026-01-16

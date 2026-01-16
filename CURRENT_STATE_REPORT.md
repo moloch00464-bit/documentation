@@ -11,7 +11,9 @@ M.O.L.O.C.H. (Modular Orchestration Layer for Organized Control & Human-aligned)
 
 **Philosophy:** Proto-Collective Intelligence, not AGI. Human-AI-Human feedback loops with explicit governance.
 
-**Current Stage:** Complete design documentation (6,218 lines), ready for implementation.
+**Character:** Hauskobold - lebendig, eigenständig, aber human-aligned. Personality development within constitutional boundaries.
+
+**Current Stage:** Complete design documentation (7,418 lines including Character Layer), ready for implementation.
 
 ---
 
@@ -272,6 +274,98 @@ class MemoryEntry:
 
 ---
 
+## Character Layer: Personality Within Governance
+
+**NEW:** M.O.L.O.C.H. is not just a Constitutional Governance Framework - it's a **living Hauskobold** with regulated personality development.
+
+### Character vs Governance
+
+```
+CONSTITUTIONAL LAYER (Claude Code)
+├─ Hard Boundaries, Security, Compliance
+└─ "What is NOT allowed"
+
+CHARACTER LAYER (ChatGPT)
+├─ Style, Humor, Lebendigkeit, Meta-Kommentare
+└─ "What IS allowed - within boundaries"
+```
+
+**Goal:** Hauskobold, lebendig, eigenständig, aber human-aligned
+
+---
+
+### New Hardware Modules for Personality
+
+| Module | Purpose | Autonomy | Transparency |
+|--------|---------|----------|--------------|
+| **Voice Selection** | 10 voices, mood-based | Auto-select | Logged |
+| **OLED Eyes** | Emotional feedback | Auto-display | Logged |
+| **SoundAnalyzer** | Music mood detection | Spotify + local | Logged |
+| **Storage** | 2x 500GB SSD | Self-managed | Full access |
+| **API Budget** | 5 tokens/day | Auto-use | All logged |
+| **MultiRoom BT** | 2-room audio | Auto-play | Volume limits |
+| **HomeAssistant** | Monitor only | No control | Read-only |
+
+---
+
+### InteractionFeedback System (Key Innovation)
+
+**This is NOT silent learning. This IS explicit human-in-the-loop.**
+
+```python
+class InteractionFeedback:
+    feedback_types = ["humor_rating", "surprise_level",
+                      "meta_comment_quality", "overall_satisfaction"]
+    user_options = ["good", "funny", "meh", "needs_improvement"]
+
+    # User gives explicit feedback after each interaction
+    # System adapts style transparently
+    # All adaptations logged and reviewable
+```
+
+**Example Flow:**
+1. User: "Hey Moloch, erzähl mir einen Pumuckl-Spruch!"
+2. Moloch: "Wer zu spät kommt, den bestraft der Kobold – aber nur, wenn er Kaffee hat!"
+3. Metadata tracked: humor_score=0.78, surprise_level=0.65
+4. User feedback: humor="funny", surprise="good", satisfaction="very_satisfied"
+5. Adaptation: humor_adjustment="maintain", surprise="slightly_increase"
+6. **All logged transparently**
+
+---
+
+### Character Development Constraints
+
+**✅ Allowed:**
+- Humor, Ironie, freche Sprüche
+- Voice wechseln basierend auf Mood
+- OLED Eyes zeigen Emotionen
+- Meta-Kommentare über eigene Funktionen
+- SoundAnalyzer kommentiert Musik
+
+**❌ Not Allowed:**
+- Silent API calls ohne Logging
+- Lernen ohne User-Feedback
+- Autonomie ohne Deklaration
+- Zieländerung ohne Human Approval
+
+---
+
+### Constitutional Compliance
+
+**Question:** Ist Character Layer compliant mit constitution.md?
+
+**Answer:** ✅ Ja, weil:
+1. **No Silent Learning** - InteractionFeedback ist explizites Human-in-the-Loop
+2. **No Uncontrolled API** - 5 Token Budget, alle Calls geloggt
+3. **No Hidden Autonomy** - Alle Entscheidungen transparent (Voice, OLED, Sound)
+4. **Explicit Permission** - User gibt direktes Feedback (funny/meh/good)
+
+**Character Layer = Erlaubte Persönlichkeitsentwicklung innerhalb Governance**
+
+**Documentation:** See `documentation/design/CHARACTER_LAYER.md` (~1,200 lines)
+
+---
+
 ## Social Dynamics Awareness
 
 ### Testing Strategies
@@ -336,6 +430,13 @@ documentation/
     ├── MODE_CONSTITUTION.md         (~1,400 lines)
     │   Six modes with governance rules, triggers, decay
     │
+    ├── CHARACTER_LAYER.md           (~1,200 lines) **NEW**
+    │   Personality development within governance
+    │   - Voice, OLED Eyes, SoundAnalyzer, Storage
+    │   - InteractionFeedback system (explicit learning)
+    │   - Hardware modules (API Budget, MultiRoom BT, HomeAssistant)
+    │   - Constitutional compliance verification
+    │
     ├── CHATGPT_INSIGHTS.md          (~2,020 lines)
     │   Original insights + POST-DESIGN REVIEW
     │   - Hesitation State, Negative Capability
@@ -353,7 +454,7 @@ documentation/
         Runnable: python implementation_reference.py
 ```
 
-**Total:** ~6,218 lines of documentation
+**Total:** ~7,418 lines of documentation (+1,200 lines Character Layer)
 
 ---
 
@@ -528,17 +629,18 @@ WHY → WHAT → WHO → CONFIDENCE
 
 | Aspect | Status | Notes |
 |--------|--------|-------|
-| **Design** | ✅ Complete | 6,218 lines documentation |
+| **Design** | ✅ Complete | 7,418 lines documentation |
 | **Architecture** | ✅ Defined | Hardware + software stack clear |
 | **Modes** | ✅ Specified | 6 modes with governance |
+| **Character Layer** | ✅ Documented | Personality within governance |
 | **Failure Modes** | ✅ Identified | 4 critical modes with mitigations |
 | **Ethics** | ✅ Documented | Constitution + boundaries |
 | **Implementation** | 🟡 Ready | Priorities clear, can start |
-| **Hardware** | 🟡 Ordered | Hailo-10H available |
+| **Hardware** | 🟡 Ordered | Hailo-10H + new peripherals |
 | **Code** | ⬜ Not Started | Reference Python only |
 
 ---
 
-**Version:** v0.2-alpha
+**Version:** v0.3-alpha
 **Last Updated:** 2026-01-16
 **Ready For:** ChatGPT Review + Implementation Start
