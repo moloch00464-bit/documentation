@@ -59,10 +59,20 @@ M.O.L.O.C.H. v3.5 transforms the system from single-user assistant to multi-spea
 
 **Philosophy:** Proto-Collective Intelligence, not AGI. Human-AI-Human feedback loops.
 
+### Prototypes
+
+- **[Dashboard Prototype](prototypes/dashboard_prototype.py)** - Visual transparency interface demonstrating real-time system state
+  - Active mode display
+  - User feedback integration
+  - Transparent learning events log
+  - Persona and hardware status
+  - Run: `python prototypes/dashboard_prototype.py`
+
 ### Quick Links
 
 - [System Constitution](documentation/system/constitution.md) - Read the complete autonomy and boundary framework
 - [v3.5 Design Briefing](documentation/design/DESIGN_SESSION_BRIEFING.md) - Multi-speaker system design
+- [Dashboard Prototype](prototypes/dashboard_prototype.py) - Visual transparency interface (NEW!)
 - Contributing Guidelines (coming soon)
 
 ## Philosophy

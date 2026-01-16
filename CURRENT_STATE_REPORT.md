@@ -474,6 +474,36 @@ documentation/
 
 ---
 
+## Prototypes
+
+```
+prototypes/
+├── dashboard_prototype.py           (~150 lines)
+│   Visual transparency interface (Tkinter GUI)
+│   - Active mode display
+│   - User feedback panel
+│   - Learning events log (transparent)
+│   - Persona status (voice, humor level)
+│   - Hardware status (SSD, speakers, camera)
+│   - 3-second refresh cycle (mock data)
+│
+└── README.md                         (~100 lines)
+    Prototypes documentation and usage guide
+```
+
+**Purpose:**
+- Demonstrate transparency principle visually
+- Early-stage UI concept for M.O.L.O.C.H. dashboard
+- Proof-of-concept for real-time system monitoring
+- Mock/Simulation (not connected to real system yet)
+
+**To run:**
+```bash
+python prototypes/dashboard_prototype.py
+```
+
+---
+
 ## Key Design Decisions
 
 ### 1. Pi5 Sovereignty
@@ -651,6 +681,7 @@ WHY → WHAT → WHO → CONFIDENCE
 | **Character Layer** | ✅ Documented | Personality within governance |
 | **System Config** | ✅ Created | Machine-readable JSON + YAML |
 | **Visual Documentation** | ✅ Created | Mermaid architecture diagram |
+| **Prototypes** | ✅ Started | Dashboard GUI prototype (Tkinter) |
 | **Failure Modes** | ✅ Identified | 4 critical modes with mitigations |
 | **Ethics** | ✅ Documented | Constitution + boundaries |
 | **Implementation** | 🟡 Ready | Priorities clear, can start |
