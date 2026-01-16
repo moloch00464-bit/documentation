@@ -13,7 +13,7 @@ M.O.L.O.C.H. (Modular Orchestration Layer for Organized Control & Human-aligned)
 
 **Character:** Hauskobold - lebendig, eigenständig, aber human-aligned. Personality development within constitutional boundaries.
 
-**Current Stage:** Complete design documentation (7,418 lines including Character Layer), ready for implementation.
+**Current Stage:** Complete design documentation (7,568 lines including Character Layer + system_config.json), ready for implementation.
 
 ---
 
@@ -446,7 +446,16 @@ documentation/
     │   - Implementation roadmap
     │
     ├── mode_constitution.yaml        (~500 lines)
-    │   Machine-readable configuration
+    │   Machine-readable mode configuration
+    │
+    ├── system_config.json            (~150 lines) **NEW**
+    │   Complete system configuration (JSON)
+    │   - Hardware specs (Pi5, Hailo, Storage, Audio, Visual)
+    │   - Governance (Constitution, Hard Boundaries, Learning)
+    │   - All 6 modes with triggers, LEDs, decay
+    │   - Feedback Loop system
+    │   - API Budget, Learning Modules, Integration
+    │   - Testing Strategy, Implementation Priorities
     │
     └── implementation_reference.py   (~698 lines)
         Executable Python reference
@@ -454,7 +463,7 @@ documentation/
         Runnable: python implementation_reference.py
 ```
 
-**Total:** ~7,418 lines of documentation (+1,200 lines Character Layer)
+**Total:** ~7,568 lines of documentation (+150 lines system_config.json)
 
 ---
 
@@ -629,10 +638,11 @@ WHY → WHAT → WHO → CONFIDENCE
 
 | Aspect | Status | Notes |
 |--------|--------|-------|
-| **Design** | ✅ Complete | 7,418 lines documentation |
+| **Design** | ✅ Complete | 7,568 lines documentation |
 | **Architecture** | ✅ Defined | Hardware + software stack clear |
 | **Modes** | ✅ Specified | 6 modes with governance |
 | **Character Layer** | ✅ Documented | Personality within governance |
+| **System Config** | ✅ Created | Machine-readable JSON config |
 | **Failure Modes** | ✅ Identified | 4 critical modes with mitigations |
 | **Ethics** | ✅ Documented | Constitution + boundaries |
 | **Implementation** | 🟡 Ready | Priorities clear, can start |

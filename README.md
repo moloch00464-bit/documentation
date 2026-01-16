@@ -42,7 +42,8 @@ M.O.L.O.C.H. v3.5 transforms the system from single-user assistant to multi-spea
 - **[Mode Constitution](documentation/design/MODE_CONSTITUTION.md)** - Six behavioral modes with governance rules
 - **[Character Layer](documentation/design/CHARACTER_LAYER.md)** - Personality development within governance (NEW!)
 - **[ChatGPT Insights](documentation/design/CHATGPT_INSIGHTS.md)** - Advanced design patterns (hesitation, negative capability, decision tracking)
-- **[mode_constitution.yaml](documentation/design/mode_constitution.yaml)** - Machine-readable configuration
+- **[mode_constitution.yaml](documentation/design/mode_constitution.yaml)** - Machine-readable mode configuration
+- **[system_config.json](documentation/design/system_config.json)** - Complete system configuration (hardware, governance, modes, testing) (NEW!)
 - **[implementation_reference.py](documentation/design/implementation_reference.py)** - Executable reference with all configs, constants, and function signatures (runnable cheat sheet)
 
 **Key Innovations:**
