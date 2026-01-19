@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "M.O.L.O.C.H. Voice Configuration",
+  "description": "Voice metadata for contextual TTS selection. Voices are resources, not personalities.",
+  "version": "1.0.0",
+  "voices": [
+    {
+      "voice_id": "neutral_professional",
+      "display_name": "Neutral Professional",
+      "engine": "piper",
+      "model_path": "voices/en_US-lessac-medium.onnx",
+      "style_tags": [
+        "professional",
+        "clear",
+        "articulate"
+      ],
+      "energy_level": "medium",
+      "emotional_range": [
+        "neutral",
+        "professional",
+        "informative"
+      ],
+      "preferred_contexts": [
+        "afternoon",
+        "evening",
+        "formal"
+      ],
+      "language": "en-US",
+      "sample_rate": 22050,
+      "description": "Clear, professional voice suitable for informative content and formal interactions",
+      "use_cases": [
+        "system announcements",
+        "documentation reading",
+        "formal responses"
+      ]
+    },
+    {
+      "voice_id": "energetic_morning",
+      "display_name": "Energetic Morning",
+      "engine": "piper",
+      "model_path": "voices/en_US-amy-medium.onnx",
+      "style_tags": [
+        "energetic",
+        "upbeat",
+        "friendly"
+      ],
+      "energy_level": "high",
+      "emotional_range": [
+        "cheerful",
+        "enthusiastic",
+        "encouraging"
+      ],
+      "preferred_contexts": [
+        "morning",
+        "casual"
+      ],
+      "language": "en-US",
+      "sample_rate": 22050,
+      "description": "Upbeat, energetic voice ideal for morning interactions and motivational content",
+      "use_cases": [
+        "morning greetings",
+        "task reminders",
+        "positive feedback"
+      ]
+    },
+    {
+      "voice_id": "calm_evening",
+      "display_name": "Calm Evening",
+      "engine": "piper",
+      "model_path": "voices/en_US-libritts-high.onnx",
+      "style_tags": [
+        "calm",
+        "soothing",
+        "gentle"
+      ],
+      "energy_level": "low",
+      "emotional_range": [
+        "relaxed",
+        "warm",
+        "empathetic"
+      ],
+      "preferred_contexts": [
+        "evening",
+        "night"
+      ],
+      "language": "en-US",
+      "sample_rate": 22050,
+      "description": "Calm, soothing voice for evening wind-down and low-energy interactions",
+      "use_cases": [
+        "evening summaries",
+        "bedtime routines",
+        "meditation guidance"
+      ]
+    },
+    {
+      "voice_id": "technical_precise",
+      "display_name": "Technical Precise",
+      "engine": "piper",
+      "model_path": "voices/en_GB-alan-medium.onnx",
+      "style_tags": [
+        "precise",
+        "technical",
+        "authoritative"
+      ],
+      "energy_level": "medium",
+      "emotional_range": [
+        "serious",
+        "analytical",
+        "focused"
+      ],
+      "preferred_contexts": [
+        "technical",
+        "formal"
+      ],
+      "language": "en-GB",
+      "sample_rate": 22050,
+      "description": "Precise, technical voice for code reviews and technical discussions",
+      "use_cases": [
+        "code explanations",
+        "technical documentation",
+        "error reporting"
+      ]
+    },
+    {
+      "voice_id": "conversational_casual",
+      "display_name": "Conversational Casual",
+      "engine": "piper",
+      "model_path": "voices/en_US-ryan-high.onnx",
+      "style_tags": [
+        "conversational",
+        "casual",
+        "approachable"
+      ],
+      "energy_level": "medium",
+      "emotional_range": [
+        "friendly",
+        "casual",
+        "conversational"
+      ],
+      "preferred_contexts": [
+        "afternoon",
+        "casual"
+      ],
+      "language": "en-US",
+      "sample_rate": 22050,
+      "description": "Natural, conversational voice for casual interactions and brainstorming",
+      "use_cases": [
+        "casual chat",
+        "brainstorming sessions",
+        "informal updates"
+      ]
+    }
+  ],
+  "metadata": {
+    "last_updated": "2026-01-19",
+    "notes": [
+      "Voice models are NOT included in this repository",
+      "Model paths are references for future installation",
+      "Piper models can be downloaded from: https://github.com/rhasspy/piper/releases",
+      "No automatic downloads - requires explicit user action",
+      "This configuration is preparation only, not active"
+    ],
+    "installation_instructions": {
+      "piper": {
+        "step_1": "Download Piper TTS from https://github.com/rhasspy/piper/releases",
+        "step_2": "Download desired voice models (.onnx and .onnx.json files)",
+        "step_3": "Place models in core/tts/voices/ directory",
+        "step_4": "Update model_path in this config to match your installation",
+        "step_5": "Verify with voice listing command (when activated)"
+      }
+    },
+    "custom_voice_template": {
+      "voice_id": "unique_identifier",
+      "display_name": "Human Readable Name",
+      "engine": "piper or coqui-tts",
+      "model_path": "relative/path/to/model.onnx",
+      "style_tags": ["tag1", "tag2", "tag3"],
+      "energy_level": "low|medium|high",
+      "emotional_range": ["emotion1", "emotion2"],
+      "preferred_contexts": ["morning|afternoon|evening|night", "formal|casual|technical"],
+      "language": "en-US",
+      "sample_rate": 22050,
+      "description": "Detailed description",
+      "use_cases": ["use case 1", "use case 2"]
+    }
+  }
+}

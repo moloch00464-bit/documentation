@@ -1,0 +1,3 @@
+# This directory is reserved for future voice model files (.onnx)
+# Voice models are NOT included in the repository
+# They must be manually downloaded when the TTS system is activated
